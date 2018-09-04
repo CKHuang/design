@@ -1,0 +1,9 @@
+src/router.js
+src/libs/util.js
+src/vendors.js
+server/**/*
+server/*
+src/**/*
+src/*
+webpack.*.js
+config/*

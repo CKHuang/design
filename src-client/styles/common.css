@@ -1,0 +1,59 @@
+/*
+ * 辅助：间距
+ */
+.mar-l-sm {margin-left: 5px}
+.mar-l {margin-left: 10px;}
+.mar-l-lg {margin-left: 15px;}
+
+.mar-r-sm {margin-right: 5px;}
+.mar-r {margin-right: 10px;}
+.mar-r-lg {margin-right: 15px;}
+
+.mar-t-sm {margin-top: 5px;}
+.mar-t {margin-top: 10px;}
+.mar-t-lg {margin-top: 15px;}
+
+.mar-b-sm {margin-bottom: 5px}
+.mar-b {margin-bottom: 10px }
+.mar-b-lg {margin-bottom: 15px;}
+
+.pad-b {padding-bottom:10px}
+.pad-b-lg {padding-bottom:15px}
+
+.pad-t {padding-top:10px}
+.pad-t-lg {padding-top:15px}
+
+
+/*
+ * 辅助：文字
+ */
+.text-right {
+    text-align: right
+}
+.text-left {
+    text-align: left;
+}
+
+
+/*
+ * 对齐
+ */
+.pull-right {
+    float: right;
+}
+.pull-left { 
+    float: left;
+}
+
+
+/*
+ * 重置
+ * @important 如果更新ivew需要对node_modules的样式进行修改
+ */
+.ivu-form-label-right .ivu-form-item-label {
+    float: left;
+    padding: 10px 12px 10px 0;
+}
+.ivu-form-item .ivu-form-item .ivu-form-item-content {
+    margin-left:auto;
+}

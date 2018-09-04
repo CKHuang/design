@@ -1,0 +1,8 @@
+.idea
+.idea/
+.DS_Store
+.project
+src/config/*.tmp
+npm-debug.log
+node_modules
+*.md
