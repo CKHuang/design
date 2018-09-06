@@ -1,4 +1,5 @@
 import axios from 'axios';
+import code from './code'
 
 let util = {
 
@@ -7,6 +8,28 @@ util.title = function(title) {
     title = title ? title + ' - Home' : 'iView project';
     window.document.title = title;
 };
+
+
+/**
+ * 代码操作
+ */
+util.code = code;
+
+
+/**
+ * 生成随机字符串
+ * @param {number} len 字符串长度
+ */
+util.randomStr = function(len) {
+    let words = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    let res = '',
+        pos;
+    for (let i = 0; i < len; i++) {
+        pos = Math.round(Math.random() * (words.length - 1));
+        res += words[pos]
+    }
+    return res;
+}
 
 /**
  * 解析出来url的参数
@@ -67,6 +90,31 @@ util.extend = (origin = {},target = {}) => {
         origin[i] = target[i]
     }
     return origin;
+}
+
+/**
+ * 将数据数据归类
+ * @param {array} list 原始的数据
+ * @param {string} sortOutKey 每一项归类的key，如果有填写key，则会以sortOutKey来作为归类的key,如果没有则直接以item作为归类key
+ * @return {object} {[sortOutKey:string]:item[]}
+ */
+util.sortOut = (list,sortOutKey = false) => {
+    const _list = list.slice(0);
+    const result = {};
+    _list.forEach((item) => {
+        let key;
+        console.log('-->item',item,item[sortOutKey]);
+        if (sortOutKey && typeof item[sortOutKey] != 'undefined') {
+            key = item[sortOutKey].toString();
+        } else {
+            key = item.toString();
+        }
+        if (typeof result[key] == 'undefined') {
+            result[key] = [];
+        }
+        result[key].push(item);
+    });
+    return result;
 }
 
 /**

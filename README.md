@@ -32,6 +32,24 @@
     - 控件栏
 
 
+Code
+    on-change(type,el,parent,props)
+        type
+            update
+            delete
+            insert
+
+Canvas
+    on-change(type,el,parent)
+        type
+            update
+            delete
+            insert
+    
+
+
+
+
 
 
 ```typescript

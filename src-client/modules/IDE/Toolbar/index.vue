@@ -3,14 +3,17 @@
  * toolbar
  */
 .ide-toolbar {
+
     position: relative;
     height: 100%;
+    height: 40px;
     background-color: #fff;
     display: flex;
     display: -webkit-flex;
     justify-content: space-between;
     align-items: center;
     box-shadow: 1px 0 6px 0 rgba(39,54,78,0.12);
+    z-index: 901;
 }
 .ide-toolbar .toolbar-left {
     display: flex;
