@@ -6,3 +6,4 @@ src/config/*.tmp
 npm-debug.log
 node_modules
 *.md
+package-lock.json

@@ -54,18 +54,18 @@
 <template>
     <div class="ide-widget">
         <div class="ide-widget-select">
-            <Select placeholder="请选择UI组件库" v-model="lib">
-                <Option v-for="item in libs" :value="item.value" :key="item.value">{{ item.label }}</Option>
+            <Select placeholder="请选择UI组件库" v-model="ide_widget_selected_lib">
+                <Option v-for="item in ide_widget_libs" :value="item.value" :key="item.value">{{ item.label }}</Option>
             </Select>
         </div>
         <div class="ide-widget-scroll-view">
-            <Collapse simple class="ide-widget-collapse" :value="widgetGroupsViewsName">
-                <Panel v-for="(item,index) in widgetGroupsConfig_" :key="index" :value="index" :name="item.name">
-                    {{ widgetGroupsConfig_[index].label }}
+            <Collapse simple class="ide-widget-collapse">
+                <Panel v-for="(item,index) in ide_widget_selected_widgetGroups_config" :key="index" :value="index" :name="item.name">
+                    {{ ide_widget_selected_widgetGroups_config[index].label }}
                     <ul class="ide-widget-list" slot="content">
-                        <div v-for="(widgetItem,widgetItemIndex) in widgetGroupsConfig_[index].widgets"  :key="widgetItemIndex">
+                        <div v-for="(widgetItem,widgetItemIndex) in ide_widget_selected_widgetGroups_config[index].widgets"  :key="widgetItemIndex">
                              <WidgetItem 
-                                :config="widgetGroupsConfig_[index].widgets[widgetItemIndex]"
+                                :config="ide_widget_selected_widgetGroups_config[index].widgets[widgetItemIndex]"
                                 @on-drag="handleDrag"
                             ></WidgetItem>
                         </div>
@@ -78,82 +78,32 @@
 
 <script>
     import WidgetItem from './item.vue'
-    import widgets from '../../../../widget/index.js'
+    import { mapGetters, mapMutations } from 'vuex'
  
     export default {
         name: `IDEWidget`,
         components: {
             WidgetItem: WidgetItem
         },
-        data() {
-            return {
-                lib: ``,
-                config_: {
-                    name: ``,
-                    version: ``,
-                    description: ``,
-                    widgetGroups: [{
-                        label: ``,
-                        widgets: [{
-                            name: ``,
-                            renderTag: ``,
-                            description: ``,
-                            props: {}
-                        }]
-                    }]
-                },
-                widgetGroupsConfig_: [],
-                widgetGroupsViewsName: [],
-            }
-        },
-        created() {
-           this.lib = widgets.default;
-        },
         computed: {
-            widgetGroupsIndex() {
-                return Object.keys(this.widgetGroupsConfig_);
-            },
-            libs() {
-                const libs = [];
-                for ( let i in widgets.libs ) {
-                    libs.push({
-                        label: `${i} (${widgets.libs[i].version})`,
-                        value: i
-                    })
+            ...mapGetters([
+                `ide_widget_libs`,
+                `ide_widget_default`,
+                `ide_widget_selected_config`,
+                `ide_widget_selected_widgetGroups_config`
+            ]),
+            ide_widget_selected_lib: {
+                get () {
+                    return this.$store.state.ide.ide_widget_selected_lib
+                },
+                set (value) {
+                    this.$store.commit(`SET_IDE_WIDGET_SELECTED_LIB`,value)
                 }
-                return libs;
             }
         },
         methods: {
             handleDrag({x,y}) {
                 // console.log('->x',x,'->y',y);
-            },
-            updateWidgetGroupsConfig(widgetGroups) {
-                const configs = [];
-                const names = [];
-                const _widgetGroups = this.util.deepClone(widgetGroups);
-                _widgetGroups.forEach((item) => {
-                    item.name = this.util.randomStr(12);
-                    configs.push(item);
-                    names.push(item.name);
-                });
-                this.$nextTick(() => {
-                    this.widgetGroupsViewsName = names;
-                })
-                this.widgetGroupsConfig_ = configs;
-            }
-        },
-        watch: {
-            lib: function(newVal,oldVal) {
-                if (newVal != oldVal) {
-                    if (widgets.libs[newVal]) {
-                        this.config_ = widgets.libs[newVal];
-                        this.updateWidgetGroupsConfig(
-                            this.config_.widgetGroups
-                        );
-                    }
-                    
-                }
             }
         }
     }

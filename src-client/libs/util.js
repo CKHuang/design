@@ -103,7 +103,6 @@ util.sortOut = (list,sortOutKey = false) => {
     const result = {};
     _list.forEach((item) => {
         let key;
-        console.log('-->item',item,item[sortOutKey]);
         if (sortOutKey && typeof item[sortOutKey] != 'undefined') {
             key = item[sortOutKey].toString();
         } else {

@@ -38,6 +38,21 @@
 }
 </style>
 
+<style>
+/*
+ * 拖拽预览的展位对象
+ */
+.ide-canvas-widget-placeholder {
+    border: 1px solid #2d8cf0;
+    background-color: #f0faff;
+    display: inline-block;
+    width: 100%;
+    opacity: .6;
+    height: 40px;
+}
+</style>
+
+
 <template>
     <div class="ide-canvas">
         <div class="ide-canvas-scroll-view">
@@ -46,11 +61,13 @@
                     320 x 560
                 </div>
                 <drop 
-                    @drop="handleDrop" 
-                    @dragover="handleDragOver" 
-                    @dragleave="handleDragLevel"
+                    @drop="SET_IDE_CANVAS_DRAGING_WIDGET" 
+                    @dragover="SET_IDE_CANVAS_WIDGET_DRAGING_OVER(true)"
+                    @dragleave="SET_IDE_CANVAS_WIDGET_DRAGING_OVER(false)"  
                 >
-                    <div class="ide-canvas-content"></div>
+                    <div class="ide-canvas-content" id="canvas">
+                        
+                    </div>
                 </drop>
             </div>
         </div>
@@ -58,18 +75,19 @@
 </template>
 
 <script>
+    import { mapGetters, mapMutations, mapActions } from 'vuex'
+
     export default {
         name: `IDECanvas`,
+        computed: {},
         methods: {
-            handleDragOver: () => {
-                console.log('-->在上空盘旋')
-            },
-            handleDragLevel: () => {
-                console.log('-->离开了')
-            },
-            handleDrop: () => {
-                console.log('-->添加了')
-            }
+            ...mapMutations([
+                `SET_IDE_CANVAS_DRAGING_WIDGET`,
+                `SET_IDE_CANVAS_WIDGET_DRAGING_OVER`
+            ]),
+            ...mapActions([
+                `ACT_SET_IDE_CANVAS_DRAGING_WIDGET_PREVIEW`
+            ])
         }
     }
 </script>

@@ -54,11 +54,14 @@
 <template>
     <li class="ide-widget-item">
         <div class="ide-widget-item-inner">
-            <drag @drag="handleDrag" @dragstart="handleStartDrag" @dragend="handleEndDarg">
-                <render-widget :config="config_"></render-widget>
+            <drag 
+                @drag="handleDrag" 
+                @dragstart="SET_IDE_WIDGET_DRAGING(config)" 
+                @dragend="DEL_IDE_WIDGET_DRAGING"
+            >
+                <render-widget :config="config"></render-widget>
             </drag>
-            
-            <span class="mar-t-sm">{{config_.description}}</span>
+            <span class="mar-t-sm">{{config.description}}</span>
         </div>
     </li>
 </template>
@@ -66,7 +69,8 @@
 
 <script>
     import renderWidget from './renderWidget'
-   
+    import { mapGetters, mapMutations, mapActions } from 'vuex'
+
     export default {
         name: `IDEWidgetItem`,
         components: {
@@ -82,32 +86,19 @@
                 })
             }
         },
-        data() {
-            console.log('-->WidgetItem',this.config);
-            return {
-                config_: this.config,
-                dragX: 0,
-                dragY: 0
-            }
-        },
+        computed: {},
         methods: {
-            handleStartDrag() {
-                console.log('-->开始拖拽')
-            },
-            handleEndDarg() {
-                console.log('-->结束拖拽')
-            },
+            ...mapMutations([
+                `SET_IDE_WIDGET_DRAGING`,
+                `DEL_IDE_WIDGET_DRAGING`
+            ]),
+            ...mapActions([
+                `ACT_SET_IDE_WIDGET_DRAGIN_POSITION`
+            ]),
             handleDrag(foo,event) {
-                const x = event.x,
-                      y = event.y;
-                if ( this.dragX == x && this.dragY == y) {
-                    return ;
-                }
-                this.dragX = x;
-                this.dragY = y;
-                this.$emit('on-drag',{
-                    x: this.dragX,
-                    y: this.dragY
+                this.ACT_SET_IDE_WIDGET_DRAGIN_POSITION({
+                    x: event.x,
+                    y: event.y
                 })
             }
         }
