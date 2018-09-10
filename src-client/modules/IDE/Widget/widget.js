@@ -1,5 +1,7 @@
+import { mapGetters, mapMutations, mapActions } from 'vuex'
+
 export default {
-    name: `IDEWidgetRenderWidget`,
+    name: `IDEDragWidget`,
     functional: true,
     props: {
         config: {
@@ -10,6 +12,7 @@ export default {
         }
     },
     render: (h,ctx) => {
-        return h(ctx.props.config.renderTag);
+        const config = ctx.props.config;
+        return h(config.renderTag,{})
     }
 }

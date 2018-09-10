@@ -1,0 +1,51 @@
+import Vue from 'vue'
+/**
+ * 生成有drag组件包含的组件，表示可以拖动的
+ */
+export default (
+    tag,
+    data,
+    events
+) => {
+    const _data = data || {};
+    const _events = events || {};
+    const _emptyFn = () => {};
+    const Instance = new Vue({
+        data: _data.data || {},
+        methods: {
+            append(parent) {
+                parent.appendChild(this.$el);
+            },
+            destroy() {
+                this.$destroy();
+            }
+        },
+        render(h) {
+            return h(`drag`,{
+                on: {
+                    drag: _events.drag || _emptyFn,
+                    dragstart: _events.dragstart || _emptyFn,
+                    dragend: _events.dragend || _emptyFn
+                }
+            },[h(tag,data)])
+        }
+    })
+    return Instance.$mount();
+    // const _events = events || {};
+    // const _emptyFn = () => {};
+    // const instance = createElement(`drag`,{
+    //     on: {
+    //         drag: _events.drag || _emptyFn,
+    //         dragstart: _events.dragstart || _emptyFn,
+    //         dragend: _events.dragend || _emptyFn
+    //     },
+    //     data: {
+    //         id: `drag_${Date.now()}`
+    //     }
+    // },[createElement(
+    //     tag,
+    //     data
+    // )]);
+    // return instance;
+
+}

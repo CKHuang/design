@@ -52,30 +52,15 @@
 </style>
 
 <template>
-    <li class="ide-widget-item">
-        <div class="ide-widget-item-inner">
-            <drag 
-                @drag="handleDrag" 
-                @dragstart="SET_IDE_WIDGET_DRAGING(config)" 
-                @dragend="DEL_IDE_WIDGET_DRAGING"
-            >
-                <render-widget :config="config"></render-widget>
-            </drag>
-            <span class="mar-t-sm">{{config.description}}</span>
-        </div>
-    </li>
+    <div ref="box"></div>
 </template>
 
 
 <script>
-    import renderWidget from './renderWidget'
-    import { mapGetters, mapMutations, mapActions } from 'vuex'
-
+    import DragWidget from './dragWidget'
+    
     export default {
-        name: `IDEWidgetItem`,
-        components: {
-            renderWidget: renderWidget
-        },
+        name: `IDEDragWidget`,
         props: {
             config: {
                 type: Object,
@@ -86,21 +71,14 @@
                 })
             }
         },
-        computed: {},
-        methods: {
-            ...mapMutations([
-                `SET_IDE_WIDGET_DRAGING`,
-                `DEL_IDE_WIDGET_DRAGING`
-            ]),
-            ...mapActions([
-                `ACT_SET_IDE_WIDGET_DRAGIN_POSITION`
-            ]),
-            handleDrag(foo,event) {
-                this.ACT_SET_IDE_WIDGET_DRAGIN_POSITION({
-                    x: event.x,
-                    y: event.y
-                })
+        data() {
+            return {
+                drageWidget: null
             }
+        },
+        mounted() {
+            this.drageWidget = DragWidget(this.config);
+            this.drageWidget.mount(this.$refs['box']);
         }
     }
 </script>

@@ -1,5 +1,6 @@
 import axios from 'axios';
-import code from './code'
+import code from './util/code'
+import vue from './util/vue'
 
 let util = {
 
@@ -14,6 +15,11 @@ util.title = function(title) {
  * 代码操作
  */
 util.code = code;
+
+/**
+ * vue相关
+ */
+util.vue = vue;
 
 
 /**

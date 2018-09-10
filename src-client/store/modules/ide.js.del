@@ -1,0 +1,125 @@
+
+
+import WIDGETS from '../../../widget/index'
+import util from '../../libs/util'
+import createElement from '../../libs/dynamicCreateElement'
+
+const compiler = require('vue-template-compiler')
+
+console.log('->compiler',compiler)
+
+const nodes = compiler.compile([
+    `<div class="wrapper">`,
+        `<Layout>`,
+            `<Header>`,
+                `<Menu v-if="showMenu" v-model="menuList" :config="menuListConfig">`,
+                    '<MenuItem>',
+                        `<Button size="small" @click="handleClick">按钮</Button`,
+                    `</MenuItem>`,
+                `</Menu>`,
+            `</Header>`,
+        `</Layout>`,
+    `</div>`
+].join('\r\n'))
+
+console.log('--->nodes',nodes)
+
+
+
+const getters = {
+    ide_code_editor_options(state) {
+        return {
+            mode: state.ide_code_modes[state.ide_code_actived_tab],
+            lineNumbers: true,
+            lineWrapping: true,
+            tabSize: 2
+        }
+    },
+    ide_code_actived_tab(state) {
+        return state.ide_code_actived_tab
+    },
+    ide_code_spread(state) {
+        return state.ide_code_spread
+    },
+    /**
+     * widget
+     */
+    ide_widget_default(state) {
+        return state.ide_widget_default;
+    },
+    ide_widget_libs(state) {
+        const libs = [];
+        for ( let i in state.ide_widgets ) {
+            libs.push({
+                label: `${i} (${state.ide_widgets[i].version})`,
+                value: i
+            })
+        }
+        return libs;
+    },
+    ide_widget_selected_lib(state) {
+        return state.ide_widget_selected_lib;
+    },
+    ide_widget_selected_config(state,getter) {
+        return state.ide_widgets[getter.ide_widget_selected_lib];
+    },
+    ide_widget_selected_widgetGroups_config(state,getter) {
+        return getter.ide_widget_selected_config.widgetGroups
+    }
+}
+
+const actions = {
+    /**
+     * 拖拽控件的时候需要计算一下前后两次的position是否有变更，有则触发
+     */
+    [ACT_SET_IDE_WIDGET_DRAGIN_POSITION]({commit, state, dispatch},{x,y}) {
+        const position = state.ide_widget_draging_position;
+        if (position.x != x || position.y != y) {
+            commit(SET_IDE_WIDGET_DRAGING_POSITION,{x,y});
+            dispatch(ACT_UPDATE_IDE_CANVAS_WIDGET_PLACEHOLDER);
+        }
+    },
+    /**
+     * 拖拽控件更新position时候会派发事件到这里来
+     * 这里主要是操作拖拽widget的占位标签的渲染
+     */
+    [ACT_UPDATE_IDE_CANVAS_WIDGET_PLACEHOLDER]({commit, state}) {
+              // 是否在canvas范围之内
+        const isDragOver = state.ide_canvas_draging_over,
+              // 拖拽对象的xy坐标
+              pos = state.ide_widget_draging_position;
+        
+        if (isDragOver) {
+            /**
+             * @todo 
+             * 此处应该会拿当前控件的位置和所有的组件进行位置判断
+             * 来设置占位符的位置，这里会有比较大的计算量，占用js
+             * 主线程的资源，但是这里的触发是通过事件的方式，如果
+             * 执行慢多话会持续执行，这里做了个test，在这里sleep
+             * 100
+             */
+            const _now = Date.now();
+             
+        }
+    },
+    /**
+     * @drop的时候添加控件
+     */
+    [ACT_INSERT_IDE_CANVAS_DRAGING_WIDGET]({commit, state}) {
+        const dragWidget = state.ide_widget_draging,
+              pos = state.ide_widget_draging_position,
+              canvas = state.ide_canvas_ref;
+        
+        console.log('->将要添加的控件',dragWidget,pos,canvas);
+    }
+}
+
+
+
+
+export default {
+    state,
+    actions,
+    getters,
+    mutations
+}

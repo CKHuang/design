@@ -61,13 +61,11 @@
                     320 x 560
                 </div>
                 <drop 
-                    @drop="SET_IDE_CANVAS_DRAGING_WIDGET" 
+                    @drop="ACT_INSERT_IDE_CANVAS_DRAGING_WIDGET" 
                     @dragover="SET_IDE_CANVAS_WIDGET_DRAGING_OVER(true)"
                     @dragleave="SET_IDE_CANVAS_WIDGET_DRAGING_OVER(false)"  
                 >
-                    <div class="ide-canvas-content" id="canvas">
-                        
-                    </div>
+                    <div class="ide-canvas-content" ref="canvas"></div>
                 </drop>
             </div>
         </div>
@@ -80,13 +78,16 @@
     export default {
         name: `IDECanvas`,
         computed: {},
+        mounted() {
+            this.SET_IDE_CANVAS_REF(this.$refs[`canvas`]);
+        },
         methods: {
             ...mapMutations([
-                `SET_IDE_CANVAS_DRAGING_WIDGET`,
-                `SET_IDE_CANVAS_WIDGET_DRAGING_OVER`
+                `SET_IDE_CANVAS_WIDGET_DRAGING_OVER`,
+                `SET_IDE_CANVAS_REF`
             ]),
             ...mapActions([
-                `ACT_SET_IDE_CANVAS_DRAGING_WIDGET_PREVIEW`
+                `ACT_INSERT_IDE_CANVAS_DRAGING_WIDGET`
             ])
         }
     }

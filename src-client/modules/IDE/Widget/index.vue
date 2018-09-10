@@ -64,10 +64,14 @@
                     {{ ide_widget_selected_widgetGroups_config[index].label }}
                     <ul class="ide-widget-list" slot="content">
                         <div v-for="(widgetItem,widgetItemIndex) in ide_widget_selected_widgetGroups_config[index].widgets"  :key="widgetItemIndex">
-                             <WidgetItem 
-                                :config="ide_widget_selected_widgetGroups_config[index].widgets[widgetItemIndex]"
-                                @on-drag="handleDrag"
-                            ></WidgetItem>
+                            <li class="ide-widget-item">
+                                <div class="ide-widget-item-inner">
+                                    <DragWidget 
+                                        :config="ide_widget_selected_widgetGroups_config[index].widgets[widgetItemIndex]"
+                                    ></DragWidget>
+                                    <span class="mar-t-sm">{{ide_widget_selected_widgetGroups_config[index].widgets[widgetItemIndex].description}}</span>
+                                </div>
+                            </li>
                         </div>
                     </ul>
                 </Panel>
@@ -77,13 +81,13 @@
 </template>
 
 <script>
-    import WidgetItem from './item.vue'
+    import DragWidget from './dragWidget.vue'
     import { mapGetters, mapMutations } from 'vuex'
  
     export default {
         name: `IDEWidget`,
         components: {
-            WidgetItem: WidgetItem
+            DragWidget: DragWidget
         },
         computed: {
             ...mapGetters([
@@ -99,11 +103,6 @@
                 set (value) {
                     this.$store.commit(`SET_IDE_WIDGET_SELECTED_LIB`,value)
                 }
-            }
-        },
-        methods: {
-            handleDrag({x,y}) {
-                // console.log('->x',x,'->y',y);
             }
         }
     }
