@@ -17,7 +17,7 @@ export default {
     ide_widgets: WIDGETS.libs,
     ide_widget_selected_lib: WIDGETS.default,
     ide_widget_draging: null,
-    ide_widget_draging_position: {x:0,y:0},
+    ide_widget_draging_offset: {x:0,y:0,width:0,height:0},
     /**
      * canvas
      */

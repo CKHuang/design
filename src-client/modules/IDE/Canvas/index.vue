@@ -28,7 +28,7 @@
     height: 560px;
     background-color: #fff;
     position: relative;
-    border: 1px dashed #e1e1e1;
+    /* border: 1px dashed #e1e1e1; */
     /* border-color: #CDB; */
     box-shadow: 0 2px 30px 0 rgba(213,213,213,0.50);
 }

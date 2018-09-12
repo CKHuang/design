@@ -4,7 +4,7 @@ import {
     SET_IDE_WIDGET_SELECTED_LIB,
     SET_IDE_WIDGET_DRAGING,
     DEL_IDE_WIDGET_DRAGING,
-    SET_IDE_WIDGET_DRAGING_POSITION,
+    SET_IDE_WIDGET_DRAGING_OFFSET,
     SET_IDE_CANVAS_WIDGET_DRAGING_OVER,
     SET_IDE_CANVAS_REF
 } from '../../mutation-types'
@@ -62,11 +62,13 @@ export default {
     /**
      * 设置拖拽中控件的位置
      */
-    [SET_IDE_WIDGET_DRAGING_POSITION](state,{x,y}) {
+    [SET_IDE_WIDGET_DRAGING_OFFSET](state,{x,y,width,height}) {
         return Object.assign(state,{
-            ide_widget_draging_position: {
+            ide_widget_draging_offset: {
                 x: x,
-                y: y
+                y: y,
+                width,
+                height
             }
         })
     },
