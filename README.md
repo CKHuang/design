@@ -163,3 +163,12 @@ interface IComponent<R,T> {
     on: {[key:string]:Function}
 }
 ```
+
+
+```javascript
+
+props: {
+    id,
+    config
+}
+```

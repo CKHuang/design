@@ -1,7 +1,8 @@
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import Vue from 'vue';
-import widget from './widget'
+import Widget from './Widget'
 import store from '../../../store/index'
+import util from '../../../libs/util'
 
 export default (
     config,
@@ -18,7 +19,7 @@ export default (
         name: `DragWidget`,
         store,
         components: {
-            widget: widget
+            Widget: Widget
         },
         data() {
             return {
@@ -26,14 +27,20 @@ export default (
                 draggable: _opts.draggable,
                 clone: _opts.clone,
                 width: 0,
-                height: 0
+                height: 0,
+                childrens: []
             }
         },
         mounted(){
             const size = this.getSize();
             this.height = size.height;
             this.width = size.width;
-        },  
+        },
+        computed: {
+            ...mapGetters([
+                `ide_canvans_ref`
+            ])
+        },
         methods: {
             ...mapMutations([
                 `SET_IDE_WIDGET_DRAGING`,
@@ -42,18 +49,38 @@ export default (
             ...mapActions([
                 `ACT_SET_IDE_WIDGET_DRAGIN_OFFSET`
             ]),
+            _setTestCanvasHolder(left,top,width,height) {
+                const $el = document.getElementById('ide-canvas-widget-placeholder');
+                $el.style.top = `${top}px`;
+                $el.style.left = `${left}px`;
+                $el.style.width = `${width}px`;
+                $el.style.height = `${height}px`
+            },
             handleDrag(foo,event) {
-                // console.log('->ACT_SET_IDE_WIDGET_DRAGIN_OFFSET',this.width,this.height)
+
                 if (this.width == 0 || this.height == 0) {
                     const size = this.getSize();
                     this.width = size.width;
                     this.height = size.height;
                 }
+                const canvasOffset = util.offset(
+                    {x:event.x,y:event.y},
+                    this.ide_canvans_ref
+                )
+                this._setTestCanvasHolder(
+                    event.x,
+                    event.y,
+                    this.width,
+                    this.height
+                )
+                
                 this.ACT_SET_IDE_WIDGET_DRAGIN_OFFSET({
                     x: event.x,
                     y: event.y,
                     width: this.width,
-                    height: this.height
+                    height: this.height,
+                    canvasX: canvasOffset.x,
+                    canvasY: canvasOffset.y
                 })
             },
             setDraggable(draggable) {
@@ -61,6 +88,9 @@ export default (
             },
             mount(parent) {
                 parent.appendChild(this.$el);
+            },
+            appendWidget(widget) {
+                this.childrens.push(widget);
             },
             getSize() {
                 const info = this.$el.getBoundingClientRect();
@@ -91,7 +121,8 @@ export default (
                 `@dragstart="SET_IDE_WIDGET_DRAGING(config)" ` +
                 `@dragend="DEL_IDE_WIDGET_DRAGING" ` +
             `>` +
-                `<widget :config="config"></widget>` +
+                `<Widget :config="config">` +
+                `</Widget>` +
             `</drag>`
     }).$mount();
 }

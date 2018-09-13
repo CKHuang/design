@@ -66,9 +66,9 @@
                         <div v-for="(widgetItem,widgetItemIndex) in ide_widget_selected_widgetGroups_config[index].widgets"  :key="widgetItemIndex">
                             <li class="ide-widget-item">
                                 <div class="ide-widget-item-inner">
-                                    <DragWidget 
+                                    <Widget 
                                         :config="ide_widget_selected_widgetGroups_config[index].widgets[widgetItemIndex]"
-                                    ></DragWidget>
+                                    ></Widget>
                                     <span class="mar-t-sm">{{ide_widget_selected_widgetGroups_config[index].widgets[widgetItemIndex].description}}</span>
                                 </div>
                             </li>
@@ -81,13 +81,13 @@
 </template>
 
 <script>
-    import DragWidget from './dragWidget.vue'
+    import Widget from './Widget.vue'
     import { mapGetters, mapMutations } from 'vuex'
  
     export default {
         name: `IDEWidget`,
         components: {
-            DragWidget: DragWidget
+            Widget: Widget
         },
         computed: {
             ...mapGetters([

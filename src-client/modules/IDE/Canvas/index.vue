@@ -32,6 +32,11 @@
     /* border-color: #CDB; */
     box-shadow: 0 2px 30px 0 rgba(213,213,213,0.50);
 }
+.ide-canvas-content-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
 .ide-canvas-info {
     padding-right: 5px;
     color: #999;
@@ -42,13 +47,22 @@
 /*
  * 拖拽预览的展位对象
  */
-.ide-canvas-widget-placeholder {
+/* .ide-canvas-widget-placeholder {
     border: 1px solid #2d8cf0;
     background-color: #f0faff;
     display: inline-block;
     width: 100%;
     opacity: .6;
     height: 40px;
+} */
+
+.ide-canvas-widget-placeholder{
+    outline: 1px dashed #ccc;
+    background-color:#ccc;
+    opacity: .6;
+    position: fixed;
+    top:0px;
+    left:0px;
 }
 </style>
 
@@ -60,12 +74,17 @@
                 <div class="ide-canvas-info pad-b-sm text-right">
                     320 x 560
                 </div>
-                <drop 
-                    @drop="ACT_INSERT_IDE_CANVAS_DRAGING_WIDGET" 
-                    @dragover="SET_IDE_CANVAS_WIDGET_DRAGING_OVER(true)"
-                    @dragleave="SET_IDE_CANVAS_WIDGET_DRAGING_OVER(false)"  
-                >
-                    <div class="ide-canvas-content" ref="canvas"></div>
+                    <div class="ide-canvas-content" >
+                        <drop 
+                            @drop="handleDrop(`foo`,...arguments)"
+                            class="ide-canvas-content-inner"
+                        >
+                            <div class="ide-canvas-content-inner">
+                                <NodeTree :nodeTree="nodeTree"></NodeTree>
+                            </div>
+                            <div class="ide-canvas-widget-placeholder" id="ide-canvas-widget-placeholder"></div>
+                        </drop>
+                    </div>
                 </drop>
             </div>
         </div>
@@ -74,16 +93,34 @@
 
 <script>
     import { mapGetters, mapMutations, mapActions } from 'vuex'
+    import NodeTree from './NodeTree'
 
     export default {
         name: `IDECanvas`,
-        computed: {},
+        computed: {
+            ...mapGetters([
+                `nodeTree`
+            ])
+        },
+        components: {
+            NodeTree: NodeTree
+        },
         mounted() {
             this.SET_IDE_CANVAS_REF(this.$refs[`canvas`]);
         },
         methods: {
+            handleDrop(foo,widgetConfig) {
+                this.INSERT_NODE({
+                    parentId: null,
+                    node: {
+                        tag: widgetConfig.tag,
+                        properties: widgetConfig.properties
+                    }
+                })
+                console.log('[handleDrag]widgetConfig',widgetConfig);
+            },
             ...mapMutations([
-                `SET_IDE_CANVAS_WIDGET_DRAGING_OVER`,
+                `INSERT_NODE`,
                 `SET_IDE_CANVAS_REF`
             ]),
             ...mapActions([

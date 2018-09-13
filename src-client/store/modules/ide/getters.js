@@ -37,5 +37,14 @@ export default {
     },
     ide_widget_selected_widgetGroups_config(state,getter) {
         return getter.ide_widget_selected_config.widgetGroups
+    },
+    ide_canvans_ref(state,getter) {
+        return state.ide_canvas_ref
+    },
+    /**
+     * 获取节点树
+     */
+    ide_data_nodetree(state) {
+        return state.ide_data_nodetree;
     }
 }

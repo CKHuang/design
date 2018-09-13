@@ -107,10 +107,9 @@ html,body {
                             </div>
                         </SiderMenu>
                         <div class="ide-layout-content" style="width:200px;" v-if="leftSiderContentVisiabled">
-                            <Widget 
-                                v-if="leftSiderMenuActived == `widget`"
-                            ></Widget>
+                            <Widget v-if="leftSiderMenuActived == `widget`"></Widget>
                             <Page v-if="leftSiderMenuActived == `page`"></Page>
+                            <NodeTree v-if="leftSiderMenuActived == `nodetree`"></NodeTree>
                         </div>
                     </div>
                 </div>
@@ -124,7 +123,8 @@ html,body {
                         </div>
                     </div>
                 </div>
-                <div class="ide-layout-sider set-box-shadow"></div>
+                <PropsEditor></PropsEditor>
+                <!-- <div class="ide-layout-sider set-box-shadow"></div> -->
             </div>
         </div>
     </div>
@@ -137,6 +137,8 @@ html,body {
     import Code from './Code/index.vue'
     import Page from './Page/index.vue'
     import SiderMenu from './Menu/siderMenu.vue'
+    import PropsEditor from './PropsEditor/index.vue'
+    import NodeTree from './NodeTree/index.vue'
 
     import widgets from '../../../widget/index.js'
 
@@ -148,7 +150,9 @@ html,body {
             Canvas: Canvas,
             Code: Code,
             Page: Page,
-            SiderMenu: SiderMenu
+            SiderMenu: SiderMenu,
+            NodeTree: NodeTree,
+            PropsEditor: PropsEditor
         },
         data() {
             return {

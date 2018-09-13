@@ -65,8 +65,7 @@
             config: {
                 type: Object,
                 default: () => ({
-                    name: ``,
-                    renderTag: ``,
+                    tag: ``,
                     description: ``
                 })
             }

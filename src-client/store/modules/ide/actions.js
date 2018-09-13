@@ -5,9 +5,9 @@ import {
 } from '../../action-types'
 import {
     SET_IDE_WIDGET_DRAGING_OFFSET,
-    SET_IDE_CANVAS_WIDGET_DRAGING_OVER
+    SET_IDE_CANVAS_WIDGET_DRAGING_OVER,
+    SET_IDE_WIDGET_DRAGING_PARENT
 } from '../../mutation-types'
-import createDragWidget from '../../../modules/IDE/Widget/dragWidget.js'
 import util from '../../../libs/util'
 
 
@@ -16,10 +16,22 @@ import util from '../../../libs/util'
  */
 const isCollide = (p1,p2) => {
     let maxX,maxY,minX,minY;
-    maxX = p1.x + p1.width >= p2.x + p2.width ? p1.x + p1.width : p2.x + p2.width;
-    maxY = p1.y + p1.height >= p2.y + p2.height ? p1.y + p1.height : p2.y + p2.height;
-    minX = p1.x <= p2.x ? p1.x : p2.x;
-    minY = p1.y <= p2.y ? p1.y : p2.y;
+    maxX = [
+        p1.x + p1.width,
+        p2.x + p2.width
+    ].sort((a,b) => b - a )[0];
+    maxY = [
+        p1.y + p1.height,
+        p2.y + p2.height
+    ].sort((a,b) => b - a )[0];
+    minX = [
+        p1.x,
+        p2.x
+    ].sort((a,b) => a - b )[0];
+    minY = [
+        p1.y,
+        p2.y
+    ].sort((a,b) => a - b )[0];
     if (maxX - minX <= p1.width + p2.width
         && maxY - minY <= p1.height + p2.height
     ) {
@@ -65,11 +77,11 @@ export default {
     /**
      * 拖拽控件的时候需要计算一下前后两次的position是否有变更，有则触发
      */
-    [ACT_SET_IDE_WIDGET_DRAGIN_OFFSET]({commit, state, dispatch},{x,y,height,width}) {
+    [ACT_SET_IDE_WIDGET_DRAGIN_OFFSET]({commit, state, dispatch},{x,y,height,width,canvasX,canvasY}) {
         const position = state.ide_widget_draging_offset;
         if (position.x != x || position.y != y) {
             //console.log('->action ACT_SET_IDE_WIDGET_DRAGIN_POSITION',)
-            commit(SET_IDE_WIDGET_DRAGING_OFFSET,{x,y,height,width});
+            commit(SET_IDE_WIDGET_DRAGING_OFFSET,{x,y,height,width,canvasX,canvasY});
             dispatch(ACT_UPDATE_IDE_CANVAS_WIDGET_PLACEHOLDER);
         }
     },
@@ -95,8 +107,9 @@ export default {
              * 100
              */
             console.time(`ACT_UPDATE_IDE_CANVAS_WIDGET_PLACEHOLDER`)
-            const ratios = [];
-            widgets.forEach((widget) => {
+            let ratios = [];
+            for( let i in widgets) {
+                const widget = widgets[i];
                 let ratio = 0;
                 const wOffset = widget.offset;
                 const p1 = {
@@ -110,12 +123,29 @@ export default {
                     x: wOffset.x,
                     y: wOffset.y
                 }
+                /**
+                 * 此处不能用相对浏览器的位置做匹对，需要用相对canvas的位置来计算
+                 * 因为canva可以滚动，滚动之后算出来的值就不对了
+                 */
                 if (isCollide(p1,p2)) {
                     ratio = coverRatio(p1,p2);
                 }
                 ratios.push(ratio);
-            });
-            console.log('->ratios 面积占比',ratios);
+            }
+            if (ratios.length > 0) {
+                const max = Math.max(...ratios);
+                if (max > 0) {
+                    const index = ratios.indexOf(max);
+                    console.log('->max',max,index)
+                    commit(SET_IDE_WIDGET_DRAGING_PARENT,widgets[index].id)
+                } else {
+                    commit(SET_IDE_WIDGET_DRAGING_PARENT,null);
+                }
+            }
+           
+            //console.log('-->index',index,max,ratios,widgets);
+            //commit(SET_IDE_WIDGET_DRAGING_PARENT,index == 0 ? null : widgets[index].id)
+            console.log('->ratios 面积占比',ratios,widgets);
             console.timeEnd(`ACT_UPDATE_IDE_CANVAS_WIDGET_PLACEHOLDER`);    
         }
     },
@@ -125,28 +155,48 @@ export default {
     [ACT_INSERT_IDE_CANVAS_DRAGING_WIDGET]({commit, state}) {
         const dragWidget = util.deepClone(state.ide_widget_draging),
               pos = state.ide_widget_draging_offset,
-              canvas = state.ide_canvas_ref;
-       
-        const el = createDragWidget(dragWidget,{
-            draggable: false
-        });
-        el.mount(canvas);
-        const toCanvasSize = el.getPosSize(canvas);
-        Object.assign(dragWidget,{
-            offset: {
-                width: toCanvasSize.width,
-                height: toCanvasSize.height,
-                canvasX: toCanvasSize.left,
-                canvasY: toCanvasSize.top,
-                x: pos.x,
-                y: pos.y
-            }
-        })
-        /**
-         * 这里是要加到里面的
-         */
-        state.ide_canvas_widgets.push(dragWidget);
-        commit(SET_IDE_CANVAS_WIDGET_DRAGING_OVER,false)
+              canvas = state.ide_canvas_ref,
+              parent = state.ide_widget_draging_parent,
+              isDragOver = state.ide_canvas_draging_over,
+              widgets = state.ide_canvas_widgets;
+        if (!isDragOver) {
+            return ;
+        }
+
+
+
+
+        const id = `wg_${util.randomStr(10)}`;
+        // const el = createDragWidget(dragWidget,{
+        //     draggable: false,
+        //     id: id
+        // });
+        // if (parent) {
+        //     widgets[parent].vueComponent.appendWidget();
+        // }
+        // el.mount(parent ? document.getElementById(`parent`) : canvas);
+        // const toCanvasSize = el.getPosSize(canvas);
+        // Object.assign(dragWidget,{
+        //     offset: {
+        //         width: toCanvasSize.width,
+        //         height: toCanvasSize.height,
+        //         canvasX: toCanvasSize.left,
+        //         canvasY: toCanvasSize.top,
+        //         x: pos.x,
+        //         y: pos.y
+        //     },
+        //     id: id,
+        //     parent: parent
+        // })
+        // /**
+        //  * 这里是要加到里面的
+        //  */
+        // //state.ide_canvas_widgets.push(dragWidget);
+        // state.ide_canvas_widgets[id] = {
+        //     dragWidget: dragWidget,
+        //     vueComponent: el
+        // }
+        // commit(SET_IDE_CANVAS_WIDGET_DRAGING_OVER,false)
 
         console.log('-->state',state.ide_canvas_widgets)
         

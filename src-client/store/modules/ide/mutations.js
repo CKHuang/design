@@ -6,7 +6,8 @@ import {
     DEL_IDE_WIDGET_DRAGING,
     SET_IDE_WIDGET_DRAGING_OFFSET,
     SET_IDE_CANVAS_WIDGET_DRAGING_OVER,
-    SET_IDE_CANVAS_REF
+    SET_IDE_CANVAS_REF,
+    SET_IDE_WIDGET_DRAGING_PARENT
 } from '../../mutation-types'
 
 export default {
@@ -62,13 +63,15 @@ export default {
     /**
      * 设置拖拽中控件的位置
      */
-    [SET_IDE_WIDGET_DRAGING_OFFSET](state,{x,y,width,height}) {
+    [SET_IDE_WIDGET_DRAGING_OFFSET](state,{x,y,width,height,canvasX,canvasY}) {
         return Object.assign(state,{
             ide_widget_draging_offset: {
                 x: x,
                 y: y,
                 width,
-                height
+                height,
+                canvasX,
+                canvasY
             }
         })
     },
@@ -84,9 +87,16 @@ export default {
      * 设置canvas的dom节点内容
      */
     [SET_IDE_CANVAS_REF](state,canvas) {
-        console.log('-->SET_IDE_CANVAS_REF canvas',canvas)
         return Object.assign(state,{
             ide_canvas_ref: canvas
+        })
+    },
+    /**
+     * 设置拖拽组件要append到的父级节点id
+     */
+    [SET_IDE_WIDGET_DRAGING_PARENT](state,parent) {
+        return Object.assign(state,{
+            ide_widget_draging_parent: parent
         })
     }
 }

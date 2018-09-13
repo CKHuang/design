@@ -21,6 +21,60 @@ util.code = code;
  */
 util.vue = vue;
 
+util.map = cb => arr => Array.prototype.map.call(arr,cb);
+
+util.max = arr => arr.reduce((acc, cur) => {
+    if (cur >= acc) return cur;
+    else return acc;
+}, arr[0]);
+
+
+/**
+ * 求树的最大深度
+ * @param {array} nodeTree 
+ */
+util.treeDepth = (nodeTree,handle) => {
+    const nextChildren = node => {
+        if (node.children.length === 0) return 1;
+        else {
+            const deeps = util.map(nextChildren)(node.children);
+            handle(deeps,node)
+            console.log('->nodes',deeps,node);
+            return 1 + util.max(deeps);
+        }
+    }
+    return nextChildren(nodeTree);
+}
+
+/**
+ * 递归处理
+ * @param {array} list 将要递归处理的数据
+ * @param {function} nextList 处理解析出来是否需要递归，返回数组表示需要，返回null表示不用
+ * @param {function} handleNextListResult 处理递归的结果
+ *    @param {object} item 被递归处理数据的对象
+ *    @param {any} result 递归处理的结果
+ * @param {function} handleTransferItem 处理修改每一项的数据并返回处理结果
+ */
+util.traverse = (
+    list,
+    handleRetNextList,
+    handleNextListResult,
+    handleTransferItem
+) => {
+    const handle = (_list) => {
+        const result = [];
+        _list.forEach((item) => {
+            const nextList = handleRetNextList(item);
+            if (nextList !== null && Array.isArray(nextList)) {
+               item = handleNextListResult(item,handle(nextList))
+            }
+            handleTransferItem(item);
+            result.push(item)
+        })
+        return result;
+    }
+    return handle(util.deepClone(list))
+}
 
 /**
  * 生成随机字符串
@@ -48,6 +102,49 @@ util.parseUrl = function(_this){
         params: url.params,
         query: url.query
     }
+}
+
+util.isUndefined = (data) => {
+    return typeof data == 'undefined'
+}
+
+/**
+ * 计算el相对otherEl的相对位置，如果otherEl为null则表示相对窗口的位置
+ * @param {HTMLElement|object} el 元素对象，或者是已经计算出来的x,y节点
+ * @param {HTMLElement|object} otherEl 相对元素，或者是已经计算出来的x,y位置,默认是null
+ * @return {object} {x,y}
+ */
+util.offset = (el,otherEl = null) => {
+    let offset;
+    if (!util.isUndefined(el.x) && !util.isUndefined(el.y)) {
+        offset = {
+            left: el.x,
+            top: el.y
+        }
+    } else {
+        offset = el.getBoundingClientRect()
+    }
+    if (otherEl === null) {
+        return {
+            x: offset.left,
+            y: offset.top
+        }
+    } else {
+        let pOffset;
+        if (otherEl.x && otherEl.y) {
+            pOffset = {
+                left: otherEl.x,
+                y: otherEl.y
+            }
+        } else {
+            pOffset = otherEl.getBoundingClientRect();
+        } 
+        return {
+            x: offset.left - pOffset.left,
+            y: offset.top - pOffset.top
+        }
+    }
+    
 }
 
 /**

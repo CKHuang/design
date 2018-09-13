@@ -1,0 +1,32 @@
+import { mapGetters, mapMutations, mapActions } from 'vuex'
+import util from '../../../libs/util'
+
+export default {
+    name: `Widget`,
+    functional: true,
+    props: {
+        config: {
+            type: Object,
+            default: () => ({
+                tag: ``
+            })
+        },
+        id: {
+            type: String,
+            default: `${util.randomStr(10)}`
+        }
+    },
+    data() {
+        return {
+            childrens: []
+        }
+    },
+    render: (h,ctx) => {
+        const config = ctx.props.config;
+        return h(config.tag,{
+            attrs: {
+                id: `widget_${ctx.props.id}`
+            }
+        })
+    }
+}
