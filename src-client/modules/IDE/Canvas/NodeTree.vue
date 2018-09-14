@@ -1,6 +1,7 @@
 <script>
     import util from '../../../libs/util'
     import { mapGetters, mapMutations, mapActions } from 'vuex'
+    import storeTypes from '../../../store/modules/ide/types'
 
     /**
      * 画布的函式组件，
@@ -9,34 +10,33 @@
      */
     export default {
         name: `IDECanvasNodeTree`,
-        props: {
-            /**
-             * 节点树
-             */
-            nodeTree: {
-                type: Array,
-                default: () => ([])
-            }
+        computed: {
+            ...mapGetters({
+                "nodeTree": storeTypes.state.data[`nodetree`]
+            })
         },
         methods: {
-            ...mapMutations([
-                `SHOW_IDE_PROP_EDIT`,
-                `SET_EDIT_PROPS`
-            ]),
-            wrapDrop(h,node) {
+            /**
+             * 渲染节点
+             * @param {function} h createElement
+             * @param {object} nodeConfig 节点配置属性
+             * @param {array}  children 子元素列表
+             */
+            renderNode(h,nodeConfig,children = []) {
                 return h(`div`,{
-                    'class': `diy-drop`,
+                    'class': `ide-canvas-node`,
                     props: {},
                     on: {
-                        contextmenu: (event) => { 
+                        contextmenu: (event) => {
                             event.preventDefault();
                             event.stopPropagation();
-                            this.SHOW_IDE_PROP_EDIT(true);
-                            this.SET_EDIT_PROPS({nodeId:node.id});
-                            console.log(`点击了鼠标右键`,event,node)
+                          
+                            console.log(`点击了鼠标右键`,nodeConfig )
                         }
                     }
-                },[node])
+                },[h(`drop`,{},[
+                    h(nodeConfig.tag,nodeConfig.properties,children)
+                ])])
             },
             /**
              * 采用深度遍历的方式来渲染
@@ -66,11 +66,11 @@
                     const item = _stack.pop();
                     if (item.children.length == 0) {
                         _cache.push(
-                            this.wrapDrop(h,h(item.tag,item.properties))
+                            this.renderNode(h,item)
                         );
                     } else if (item.children.length > 0) {
                         const _children = _cache.splice(-item.children.length);
-                        const vnode = this.wrapDrop(h,h(item.tag,item.properties,_children.reverse()));
+                        const vnode = this.renderNode(h,item,_children.reverse())
                         _cache.push(vnode);
                        
                     }

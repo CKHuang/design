@@ -1,35 +1,155 @@
 import WIDGETS from '../../../../widget/index'
+import types from './types'
+import NodeTree from '../../struct/NodeTree'
 
-export default {
-    /**
-     * code面板
+const nodetree = new NodeTree();
+    nodetree.on('change', () => {
+        state[types.state.data[`nodetree`]] = nodetree.nodeTree
+    })
+
+    setTimeout(() => {
+        nodetree.set([{
+            tag: `Layout`,
+            properties: {},
+            children: [{
+                tag: `Menu`,
+                properties: {
+                    props: {
+                        'mode': `horizontal`
+                    }
+                },
+                children: [{
+                    tag: `MenuItem`,
+                    properties: {
+                        props: {
+                            name: `1`
+                        }
+                    },
+                    children: [{
+                        tag: `Icon`,
+                        properties: {
+                            props: {
+                                type: `ios-paper`
+                            }
+                        },
+                        children: []
+                    }]
+                },{
+                    tag: `MenuItem`,
+                    properties: {
+                        props: {
+                            name: `1`
+                        }
+                    },
+                    children: [{
+                        tag: `Icon`,
+                        properties: {
+                            props: {
+                                type: `ios-paper`
+                            }
+                        },
+                        children: []
+                    }]
+                },{
+                    tag: `MenuItem`,
+                    properties: {
+                        props: {
+                            name: `1`
+                        }
+                    },
+                    children: [{
+                        tag: `Icon`,
+                        properties: {
+                            props: {
+                                type: `ios-paper`
+                            }
+                        },
+                        children: []
+                    }]
+                }]
+            },{
+                tag: `Content`,
+                properties: {},
+                children: [{
+                    tag: `Card`,
+                    properties: {},
+                    children: [{
+                        tag: `Form`,
+                        properties: {},
+                        children: [{
+                            tag: `FormItem`,
+                            properties: {
+                                props: {
+                                    label: `name`
+                                },children: []
+                            },
+                            children: [{
+                                tag: `Input`,
+                                properties: {
+                                    props: {
+                                        size: `default`
+                                    }
+                                },children: []
+                            }]
+                        },{
+                            tag: `FormItem`,
+                            properties: {
+                                props: {
+                                    label: `password`
+                                }
+                            },
+                            children: [{
+                                tag: `Input`,
+                                properties: {}
+                                ,children: []
+                            }]
+                        }]
+                    }]
+                }]
+            }]  
+        }])
+      },1000);
+
+const state = {
+     /**
+     * @description 展开状态
+     * @type {boolean} false:收起,true:展开
      */
-    ide_code_spread: false,
-    ide_code_actived_tab: ``,
-    ide_code_modes: {
+    [types.state.ui["code.spread"]]: false,
+    /**
+     * @description 当前激活的标签
+     * @type {string} template、script、style其中一个
+     */
+    [types.state.ui["code.actived"]]: ``,
+    /**
+     * @description 代码编辑器的渲染模式
+     * @type {object}
+     */
+    [types.state.ui["code.modes"]]: {
         "template": `htmlmixed`,
         "script": `javascript`,
         "style": `css`
     },
-    /**
-     * widget面板
+     /**
+     * @description 选中的控件库
+     * @type {string} 例如iview
      */
-    ide_widgets: WIDGETS.libs,
-    ide_widget_selected_lib: WIDGETS.default,
-    ide_widget_draging: null,
-    ide_widget_draging_offset: {x:0,y:0,width:0,height:0,canvasX:0,canvasY:0},
-    ide_widget_draging_parent: null, // 要append到的父亲节点，如果没有则为root
+    [types.state.data["widget.lib"]]: WIDGETS.default,
     /**
-     * canvas
+     * @description 可选的组件库
+     * @type {object}
      */
-    // canvas里面所有的控件
-    ide_canvas_ref: null,
-    ide_canvas_widgets: {},
-    ide_canvas_draging_over: false,
-    ide_canvas_widget_placeholder: null,
-    // 数据
+    [types.state.data["widget.libs"]]: WIDGETS.libs,
     /**
-     * 节点树
+     * @description 节点树
+     * @type {array}
      */
-    ide_data_nodetree: []
+    [types.state.data[`nodetree`]]: [],
+    /**
+     * @description 节点树对象
+     * @type {NodeTree}
+     */
+    [types.state.data["nodetree.instance"]]: nodetree
 }
+
+export default state

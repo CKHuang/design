@@ -37,23 +37,23 @@
 
 
 <template>
-    <div :class="[`ide-code`,ide_code_spread ? `spread` : ``]">
+    <div :class="[`ide-code`,spread ? `spread` : ``]">
         <div class="ide-code-header">
-            <div :class="[`trigger-item`,ide_code_actived_tab ==`template` ? `actived` : ``]" @click="SET_IDE_CODE_TOGGLE(`template`)">
+            <div :class="[`trigger-item`,actived ==`template` ? `actived` : ``]" @click="handletToggle(`template`)">
                 <Icon type="md-code-working" />
                 <span class="pad-l-sm">编辑模版代码</span>
             </div>
-            <div :class="[`trigger-item`,ide_code_actived_tab ==`script` ? `actived` : ``]" @click="SET_IDE_CODE_TOGGLE(`script`)">
+            <div :class="[`trigger-item`,actived ==`script` ? `actived` : ``]" @click="handletToggle(`script`)">
                 <Icon type="logo-javascript" />
                 <span class="pad-l-sm">编辑脚本代码</span>
             </div>
-            <div :class="[`trigger-item`,ide_code_actived_tab ==`style` ? `actived` : ``]" @click="SET_IDE_CODE_TOGGLE('style')">
+            <div :class="[`trigger-item`,actived ==`style` ? `actived` : ``]" @click="handletToggle('style')">
                 <Icon type="logo-css3" />
                 <span class="pad-l-sm">编辑样式代码</span>
             </div>
         </div>
         <div class="ide-code-body">
-            <Codemirror :value="code_actived" :options="ide_code_editor_options" @change="handleCodeChange"></Codemirror>
+            <Codemirror :value="actived" :options="editorOptions" @change="handleCodeChange"></Codemirror>
         </div>
     </div>
 </template>
@@ -61,6 +61,7 @@
 <script>
     import { codemirror } from 'vue-codemirror-lite'
     import { mapGetters, mapMutations } from 'vuex'
+    import storeTypes from '../../../store/modules/ide/types'
     require('codemirror/mode/javascript/javascript')
     require('codemirror/mode/css/css');
     require('codemirror/mode/htmlmixed/htmlmixed');
@@ -78,17 +79,16 @@
             Codemirror: codemirror
         },
         computed: {
-            ...mapGetters([
-                `ide_code_editor_options`,
-                `ide_code_actived_tab`,
-                `ide_code_spread`,
-                `code_actived`
-            ])
+            ...mapGetters({
+                "spread": storeTypes.state.ui[`code.spread`],
+                "actived": storeTypes.state.ui[`code.actived`],
+                "editorOptions": storeTypes.getters[`ui.code.editor.options`]
+            })
         },
         methods: {
-            ...mapMutations([
-                `SET_IDE_CODE_TOGGLE`
-            ]),
+            ...mapMutations({
+                "handletToggle": storeTypes.mutations[`toggle.ui.code.spread`]
+            }),
             async handleCodeChange(code) {
                 this.$emit('on-code-change',{code});
             }

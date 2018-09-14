@@ -54,22 +54,22 @@
 <template>
     <div class="ide-widget">
         <div class="ide-widget-select">
-            <Select placeholder="请选择UI组件库" v-model="ide_widget_selected_lib">
-                <Option v-for="item in ide_widget_libs" :value="item.value" :key="item.value">{{ item.label }}</Option>
+            <Select placeholder="请选择UI组件库" v-model="lib">
+                <Option v-for="item in libs" :value="item.value" :key="item.value">{{ item.label }}</Option>
             </Select>
         </div>
         <div class="ide-widget-scroll-view">
             <Collapse simple class="ide-widget-collapse">
-                <Panel v-for="(item,index) in ide_widget_selected_widgetGroups_config" :key="index" :value="index" :name="item.name">
-                    {{ ide_widget_selected_widgetGroups_config[index].label }}
+                <Panel v-for="(item,index) in libWidgetsConfig" :key="index" :value="index" :name="item.name">
+                    {{ libWidgetsConfig[index].label }}
                     <ul class="ide-widget-list" slot="content">
-                        <div v-for="(widgetItem,widgetItemIndex) in ide_widget_selected_widgetGroups_config[index].widgets"  :key="widgetItemIndex">
+                        <div v-for="(widgetItem,widgetItemIndex) in libWidgetsConfig[index].widgets"  :key="widgetItemIndex">
                             <li class="ide-widget-item">
                                 <div class="ide-widget-item-inner">
                                     <Widget 
-                                        :config="ide_widget_selected_widgetGroups_config[index].widgets[widgetItemIndex]"
+                                        :config="libWidgetsConfig[index].widgets[widgetItemIndex]"
                                     ></Widget>
-                                    <span class="mar-t-sm">{{ide_widget_selected_widgetGroups_config[index].widgets[widgetItemIndex].description}}</span>
+                                    <span class="mar-t-sm">{{libWidgetsConfig[index].widgets[widgetItemIndex].description}}</span>
                                 </div>
                             </li>
                         </div>
@@ -83,25 +83,25 @@
 <script>
     import Widget from './Widget.vue'
     import { mapGetters, mapMutations } from 'vuex'
- 
+    import storeTypes from '../../../store/modules/ide/types'
+
     export default {
         name: `IDEWidget`,
         components: {
             Widget: Widget
         },
         computed: {
-            ...mapGetters([
-                `ide_widget_libs`,
-                `ide_widget_default`,
-                `ide_widget_selected_config`,
-                `ide_widget_selected_widgetGroups_config`
-            ]),
-            ide_widget_selected_lib: {
+            ...mapGetters({
+                "libs": storeTypes.getters[`data.widget.libs.options`],
+                "libConfig": storeTypes.getters[`data.widget.lib.config`],
+                "libWidgetsConfig": storeTypes.getters[`data.widget.lib.widgets.config`]
+            }),
+            lib: {
                 get () {
-                    return this.$store.state.ide.ide_widget_selected_lib
+                    return this.$store.state.ide[storeTypes.state.data[`widget.lib`]]
                 },
                 set (value) {
-                    this.$store.commit(`SET_IDE_WIDGET_SELECTED_LIB`,value)
+                    this.$store.commit(storeTypes.mutations[`update.data.widget.lib`],value)
                 }
             }
         }

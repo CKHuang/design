@@ -80,7 +80,7 @@
                             class="ide-canvas-content-inner"
                         >
                             <div class="ide-canvas-content-inner">
-                                <NodeTree :nodeTree="nodeTree"></NodeTree>
+                                <NodeTree></NodeTree>
                             </div>
                             <div class="ide-canvas-widget-placeholder" id="ide-canvas-widget-placeholder"></div>
                         </drop>
@@ -93,39 +93,28 @@
 
 <script>
     import { mapGetters, mapMutations, mapActions } from 'vuex'
+    import storeTypes from '../../../store/modules/ide/types'
     import NodeTree from './NodeTree'
 
     export default {
         name: `IDECanvas`,
-        computed: {
-            ...mapGetters([
-                `nodeTree`
-            ])
-        },
         components: {
             NodeTree: NodeTree
         },
-        mounted() {
-            this.SET_IDE_CANVAS_REF(this.$refs[`canvas`]);
-        },
         methods: {
             handleDrop(foo,widgetConfig) {
-                this.INSERT_NODE({
+                this[`insert.node`]({
                     parentId: null,
-                    node: {
+                    nodeConfig: {
                         tag: widgetConfig.tag,
                         properties: widgetConfig.properties
                     }
                 })
                 console.log('[handleDrag]widgetConfig',widgetConfig);
             },
-            ...mapMutations([
-                `INSERT_NODE`,
-                `SET_IDE_CANVAS_REF`
-            ]),
-            ...mapActions([
-                `ACT_INSERT_IDE_CANVAS_DRAGING_WIDGET`
-            ])
+            ...mapMutations({
+                "insert.node": storeTypes.mutations[`insert.data.nodetree.node`]
+            }),
         }
     }
 </script>
