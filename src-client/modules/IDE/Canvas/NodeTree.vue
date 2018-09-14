@@ -16,6 +16,9 @@
             })
         },
         methods: {
+            ...mapMutations({
+                "insert.node": storeTypes.mutations[`insert.data.nodetree.node`]
+            }),
             /**
              * 渲染节点
              * @param {function} h createElement
@@ -23,7 +26,7 @@
              * @param {array}  children 子元素列表
              */
             renderNode(h,nodeConfig,children = []) {
-                return h(`div`,{
+                return h(`drop`,{
                     'class': `ide-canvas-node`,
                     props: {},
                     on: {
@@ -34,7 +37,21 @@
                             console.log(`点击了鼠标右键`,nodeConfig )
                         }
                     }
-                },[h(`drop`,{},[
+                },[h(`drop`,{
+                    on: {
+                        drop: (widgetConfig,...args) => {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            this["insert.node"]({
+                                parentId: nodeConfig.id,
+                                nodeConfig: {
+                                    tag: widgetConfig.tag,
+                                    properties: widgetConfig.properties
+                                }
+                            })
+                        }
+                    }
+                },[
                     h(nodeConfig.tag,nodeConfig.properties,children)
                 ])])
             },

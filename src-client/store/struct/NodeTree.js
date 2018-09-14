@@ -32,7 +32,7 @@ export default class NodeTree extends EventEmitter{
     /**
      * 解析获取控件的属性的默认值
      */
-    _getPropertiesDefaultValues(properties) {
+    _getWidgetConfigPropertiesDefaultValues(properties) {
         const result = {};
         for ( let i in properties ) {
             const item = properties[i];
@@ -47,13 +47,14 @@ export default class NodeTree extends EventEmitter{
     /**
      * 创建新节点
      * @param {object} nodeConfig 节点的配置{tag,properties}
+     * @param {boolean} isNewFromWidgetConfig 从widget的配置里面初始化
      */
-    createNode(nodeConfig) {
+    createNode(nodeConfig,isNewFromWidgetConfig = true) {
         return node(
             nodeConfig.tag,
-            this._getPropertiesDefaultValues(
+            isNewFromWidgetConfig ? this._getWidgetConfigPropertiesDefaultValues(
                 nodeConfig.properties
-            ),
+            ) : nodeConfig.properties,
             nodeConfig.id
         )
     }
@@ -66,30 +67,26 @@ export default class NodeTree extends EventEmitter{
     set(
         nodeTree
     ) {
-        const nodes = {};
-        let   count = 0;
-        const tree = util.traverse(nodeTree,(item) => {
-            if (typeof item != 'string' && item.children.length > 0) {
-                return item.children;
-            }
-            return null;
-        },(item,result) => {
-            item.children = result;
-            return item;
-        },(nodeConfig) => {
-            const _node = this.createNode({
-                tag: typeof nodeConfig == 'string' ? `span` : nodeConfig.tag,
-                properties: typeof nodeConfig == 'string' ? {} : nodeConfig.properties
-            })
-            nodes[_node.id] = _node;
-            count++;
-            if (typeof nodeConfig != 'string') {
-                nodeConfig.id = _node.id;
-            }
-        });
-        this.nodeTree = tree;
+        this.nodes = {};
+        let  count = 0;
+        const cloneNode = (nodes,newNode) => {
+            nodes.forEach((item) => {
+                const _node = this.createNode({
+                    tag: item.tag,
+                    properties: item.properties
+                },false);
+                this.nodes[_node.id] = _node;
+                newNode.push(_node);
+                count++;
+                if (item.children.length > 0) {
+                    cloneNode(item.children,_node.children)
+                }
+            });
+        }
+        let newTree = [];
+        cloneNode(util.deepClone(nodeTree),newTree);
+        this.nodeTree = newTree;
         this.nodeCount = count;
-        this.nodes = nodes;
         this._emit(this.EVENT.CHANGE);
     }
 
@@ -109,6 +106,7 @@ export default class NodeTree extends EventEmitter{
         const parent = parentId ? this.find(parentId)
                                 : this.nodeTree;
         const _node = this.createNode(nodeConfig)
+        console.log(`=======[insert node] nodeConfig`,nodeConfig,`parentId`,parentId,`parent`,parent.tag)
         if (Array.isArray(parent)) {
             parent[mode](_node);
         } else {
@@ -122,6 +120,6 @@ export default class NodeTree extends EventEmitter{
      * 查找某个节点
      */
     find(nodeId) {
-
+        return this.nodes[nodeId];
     }
 }

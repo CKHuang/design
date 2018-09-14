@@ -41,7 +41,6 @@ export default {
         state,
         {parentId,nodeConfig,mode = 'push'}
     ) {
-        console.log('-->nodeConfig',nodeConfig)
         state[types.state.data["nodetree.instance"]].insert(
             parentId,
             nodeConfig,

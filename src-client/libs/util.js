@@ -61,19 +61,23 @@ util.traverse = (
     handleNextListResult,
     handleTransferItem
 ) => {
+    const result = [];
     const handle = (_list) => {
-        const result = [];
+        //const result = [];
         _list.forEach((item) => {
             const nextList = handleRetNextList(item);
             if (nextList !== null && Array.isArray(nextList)) {
                item = handleNextListResult(item,handle(nextList))
             }
-            handleTransferItem(item);
+            item = handleTransferItem(item);
             result.push(item)
         })
         return result;
     }
-    return handle(util.deepClone(list))
+    //console.log('-->')
+    const res = handle(util.deepClone(list));
+    console.log(`traverse result`,res)
+    return res;
 }
 
 /**

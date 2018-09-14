@@ -75,13 +75,17 @@ const nodetree = new NodeTree();
                     properties: {},
                     children: [{
                         tag: `Form`,
-                        properties: {},
+                        properties: {
+                            props: {
+                                
+                            }
+                        },
                         children: [{
                             tag: `FormItem`,
                             properties: {
                                 props: {
                                     label: `name`
-                                },children: []
+                                }
                             },
                             children: [{
                                 tag: `Input`,
