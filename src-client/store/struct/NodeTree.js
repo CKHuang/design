@@ -41,6 +41,7 @@ export default class NodeTree extends EventEmitter{
                 result[i][k] = item[k].default
             }
         }
+        console.log(`[_getWidgetConfigPropertiesDefaultValues]`,result);
         return result;  
     }
 
@@ -51,6 +52,7 @@ export default class NodeTree extends EventEmitter{
      */
     createNode(nodeConfig,isNewFromWidgetConfig = true) {
         return node(
+            nodeConfig.lib,
             nodeConfig.tag,
             isNewFromWidgetConfig ? this._getWidgetConfigPropertiesDefaultValues(
                 nodeConfig.properties
@@ -72,6 +74,7 @@ export default class NodeTree extends EventEmitter{
         const cloneNode = (nodes,newNode) => {
             nodes.forEach((item) => {
                 const _node = this.createNode({
+                    lib: item.lib,
                     tag: item.tag,
                     properties: item.properties
                 },false);
@@ -98,6 +101,7 @@ export default class NodeTree extends EventEmitter{
     insert(
         parentId = null,
         nodeConfig = {
+            lib,
             tag,
             properties
         },

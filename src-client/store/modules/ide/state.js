@@ -7,112 +7,112 @@ const nodetree = new NodeTree();
         state[types.state.data[`nodetree`]] = nodetree.nodeTree
     })
 
-    setTimeout(() => {
-        nodetree.set([{
-            tag: `Layout`,
-            properties: {},
-            children: [{
-                tag: `Menu`,
-                properties: {
-                    props: {
-                        'mode': `horizontal`
-                    }
-                },
-                children: [{
-                    tag: `MenuItem`,
-                    properties: {
-                        props: {
-                            name: `1`
-                        }
-                    },
-                    children: [{
-                        tag: `Icon`,
-                        properties: {
-                            props: {
-                                type: `ios-paper`
-                            }
-                        },
-                        children: []
-                    }]
-                },{
-                    tag: `MenuItem`,
-                    properties: {
-                        props: {
-                            name: `1`
-                        }
-                    },
-                    children: [{
-                        tag: `Icon`,
-                        properties: {
-                            props: {
-                                type: `ios-paper`
-                            }
-                        },
-                        children: []
-                    }]
-                },{
-                    tag: `MenuItem`,
-                    properties: {
-                        props: {
-                            name: `1`
-                        }
-                    },
-                    children: [{
-                        tag: `Icon`,
-                        properties: {
-                            props: {
-                                type: `ios-paper`
-                            }
-                        },
-                        children: []
-                    }]
-                }]
-            },{
-                tag: `Content`,
-                properties: {},
-                children: [{
-                    tag: `Card`,
-                    properties: {},
-                    children: [{
-                        tag: `Form`,
-                        properties: {
-                            props: {
+    // setTimeout(() => {
+    //     nodetree.set([{
+    //         tag: `Layout`,
+    //         properties: {},
+    //         children: [{
+    //             tag: `Menu`,
+    //             properties: {
+    //                 props: {
+    //                     'mode': `horizontal`
+    //                 }
+    //             },
+    //             children: [{
+    //                 tag: `MenuItem`,
+    //                 properties: {
+    //                     props: {
+    //                         name: `1`
+    //                     }
+    //                 },
+    //                 children: [{
+    //                     tag: `Icon`,
+    //                     properties: {
+    //                         props: {
+    //                             type: `ios-paper`
+    //                         }
+    //                     },
+    //                     children: []
+    //                 }]
+    //             },{
+    //                 tag: `MenuItem`,
+    //                 properties: {
+    //                     props: {
+    //                         name: `1`
+    //                     }
+    //                 },
+    //                 children: [{
+    //                     tag: `Icon`,
+    //                     properties: {
+    //                         props: {
+    //                             type: `ios-paper`
+    //                         }
+    //                     },
+    //                     children: []
+    //                 }]
+    //             },{
+    //                 tag: `MenuItem`,
+    //                 properties: {
+    //                     props: {
+    //                         name: `1`
+    //                     }
+    //                 },
+    //                 children: [{
+    //                     tag: `Icon`,
+    //                     properties: {
+    //                         props: {
+    //                             type: `ios-paper`
+    //                         }
+    //                     },
+    //                     children: []
+    //                 }]
+    //             }]
+    //         },{
+    //             tag: `Content`,
+    //             properties: {},
+    //             children: [{
+    //                 tag: `Card`,
+    //                 properties: {},
+    //                 children: [{
+    //                     tag: `Form`,
+    //                     properties: {
+    //                         props: {
                                 
-                            }
-                        },
-                        children: [{
-                            tag: `FormItem`,
-                            properties: {
-                                props: {
-                                    label: `name`
-                                }
-                            },
-                            children: [{
-                                tag: `Input`,
-                                properties: {
-                                    props: {
-                                        size: `default`
-                                    }
-                                },children: []
-                            }]
-                        },{
-                            tag: `FormItem`,
-                            properties: {
-                                props: {
-                                    label: `password`
-                                }
-                            },
-                            children: [{
-                                tag: `Input`,
-                                properties: {}
-                                ,children: []
-                            }]
-                        }]
-                    }]
-                }]
-            }]  
-        }])
-      },1000);
+    //                         }
+    //                     },
+    //                     children: [{
+    //                         tag: `FormItem`,
+    //                         properties: {
+    //                             props: {
+    //                                 label: `name`
+    //                             }
+    //                         },
+    //                         children: [{
+    //                             tag: `Input`,
+    //                             properties: {
+    //                                 props: {
+    //                                     size: `default`
+    //                                 }
+    //                             },children: []
+    //                         }]
+    //                     },{
+    //                         tag: `FormItem`,
+    //                         properties: {
+    //                             props: {
+    //                                 label: `password`
+    //                             }
+    //                         },
+    //                         children: [{
+    //                             tag: `Input`,
+    //                             properties: {}
+    //                             ,children: []
+    //                         }]
+    //                     }]
+    //                 }]
+    //             }]
+    //         }]  
+    //     }])
+    //   },1000);
 
 const state = {
      /**
@@ -153,7 +153,12 @@ const state = {
      * @description 节点树对象
      * @type {NodeTree}
      */
-    [types.state.data["nodetree.instance"]]: nodetree
+    [types.state.data["nodetree.instance"]]: nodetree,
+    /**
+     * @description 正在编辑的节点
+     * @type {Node}
+     */
+    [types.state.data["node.editing"]]: null
 }
 
 export default state

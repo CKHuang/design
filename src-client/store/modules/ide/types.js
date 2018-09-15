@@ -34,7 +34,11 @@ export default {
             /**
              * @description NodeTree实例
              */
-            [`nodetree.instance`]: `ide.data.nodetree.instance`
+            [`nodetree.instance`]: `ide.data.nodetree.instance`,
+            /**
+             * @description 正在编辑的节点
+             */
+            [`node.editing`]: `ide.data.node.editing`
         }
     },
     getters: {
@@ -42,11 +46,13 @@ export default {
         [`data.widget.lib.config`]: `data.widget.lib.config`,
         [`data.widget.lib.widgets.config`]: `data.widget.lib.widgets.config`,
         [`data.widget.libs.options`]: `ide.widget.libs.options`,
-        [`data.nodetree.tree`]: `ide.nodetree.tree`
+        [`data.nodetree.tree`]: `ide.nodetree.tree`,
+        [`data.node.editing.widget.config`]: `data.node.editing.widget.config`
     },
     mutations: {
         [`insert.data.nodetree.node`]: `ide.insert.data.nodetree.node`,
         [`update.data.widget.lib`]: `ide.update.data.widget.lib`,
-        [`toggle.ui.code.spread`]: `ide.toggle.ui.code.spread`
+        [`toggle.ui.code.spread`]: `ide.toggle.ui.code.spread`,
+        [`update.data.editing.node`]: `update.data.editing.node`
     }
 }

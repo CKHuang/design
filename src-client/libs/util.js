@@ -39,7 +39,6 @@ util.treeDepth = (nodeTree,handle) => {
         else {
             const deeps = util.map(nextChildren)(node.children);
             handle(deeps,node)
-            console.log('->nodes',deeps,node);
             return 1 + util.max(deeps);
         }
     }
@@ -61,9 +60,8 @@ util.traverse = (
     handleNextListResult,
     handleTransferItem
 ) => {
-    const result = [];
     const handle = (_list) => {
-        //const result = [];
+        const result = [];
         _list.forEach((item) => {
             const nextList = handleRetNextList(item);
             if (nextList !== null && Array.isArray(nextList)) {
@@ -74,10 +72,7 @@ util.traverse = (
         })
         return result;
     }
-    //console.log('-->')
-    const res = handle(util.deepClone(list));
-    console.log(`traverse result`,res)
-    return res;
+    return handle(util.deepClone(list));
 }
 
 /**

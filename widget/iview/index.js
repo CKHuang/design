@@ -5,6 +5,39 @@ export default {
     version: `3.0.0`,
     description: `iview的组件`,
     widgetGroups: [{
+        label: `基础`,
+        widgets: [{
+            tag: `span`,
+            description: `文字`,
+            properties: {
+                props: {
+                    
+                },
+                domProps: {
+                    "innerText": {
+                        editControl: {
+                            control: types.Control.Input
+                        },
+                        default: `文字`
+                    }
+                }
+            }
+        },{
+            tag: `Button`,
+            description: `按钮`,
+            properties: {
+                props: {},
+                domProps: {
+                    "innerText": {
+                        editControl: {
+                            control: types.Control.Input
+                        },
+                        default: `按钮`
+                    }
+                }
+            }
+        }]
+    },{
         label: `布局`,
         widgets: [{
             tag: `Card`,
@@ -43,7 +76,7 @@ export default {
                                 {value:`large`,label:`large`}
                             ]
                         },
-                        default: `small`
+                        default: `default`
                     }
                 }
             }

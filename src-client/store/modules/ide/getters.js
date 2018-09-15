@@ -89,5 +89,33 @@ export default {
         return util.vue.data.tree(
             state[types.state.data[`nodetree`]]
         )
+    },
+    /**
+     * @description 获取正在更新的节点
+     * @return {Node}
+     */
+    [types.state.data["node.editing"]](state) {
+        return state[types.state.data["node.editing"]]
+    },
+    /**
+     * @description 获取正在编辑节点的widget配置
+     * @return {object}
+     */
+    [types.getters["data.node.editing.widget.config"]](state,getter) {
+        const nodeConfig = state[types.state.data["node.editing"]];
+        let lib = null;
+        if (nodeConfig && nodeConfig.lib) {
+            lib = state[types.state.data["widget.libs"]][nodeConfig.lib];
+        }
+        if (lib === null) {
+            return null;
+        }
+        const widgetGroups = lib.widgetGroups;
+        let   widgets = [];
+        widgetGroups.forEach((group) => {
+            widgets = widgets.concat(group.widgets);
+        });
+        const widgetConfig = widgets.find(item => item.tag == nodeConfig.tag);
+        console.log('->[widgetGroups]',widgets)
     }
 }

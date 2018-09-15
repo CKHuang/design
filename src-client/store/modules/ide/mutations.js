@@ -41,10 +41,23 @@ export default {
         state,
         {parentId,nodeConfig,mode = 'push'}
     ) {
+        nodeConfig.lib = state[types.state.data["widget.lib"]];
         state[types.state.data["nodetree.instance"]].insert(
             parentId,
             nodeConfig,
             mode
         )
+    },
+    /**
+     * @description 选择正在更新的节点
+     * @param {object} nodeConfig
+     */
+    [types.mutations["update.data.editing.node"]](
+        state,
+        {nodeConfig}
+    ) {
+        return Object.assign(state,{
+            [types.state.data["node.editing"]]: nodeConfig 
+        })
     }
 }

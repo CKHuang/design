@@ -1,3 +1,10 @@
+<style>
+.ide-canvas-node {
+    display: inline-block;
+}
+</style>
+
+
 <script>
     import util from '../../../libs/util'
     import { mapGetters, mapMutations, mapActions } from 'vuex'
@@ -17,7 +24,8 @@
         },
         methods: {
             ...mapMutations({
-                "insert.node": storeTypes.mutations[`insert.data.nodetree.node`]
+                "insert.node": storeTypes.mutations[`insert.data.nodetree.node`],
+                "update.editing.node": storeTypes.mutations[`update.data.editing.node`]
             }),
             /**
              * 渲染节点
@@ -26,15 +34,17 @@
              * @param {array}  children 子元素列表
              */
             renderNode(h,nodeConfig,children = []) {
-                return h(`drop`,{
+                return h(`div`,{
                     'class': `ide-canvas-node`,
                     props: {},
                     on: {
                         contextmenu: (event) => {
                             event.preventDefault();
                             event.stopPropagation();
-                          
                             console.log(`点击了鼠标右键`,nodeConfig )
+                            this[`update.editing.node`]({
+                                nodeConfig
+                            });
                         }
                     }
                 },[h(`drop`,{
