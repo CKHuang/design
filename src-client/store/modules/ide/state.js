@@ -1,11 +1,14 @@
 import WIDGETS from '../../../../widget/index'
 import types from './types'
 import NodeTree from '../../struct/NodeTree'
+import Record from '../../struct/Record';
 
 const nodetree = new NodeTree();
     nodetree.on('change', () => {
         state[types.state.data[`nodetree`]] = nodetree.nodeTree
     })
+
+const record = new Record();
 
     // setTimeout(() => {
     //     nodetree.set([{
@@ -158,7 +161,22 @@ const state = {
      * @description 正在编辑的节点
      * @type {Node}
      */
-    [types.state.data["node.editing"]]: null
+    [types.state.data["node.editing"]]: null,
+    /**
+     * @description 操作记录的实例化
+     * @type {Record}
+     */
+    [types.state.data["record.instance"]]: record,
+    /**
+     * @description 记录的模块
+     * @type {Record.MOD}
+     */
+    [types.state.data["record.mod"]]: record.MOD,
+    /**
+     * @description 记录的行为
+     * @type {Record.ACT}
+     */
+    [types.state.data["record.act"]]: record.ACT
 }
 
 export default state

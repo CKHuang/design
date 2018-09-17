@@ -49,15 +49,53 @@ export default {
         )
     },
     /**
-     * @description 选择正在更新的节点
+     * @description 更换正在编辑的节点
      * @param {object} nodeConfig
      */
-    [types.mutations["update.data.editing.node"]](
+    [types.mutations["select.data.editing.node"]](
         state,
         {nodeConfig}
     ) {
         return Object.assign(state,{
             [types.state.data["node.editing"]]: nodeConfig 
         })
+    },
+    /**
+     * @description 修改正在编辑节点的properties属性
+     * @param {string} nodeId 节点ID
+     * @param {string} propsGroup 属性组
+     * @param {string} fieldName 属性名称
+     * @param {string} newValue 更新后的值
+     */
+    [types.mutations["update.data.editing.node.properties"]](
+        state,
+        {nodeId,propsGroup,fieldName,newValue}
+    ) {
+        state[types.state.data["nodetree.instance"]].updateProperties(
+            nodeId,
+            propsGroup,
+            fieldName,
+            newValue
+        )
+    },
+    /**
+     * @description 添加编辑记录
+     * @param {number} mod 模块
+     * @param {number} act 行为
+     * @param {object} config 配置
+     * @param {anyval} newValue 新的值
+     * @param {anyval} oldValue 旧的值
+     */
+    [types.mutations["insert.editor.record"]](
+        state,
+        {mod,act,config,newValue,oldValue}
+    ) {
+        state[types.state.data["record.instance"]].push(
+            mod,
+            act,
+            config,
+            newValue,
+            oldValue
+        )
     }
 }

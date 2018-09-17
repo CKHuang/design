@@ -126,4 +126,32 @@ export default class NodeTree extends EventEmitter{
     find(nodeId) {
         return this.nodes[nodeId];
     }
+    /**
+     * @description 更新节点的properties相关
+     * @param {string} nodeId 节点id
+     * @param {string} propsGroup 属性组名称
+     * @param {string} fieldName 属性名称
+     * @param {anyval} newValue 更新后的值
+     */
+    updateProperties(
+        nodeId,
+        propsGroup,
+        fieldName,
+        newValue
+    ) {
+        let oldValue = undefined;
+        const node = this.find(nodeId);
+        let set = node.properties[propsGroup];
+        if (set && typeof set[fieldName] != 'undefined') {
+            oldValue = set[fieldName]
+        }
+        console.log('->oldeValue',oldValue,'->newValue',newValue);
+        if (oldValue != undefined) {
+            set[fieldName] = newValue;
+        } else {
+            let _set = node.properties[propsGroup] || {};
+            _set[fieldName] = newValue;
+        }
+        console.log('->newNode',node);
+    }
 }

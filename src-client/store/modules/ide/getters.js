@@ -115,7 +115,6 @@ export default {
         widgetGroups.forEach((group) => {
             widgets = widgets.concat(group.widgets);
         });
-        const widgetConfig = widgets.find(item => item.tag == nodeConfig.tag);
-        console.log('->[widgetGroups]',widgets)
+        return widgets.find(item => item.tag == nodeConfig.tag);
     }
 }

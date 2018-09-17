@@ -123,7 +123,7 @@ html,body {
                         </div>
                     </div>
                 </div>
-                <PropsEditor></PropsEditor>
+                <!-- <PropsEditor></PropsEditor> -->
                 <!-- <div class="ide-layout-sider set-box-shadow"></div> -->
             </div>
         </div>

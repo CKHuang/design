@@ -25,7 +25,7 @@
         methods: {
             ...mapMutations({
                 "insert.node": storeTypes.mutations[`insert.data.nodetree.node`],
-                "update.editing.node": storeTypes.mutations[`update.data.editing.node`]
+                "select.editing.node": storeTypes.mutations[`select.data.editing.node`]
             }),
             /**
              * 渲染节点
@@ -42,7 +42,7 @@
                             event.preventDefault();
                             event.stopPropagation();
                             console.log(`点击了鼠标右键`,nodeConfig )
-                            this[`update.editing.node`]({
+                            this[`select.editing.node`]({
                                 nodeConfig
                             });
                         }

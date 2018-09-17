@@ -88,6 +88,7 @@
                 </drop>
             </div>
         </div>
+        <PropsEditor></PropsEditor>
     </div>
 </template>
 
@@ -95,11 +96,13 @@
     import { mapGetters, mapMutations, mapActions } from 'vuex'
     import storeTypes from '../../../store/modules/ide/types'
     import NodeTree from './NodeTree'
+    import PropsEditor from '../PropsEditor/index.vue'
 
     export default {
         name: `IDECanvas`,
         components: {
-            NodeTree: NodeTree
+            NodeTree: NodeTree,
+            PropsEditor: PropsEditor
         },
         methods: {
             handleDrop(foo,widgetConfig) {

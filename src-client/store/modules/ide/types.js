@@ -38,7 +38,19 @@ export default {
             /**
              * @description 正在编辑的节点
              */
-            [`node.editing`]: `ide.data.node.editing`
+            [`node.editing`]: `ide.data.node.editing`,
+            /**
+             * @description 操作记录
+             */
+            [`record.instance`]: `record.instance`,
+            /**
+             * @description 记录的模块
+             */
+            [`record.mod`]: `record.mod`,
+            /**
+             * @description 记录的行为
+             */
+            [`record.act`]: `record.act`
         }
     },
     getters: {
@@ -53,6 +65,8 @@ export default {
         [`insert.data.nodetree.node`]: `ide.insert.data.nodetree.node`,
         [`update.data.widget.lib`]: `ide.update.data.widget.lib`,
         [`toggle.ui.code.spread`]: `ide.toggle.ui.code.spread`,
-        [`update.data.editing.node`]: `update.data.editing.node`
+        [`select.data.editing.node`]: `select.data.editing.node`,
+        [`update.data.editing.node.properties`]: `update.data.editing.node.properties`,
+        [`insert.editor.record`]: `insert.editor.record`
     }
 }
