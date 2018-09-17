@@ -16,7 +16,11 @@ export default {
             /**
              * @description 代码编辑器的渲染模式
              */
-            [`code.modes`]: `ide.code.modes`
+            [`code.modes`]: `ide.code.modes`,
+             /**
+             * @description 编辑器正在初始化
+             */
+            [`ide.loading`]: `ide.loading`
         },
         data: {
             /**
@@ -54,7 +58,20 @@ export default {
             /**
              * @description 记录的行为
              */
-            [`record.act`]: `ide.data.record.act`
+            [`record.act`]: `ide.data.record.act`,
+            /**
+             * @description 项目相关的信息
+             */
+            [`project`]: `ide.data.project`,
+            /**
+             * @description 项目相关的页面列表
+             */
+            [`project.page.list`]: `ide.data.project.list`,
+            /**
+             * @description 当前编辑的页面
+             */
+            [`page.editing`]: `ide.data.page.editing`,
+            
         }
     },
     getters: {
@@ -66,11 +83,18 @@ export default {
         [`data.node.editing.widget.config`]: `data.node.editing.widget.config`
     },
     mutations: {
+        [`update.ide.loading`]: `ide.update.ide.loading`,
         [`insert.data.nodetree.node`]: `ide.insert.data.nodetree.node`,
         [`update.data.widget.lib`]: `ide.update.data.widget.lib`,
         [`toggle.ui.code.spread`]: `ide.toggle.ui.code.spread`,
         [`select.data.editing.node`]: `select.data.editing.node`,
         [`update.data.editing.node.properties`]: `update.data.editing.node.properties`,
-        [`insert.editor.record`]: `insert.editor.record`
+        [`insert.editor.record`]: `insert.editor.record`,
+        [`update.data.project`]: `update.data.project`,
+        [`update.data.project.page.list`]: `update.data.project.page.list`,
+        [`select.data.editing.page`]: `select.data.editing.page`
+    },
+    actions: {
+        [`init.data`]: `ide.init.data`
     }
 }

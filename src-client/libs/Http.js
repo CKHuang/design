@@ -20,13 +20,7 @@ export default class Http {
         return `${baseURL}${path}`
     }
 
-    /**
-     * 跳转到登录页面
-     */
-    toLogin() {
-        location.href = `http://passport.oa.com/modules/passport/signin.ashx?url=${location.href}`
-    }
-
+   
     /**
      * 发起ajax请求
      * @param {stirng} method 请求的方法

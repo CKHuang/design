@@ -3,6 +3,13 @@ import util from '../../../libs/util'
 
 export default {
     /**
+     * @description ide编辑器正在加载中
+     * @return {boolean}
+     */
+    [types.state.ui["ide.loading"]](state) {
+        return state[types.state.ui["ide.loading"]]
+    },
+    /**
      * @description 获取编辑器的配置
      * @return {object}
      */
@@ -116,5 +123,19 @@ export default {
             widgets = widgets.concat(group.widgets);
         });
         return widgets.find(item => item.tag == nodeConfig.tag);
+    },
+    /**
+     * @description 获取当前正在编辑的页面
+     * @return {page}
+     */
+    [types.state.data["page.editing"]](state) {
+        return state[types.state.data["page.editing"]];
+    },
+    /**
+     * @description 获取项目的所有页面列表
+     * @return {array}
+     */
+    [types.state.data["project.page.list"]](state) {
+        return state[types.state.data["project.page.list"]]
     }
 }

@@ -4,6 +4,15 @@ export default {
     /**
      * 优化的
      */
+    /**
+     * @description 更新ide的加载状态
+     * @param {boolean} isLoading 是否加载中
+     */
+    [types.mutations["update.ide.loading"]](state,isLoading) {
+        return Object.assign(state,{
+            [types.state.ui["ide.loading"]]: isLoading
+        })
+    },
 
     /**
      * @description 切换code面板不同的tab
@@ -111,5 +120,41 @@ export default {
             newValue,
             oldValue
         )
+    },
+    /**
+     * @description 更新当前编辑的项目信息
+     * @param {project} project
+     */
+    [types.mutations["update.data.project"]](
+        state,
+        project
+    ) {
+        return Object.assign(state,{
+            [types.state.data[`project`]]: project
+        })
+    },
+    /**
+     * @description 更新当前编辑项目所属的页面列表
+     * @param {array} pageList
+     */
+    [types.mutations["update.data.project.page.list"]](
+        state,
+        pageList
+    ) {
+        return Object.assign(state,{
+            [types.state.data["project.page.list"]]: pageList
+        })
+    },
+    /**
+     * @description 选择当前正在编辑的页面
+     * @param {page} page
+     */
+    [types.mutations["select.data.editing.page"]](
+        state,
+        page
+    ) {
+        return Object.assign(state,{
+            [types.state.data["page.editing"]]: page
+        })
     }
 }

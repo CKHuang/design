@@ -1,12 +1,57 @@
+<style>
+.ide-page-item-btns {
+    display: none;
+}
+.ide-page-item {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    padding: 5px;
+    cursor: pointer;
+}
+.ide-page-item:hover .ide-page-item {
+    display: block;
+}
+.ide-page-item:hover {
+    background-color: #e1e1e1;
+}
+.ide-page-item-title {
+    flex: 1 0 90px;
+}
+.ide-page-tree {
+    padding: 0px 10px;
+}
+.ide-page-tree.ivu-tree ul li {
+    margin: 0px;
+}
+.ide-page-tree .ivu-tree-arrow{
+    display: none;
+}
+.ide-page-item-btns .btn-item {
+    cursor: pointer;
+}
+
+</style>
+
+
 <template>
-    <Tree
-        :data="treeList"
-    >
-    </Tree>
+    <div>
+        <Divider orientation="right">
+            <Button icon="ios-add-circle-outline" size="small">新页面</Button>
+        </Divider>
+        <Tree
+            class="ide-page-tree"
+            :data="renderTreeData"
+        >
+        </Tree>
+    </div>
+   
 </template>
 
 <script>
-
+    import { mapGetters, mapMutations, mapActions } from 'vuex'
+    import storeTypes from '../../../store/modules/ide/types'
     /**
      * @name IDEPage
      * @description IDE页面预览功能
@@ -14,119 +59,83 @@
      */
     export default {
         name: `IDEPage`,
-        props: {
-            value: {
-                type: Array,
-                default: () => ([])
+        data() {
+            return {
+                renderTreeData: []
             }
         },
         computed: {
-            treeList() {
-                const sortOutFiles = this.util.sortOut(this.value_,`folder_id`);
-                const list = [];
-                this.folders_.forEach((folder) => {
-                   let item = {};
-                       item.title = folder.folder_name;
-                       item.expand = true;
-                       item.children = [];
-                       item.render = (h,{root,node,data}) => {
-                           console.log('->Data',data);
-                           return this.renderFolder(h,folder)
-                       }
-                       if (sortOutFiles[folder.folder_id]) {
-                           sortOutFiles[folder.folder_id].forEach((file) => {
-                               item.children.push({
-                                   title: file.file_name,
-                                   render: (h,{root,node,data}) => {
-                                       console.log('->Data renderFile',data);
-                                       return this.renderFile(h,file)
-                                   }
-                               })
-                           });
-                       }
-                       list.push(item);
-                });
-                // 没有分类的
-                sortOutFiles[""].forEach((file) => {
-                    let item = {};
-                        item.title = file.file_name,
-                        item.expand = false;
-                        item.render = (h,{root,node,data}) => {
-                            return this.renderFile(h,file);
-                        }
-                    list.push(item);
-                })
-                //console.log('page tree',list,sortOutFiles,this.folders_);
-                return list;
-            }
-        },
-        created() {
-            this.value_ =  [{
-                file_name: `产品功能页面`,
-                file_type: 0,
-                file_id: `file_8273729308238`,
-                project_id: `project_827374637366736362`,
-                folder_id: `folder_2837292837472827374`
-            },{
-                file_name: `用户流信息页面`,
-                file_type: 0,
-                file_id: `file_827373874643`,
-                project_id: `project_827374637366736362`,
-                folder_id: ``
-            },{
-                file_name: `产品功能页面`,
-                file_type: 0,
-                file_id: `file_827372930232`,
-                project_id: `project_827374637366736362`,
-                folder_id: ``
-            }];
-            this.folders_ = [{
-                folder_id: `folder_2837292837472827374`,
-                folder_name: `前期规划`
-            }]
-        },
-        data() {
-            return {
-                value_: this.value,
-                folders_: [],
-            }
+            ...mapGetters({
+                "projectPageList": storeTypes.state.data[`project.page.list`]
+            })
         },
         methods: {
-            renderFile(h,file) {
-                return h(`span`,{
-                    style: {
-                        display: 'inline-block',
-                        width: '100%'
-                    }
+            renderPageItem(h, {root, node, data}) {
+                console.log('->renderPageItem',root,node,data)
+                return h(`div`,{
+                    "class": `ide-page-item`
                 },[
-                    h(`span`,[
+                    h(`div`,{
+                        'class': `ide-page-item-title`
+                    },[
                         h(`Icon`,{
+                            'class': `ide-page-item-icon`,
                             props: {
-                                type: 'ios-paper-outline'
-                            },
-                            class: `mar-r-sm`
+                                type: `ios-document-outline`
+                            }
                         }),
-                        h(`span`,file.file_name)
+                        h(`span`,data.title)
+                    ]),
+                    h(`div`,{
+                        'class': `ide-page-item-btns`
+                    },[
+                        h(`Icon`,{
+                            'class': `btn-item`,
+                            props: {
+                                type: `ios-create-outline`
+                            },
+                            on: {
+                                click: () => {
+                                    console.log('-->点击编辑页面',data)
+                                }
+                            }
+                        }),
+                        h(`Icon`,{
+                            'class': `btn-item`,
+                            props: {
+                                type: `ios-trash-outline`
+                            },
+                            on: {
+                                click: () => {
+                                    console.log('-->点击删除页面',data)
+                                }
+                            }
+                        })
                     ])
                 ])
             },
-            renderFolder(h,folder) {
-                return h(`span`,{
-                    style: {
-                        display: 'inline-block',
-                        width: '100%'
+            updateRenderTreeData(projectPageList) {
+                const result = [];
+                projectPageList.forEach((page) => {
+                    const item = {
+                        title: page.name,
+                        expand: false,
+                        render: this.renderPageItem
                     }
-                },[
-                    h(`span`,[
-                        h(`Icon`,{
-                            props: {
-                                type: 'ios-folder-outline'
-                            },
-                            class: `mar-r-sm`
-                        }),
-                        h(`span`,folder.folder_name)
-                    ])
-                ])
+                    result.push(item)
+                });
+                this.renderTreeData = result;
+                console.log('-->projectPageList',projectPageList,result)
+            }
+        },
+        watch: {
+            "projectPageList": {
+                handler: function(newValue,oldValue) {
+                    if (newValue != oldValue) {
+                        this.updateRenderTreeData(newValue);
+                    }
+                },
+                deep: true
             }
         }
     }

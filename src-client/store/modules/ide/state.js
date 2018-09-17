@@ -123,6 +123,11 @@ const record = new Record();
 
 const state = {
      /**
+     * @description 编辑器正在初始化
+     * @type {boolean}
+     */
+    [types.state.ui["ide.loading"]]: true,
+     /**
      * @description 展开状态
      * @type {boolean} false:收起,true:展开
      */
@@ -185,7 +190,23 @@ const state = {
      * @description 记录的行为
      * @type {Record.ACT}
      */
-    [types.state.data["record.act"]]: record.ACT
+    [types.state.data["record.act"]]: record.ACT,
+   
+    /**
+     * @description 当前编辑的项目相关信息
+     * @type {project}
+     */
+    [types.state.data["project"]]: null,
+    /**
+     * @description 当前编辑项目相关的页面列表
+     * @type {array}
+     */
+    [types.state.data["project.page.list"]]: [],
+    /**
+     * @description 当前正在编辑的页面
+     * @type {page}
+     */
+    [types.state.data["page.editing"]]: null
 }
 
 export default state

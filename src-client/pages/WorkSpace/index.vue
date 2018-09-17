@@ -1,6 +1,9 @@
 <template>
     <div>
-        <IDE></IDE>
+        <IDE
+            :projectKey="projectKey"
+            :pageKey="pageKey"
+        ></IDE>
     </div>
 </template>
 
@@ -12,8 +15,15 @@
         components: {
             IDE: IDE
         },
-        data() {
-            return {}
+        props: {
+            projectKey: {
+                type: String,
+                default: ``
+            },
+            pageKey: {
+                type: String,
+                default: ``
+            }
         }
     }
 </script>

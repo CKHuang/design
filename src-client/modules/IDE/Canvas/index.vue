@@ -41,6 +41,21 @@
     padding-right: 5px;
     color: #999;
 }
+.ide-canvas-no-select {
+    position: absolute;
+    width: 100%;
+    color: #999;
+    font-size: 24px;
+    position: absolute;
+    width: 100%;
+    color: #999;
+    font-size: 24px;
+    text-align: center;
+    /* height: 100%; */
+    top: 50%;
+    margin-top: -18px;
+
+}
 </style>
 
 <style>
@@ -70,22 +85,25 @@
 <template>
     <div class="ide-canvas">
         <div class="ide-canvas-scroll-view">
-            <div class="ide-canvas-drawboard">
+            <div class="ide-canvas-no-select" v-if="pageEditing == null">
+                <Icon type="ios-alert-outline" />
+                <span>没有选中任何页面</span>
+            </div>
+            <div class="ide-canvas-drawboard" v-else>
                 <div class="ide-canvas-info pad-b-sm text-right">
                     320 x 560
                 </div>
-                    <div class="ide-canvas-content" >
-                        <drop 
-                            @drop="handleDrop(`foo`,...arguments)"
-                            class="ide-canvas-content-inner"
-                        >
-                            <div class="ide-canvas-content-inner">
-                                <NodeTree></NodeTree>
-                            </div>
-                            <div class="ide-canvas-widget-placeholder" id="ide-canvas-widget-placeholder"></div>
-                        </drop>
-                    </div>
-                </drop>
+                <div class="ide-canvas-content" >
+                    <drop 
+                        @drop="handleDrop(`foo`,...arguments)"
+                        class="ide-canvas-content-inner"
+                    >
+                        <div class="ide-canvas-content-inner">
+                            <NodeTree></NodeTree>
+                        </div>
+                        <div class="ide-canvas-widget-placeholder" id="ide-canvas-widget-placeholder"></div>
+                    </drop>
+                </div>
             </div>
         </div>
         <PropsEditor></PropsEditor>
@@ -103,6 +121,11 @@
         components: {
             NodeTree: NodeTree,
             PropsEditor: PropsEditor
+        },
+        computed: {
+            ...mapGetters({
+                "pageEditing": storeTypes.state.data[`page.editing`]
+            })
         },
         methods: {
             handleDrop(foo,widgetConfig) {

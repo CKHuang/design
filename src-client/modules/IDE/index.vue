@@ -34,6 +34,9 @@
     -webkit-box-flex: 0;
     -ms-flex: 0 0 auto;
     flex: 0 0 auto;
+    transition: all  .25s  ease-in;
+    -moz-transition: all  .25s  ease-in;
+    -webkit-transition: all  .25s  ease-in;
 }
 .ide-layout .ide-layout-header {
     z-index:905;
@@ -44,11 +47,16 @@
     flex: auto;
     overflow: auto;
     position: relative;
+    height: 100%;
+    overflow: hidden;
 }
 .ide-layout.layout-horiz .ide-layout-sider {
     width: 240px;
     position: relative;
     z-index: 901;
+    transition: all  .25s  ease-in;
+    -moz-transition: all  .25s  ease-in;
+    -webkit-transition: all  .25s  ease-in;
 }
 .ide-layout.layout-horiz .ide-layout-sider.auto-width {
     width: auto;
@@ -77,6 +85,8 @@
 .ide-tigger:hover {
     color: #333;
 }
+
+
 </style>
 
 <style>
@@ -85,12 +95,45 @@ html,body {
     height:100%;
     overflow: hidden;
 }
+ .demo-spin-icon-load{
+    animation: ani-demo-spin 1s linear infinite;
+}
+@keyframes ani-demo-spin {
+    from { transform: rotate(0deg);}
+    50%  { transform: rotate(180deg);}
+    to   { transform: rotate(360deg);}
+}
+.demo-spin-col{
+    height: 100px;
+    position: relative;
+    border: 1px solid #eee;
+}
+.ide-loading .ide-layout-header {
+    transform:translateY(-40px);
+}
+.ide-loading .ide-layout.layout-horiz .ide-layout-sider {
+    transform:translateX(-240px);
+}
+.ide-loading .ide-layout-content {
+    visibility: hidden;
+}
+.ide-loading-spin {
+    opacity: 1;
+    display: none;
+}
+.ide-loading .ide-loading-spin {
+    transition: all  .1s  ease-in;
+    -moz-transition: all  .1s  ease-in;
+    -webkit-transition: all  .1s  ease-in;
+    opacity: 1;
+    display: -webkit-box;
+}
+
 </style>
 
 
 <template>
-   
-    <div class="ide">
+    <div :class="[`ide`, loading ? `ide-loading`: ``]">
         <div class="ide-layout">
             <div class="ide-layout-header">
                 <Toolbar></Toolbar>
@@ -127,6 +170,12 @@ html,body {
                 <!-- <div class="ide-layout-sider set-box-shadow"></div> -->
             </div>
         </div>
+        <div class="ide-loading-spin">
+            <Spin fix>
+                <Icon type="ios-loading" size=40 class="demo-spin-icon-load mar-b-lg"></Icon>
+                <div>正在初始化项目，请稍后</div>
+            </Spin>
+        </div>
     </div>
 </template>
 
@@ -139,11 +188,23 @@ html,body {
     import SiderMenu from './Menu/siderMenu.vue'
     import PropsEditor from './PropsEditor/index.vue'
     import NodeTree from './NodeTree/index.vue'
+    import { mapGetters, mapMutations, mapActions } from 'vuex'
+    import storeTypes from '../../store/modules/ide/types'
 
     import widgets from '../../../widget/index.js'
 
     export default {
         name: `IDE`,
+        props: {
+            projectKey: {
+                type: String,
+                default: ``
+            },
+            pageKey: {
+                type: String,
+                default: ``
+            }
+        },
         components: {
             Toolbar: Toolbar,
             Widget: Widget,
@@ -154,16 +215,27 @@ html,body {
             NodeTree: NodeTree,
             PropsEditor: PropsEditor
         },
+        async created() {
+            await this[`init.data`]({
+                projectKey: this.projectKey,
+                pageKey: this.pageKey
+            })
+        },
+        computed: {
+            ...mapGetters({
+                "loading": storeTypes.state.ui[`ide.loading`]
+            })
+        },
         data() {
             return {
                 leftSiderMenuConfig: [{
-                    name: `widget`,
-                    label: `控件`,
-                    icon: `ios-apps-outline`
-                },{
                     name: `page`,
                     label: `页面`,
                     icon: `ios-paper-outline`
+                },{
+                    name: `widget`,
+                    label: `控件`,
+                    icon: `ios-apps-outline`
                 },{
                     name: `nodetree`,
                     label: `组件树`,
@@ -173,12 +245,15 @@ html,body {
                     label: `数据层`,
                     icon: `logo-buffer`
                 }],
-                leftSiderMenuActived: `widget`,
+                leftSiderMenuActived: `page`,
                 leftSiderContentVisiabled: true,
-                iviewWidgets: widgets.iview
+                // iviewWidgets: widgets.iview
             }
         },
         methods: {
+            ...mapActions({
+                'init.data': storeTypes.actions[`init.data`]
+            }),
             handleToggleLeftSideContent() {
                 this.leftSiderContentVisiabled 
                     = this.leftSiderContentVisiabled ? false : true;
