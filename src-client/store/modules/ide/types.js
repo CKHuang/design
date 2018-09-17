@@ -40,17 +40,21 @@ export default {
              */
             [`node.editing`]: `ide.data.node.editing`,
             /**
+             * @description 所有的操作记录
+             */
+            [`record`]: `ide.data.record`,
+            /**
              * @description 操作记录
              */
-            [`record.instance`]: `record.instance`,
+            [`record.instance`]: `ide.data.record.instance`,
             /**
              * @description 记录的模块
              */
-            [`record.mod`]: `record.mod`,
+            [`record.mod`]: `ide.data.record.mod`,
             /**
              * @description 记录的行为
              */
-            [`record.act`]: `record.act`
+            [`record.act`]: `ide.data.record.act`
         }
     },
     getters: {

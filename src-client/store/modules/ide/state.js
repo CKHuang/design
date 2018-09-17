@@ -9,6 +9,10 @@ const nodetree = new NodeTree();
     })
 
 const record = new Record();
+      record.on('change',() => {
+          console.log(`[Record change]`,record.record)
+          state[types.state.data[`record`]] = record.record
+      })
 
     // setTimeout(() => {
     //     nodetree.set([{
@@ -162,6 +166,11 @@ const state = {
      * @type {Node}
      */
     [types.state.data["node.editing"]]: null,
+    /**
+     * @description 操作记录的具体内容
+     * @type {array}
+     */
+    [types.state.data["record"]]: [],
     /**
      * @description 操作记录的实例化
      * @type {Record}

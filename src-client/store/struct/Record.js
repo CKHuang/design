@@ -1,15 +1,26 @@
-export default class Record {
+import { EventEmitter } from 'events';
+
+export default class Record extends EventEmitter {
 
     constructor() {
+        super();
         this.record = [];
         this.MOD = {
-            [`node.properties`]: 1
+            [`node`]: `node`,
+            [`node.properties`]: `node.properties`
         }
         this.ACT = {
-            [`update`]: 1,
-            [`insert`]: 2,
-            [`delete`]: 3
+            [`update`]: `update`,
+            [`insert`]: `insert`,
+            [`delete`]: `delete`
         }
+        this.EVENT = {
+            CHANGE: `change`
+        }
+    }
+
+    _emit(event,...args) {
+        this.emit(event,...args);
     }
 
     /**
@@ -26,7 +37,9 @@ export default class Record {
             act: act,
             config: config,
             newValue: newValue,
-            oldValue: oldValue
+            oldValue: oldValue,
+            time: Date.now()
         })
+        this._emit(this.EVENT.CHANGE);
     }
 }

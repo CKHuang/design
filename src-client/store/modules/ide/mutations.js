@@ -47,6 +47,13 @@ export default {
             nodeConfig,
             mode
         )
+        this.commit(types.mutations["insert.editor.record"],{
+            mod: state[types.state.data["record.mod"]][`node`],
+            act: state[types.state.data["record.act"]][`insert`],
+            config: null,
+            newValue: {parentId,nodeConfig,mode},
+            oldValue: null
+        })
     },
     /**
      * @description 更换正在编辑的节点
@@ -71,12 +78,19 @@ export default {
         state,
         {nodeId,propsGroup,fieldName,newValue}
     ) {
-        state[types.state.data["nodetree.instance"]].updateProperties(
+        const { oldValue } = state[types.state.data["nodetree.instance"]].updateProperties(
             nodeId,
             propsGroup,
             fieldName,
             newValue
         )
+        this.commit(types.mutations["insert.editor.record"],{
+            mod: state[types.state.data["record.mod"]][`node.properties`],
+            act: state[types.state.data["record.act"]][`update`],
+            config: {nodeId,propsGroup,fieldName,newValue},
+            newValue: newValue,
+            oldValue: oldValue
+        })
     },
     /**
      * @description 添加编辑记录

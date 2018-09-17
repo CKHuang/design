@@ -152,6 +152,10 @@ export default class NodeTree extends EventEmitter{
             let _set = node.properties[propsGroup] || {};
             _set[fieldName] = newValue;
         }
-        console.log('->newNode',node);
+        return {
+            oldValue,
+            newValue
+        }
+        //console.log('->newNode',node);
     }
 }
