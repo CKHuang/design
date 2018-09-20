@@ -2,6 +2,7 @@
     <Card v-if="nodeEditing !== null" :dis-hover="false" style="position:fixed;z-index:9999;right:0px;top:40px;">
         <span>属性编辑器</span>
         <span>正在编辑的节点<strong>{{nodeEditing.tag}}</strong></span>
+        <span>({{nodeEditing.id}})</span>
         <Editor></Editor>
     </Card>
 </template>

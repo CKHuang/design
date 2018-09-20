@@ -47,6 +47,7 @@ export default {
     render(h,ctx) {
         const control = ctx.props.editorControl.control;
         const render = Controls[control];
+        console.log('-->control change',control,ctx.props);
         if ( typeof render == 'function' ) {
             return h(`div`,{
                 "class": `ide-propseditor-control`

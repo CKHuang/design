@@ -57,7 +57,8 @@
                                 parentId: nodeConfig.id,
                                 nodeConfig: {
                                     tag: widgetConfig.tag,
-                                    properties: widgetConfig.properties
+                                    properties: widgetConfig.properties,
+                                    children: widgetConfig.children
                                 }
                             })
                         }

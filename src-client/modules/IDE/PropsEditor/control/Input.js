@@ -7,6 +7,7 @@ export default (
     {value,fieldName,propsGroup,editorControl,nodeEditing},
     ctx
 ) => {
+    console.log('->render input',value)
     return h(`Input`,{
         props: {
             value: value,

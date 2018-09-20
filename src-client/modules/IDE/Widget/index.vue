@@ -3,6 +3,8 @@
     width: 100%;
     height: 100%;
     position: relative;
+    display: flex;
+    flex-direction: column;
 }
 .ide-widget-select {
     margin: 10px;
@@ -28,9 +30,13 @@
 /*
  * 只是ide用到的手风琴样式效果
  */
+.ide-widget-collapse-wrapper {
+    position: relative;
+}
 .ide-widget-collapse {
     border-color:#eee !important;
     border-top:0 !important;
+    position: relative;
 }
 .ide-widget-collapse .ivu-collapse-content {
     padding: 0px !important;
@@ -59,22 +65,24 @@
             </Select>
         </div>
         <div class="ide-widget-scroll-view">
-            <Collapse simple class="ide-widget-collapse">
-                <Panel v-for="(item,index) in libWidgetsConfig" :key="index" :value="index" :name="item.name">
-                    {{ libWidgetsConfig[index].label }}
-                    <ul class="ide-widget-list" slot="content">
-                        <div v-for="(widgetItem,widgetItemIndex) in libWidgetsConfig[index].widgets"  :key="widgetItemIndex">
-                            <li class="ide-widget-item">
-                                <div class="ide-widget-item-inner">
-                                    <Widget 
-                                        :config="libWidgetsConfig[index].widgets[widgetItemIndex]"
-                                    ></Widget>
-                                </div>
-                            </li>
-                        </div>
-                    </ul>
-                </Panel>
-            </Collapse>
+            <div class="ide-widget-collapse-wrapper">
+                <Collapse simple class="ide-widget-collapse">
+                    <Panel v-for="(item,index) in libWidgetsConfig" :key="index" :value="index" :name="item.name">
+                        {{ libWidgetsConfig[index].label }}
+                        <ul class="ide-widget-list" slot="content">
+                            <div v-for="(widgetItem,widgetItemIndex) in libWidgetsConfig[index].widgets"  :key="widgetItemIndex">
+                                <li class="ide-widget-item">
+                                    <div class="ide-widget-item-inner">
+                                        <Widget 
+                                            :config="libWidgetsConfig[index].widgets[widgetItemIndex]"
+                                        ></Widget>
+                                    </div>
+                                </li>
+                            </div>
+                        </ul>
+                    </Panel>
+                </Collapse>
+            </div>
         </div>
     </div>
 </template>

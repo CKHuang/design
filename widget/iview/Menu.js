@@ -1,8 +1,9 @@
 import types from '../types'
-import Button from './Button'
+import htmlspan from '../html/span'
 
 const MenuItem = {
     tag: `MenuItem`,
+    lib: `iview`,
     description: `菜单项`,
     properties: {
         props: {
@@ -21,11 +22,12 @@ const MenuItem = {
             }
         }
     },
-    children: [Button[0]]
+    children: [htmlspan[0]]
 }
 
 export default [{
     tag: `Menu`,
+    lib: `iview`,
     description: `导航菜单`,
     properties: {
         props: {
@@ -66,5 +68,5 @@ export default [{
             }
         }
     },
-    children: [MenuItem,MenuItem]
+    children: [MenuItem]
 },MenuItem]

@@ -1,6 +1,6 @@
 <style>
 .ide-propseditor-control {
-    margin-bottom: 0px;
+    margin-bottom: 3px;
 }
 .ide-propseditor-control .ivu-form-item{
     margin-bottom: 0px;
@@ -41,6 +41,9 @@
                 });
             },
             renderEditor(h,widgetProps,nodeProps) {
+                if (widgetProps === null || Object.keys(widgetProps) == 0) {
+                    return h(`span`,`该节点没有可添加属性`);
+                }
                 const controls = [];
                 for ( let i in widgetProps ) {
                     const widgetPropsGroups = widgetProps[i]; 
@@ -84,7 +87,10 @@
                 }
             },this.renderEditor(
                 h,
-                this.widgetConfig.properties,
+                ( typeof this.widgetConfig == 'undefined'
+                || typeof this.widgetConfig.properties == 'undefined' )
+                    ? null 
+                    : this.widgetConfig.properties,
                 this.nodeEditing.properties
             ))
         }

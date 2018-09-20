@@ -1,7 +1,9 @@
 import types from '../types'
+import htmlSpan from '../html/span'
 
 export default [{
     tag: `Button`,
+    lib: `iview`,
     description: `按钮`,
     properties: {
         props: {
@@ -115,23 +117,22 @@ export default [{
                 },
                 default: `_self`
             }
-        },
-        domProps: {
-            "innerText": {
-                editControl: {
-                    label: `文案`,
-                    control: types.Control.Input
-                },
-                default: `按钮`
-            }
         }
+        // ,
+        // domProps: {
+        //     "innerText": {
+        //         editControl: {
+        //             label: `文案`,
+        //             control: types.Control.Input
+        //         },
+        //         default: `按钮`
+        //     }
+        // }
     },
-    children: [{
-        tag: `span`,
-        properties: {}
-    }]
+    children: [htmlSpan[0]]
 },{
     tag: `ButtonGroup`,
+    lib: `iview`,
     description: `按钮组`,
     properties: {
         props: {

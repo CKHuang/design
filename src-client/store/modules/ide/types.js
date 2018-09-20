@@ -116,6 +116,8 @@ export default {
     },
     actions: {
         [`init.data`]: `ide.init.data`,
-        [`new.page`]: `new.page`
+        [`new.page`]: `new.page`,
+        [`act.run.preview`]: `ide.act.run.preview`,
+        [`act.exit.preview`]: `ide.act.exit.preview`
     }
 }

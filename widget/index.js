@@ -1,10 +1,10 @@
 import iview from './iview'
-import mui from './mui/index'
+import html from './html'
 
 export default {
     libs: {
-        iview,
-        mui
+        html,
+        iview
     },
     default: `iview`
 }

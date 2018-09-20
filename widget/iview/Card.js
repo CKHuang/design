@@ -2,6 +2,7 @@ import types from '../types'
 
 export default [{
     tag: `Card`,
+    lib: `iview`,
     description: `卡片`,
     properties: {
         props: {

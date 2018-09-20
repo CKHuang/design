@@ -70,7 +70,6 @@ export default class NodeTree extends EventEmitter{
      * @param {object} nodeConfig 
      */
     createUnitNode(nodeConfig) {
-        console.log(nodeConfig)
         let node = null,
             lib = nodeConfig.lib,
             nodeCount = 1,
@@ -91,7 +90,9 @@ export default class NodeTree extends EventEmitter{
             _childNode;
         while (stack.length > 0) {
             const item = stack.pop();
-            item.lib = lib;
+            if (typeof item.lib == 'undefined') {
+                item.lib = lib
+            }
             if (typeof item.children == 'undefined' 
                 || item.children.length == 0
             ) {
@@ -181,14 +182,13 @@ export default class NodeTree extends EventEmitter{
             if ( Array.isArray(parent)) {
                 parent[mode](_res.node)
             } else {
-                parent.children[mode](_node)
+                parent.children[mode](_res.node)
             }
             for ( let i in _res.nodes ) {
                 this.nodes[i] = _res.nodes[i];
             }
             this.nodeCount += _res.nodeCount;
             this._emit(this.EVENT.CHANGE)
-            // const _node = this.createCompoundNode(nodeConfig);
         }
         
         

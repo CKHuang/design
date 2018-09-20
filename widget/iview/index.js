@@ -2,6 +2,9 @@ import types from '../types'
 import Button from './Button'
 import Card from './Card'
 import Menu from './Menu'
+import Layout from './Layout'
+import LayoutTemplate from './LayoutTemplate'
+import './reset.css'
 
 export default {
     name: `iview`,
@@ -12,8 +15,20 @@ export default {
         widgets: [].concat(
             Button
         )
+    }
+    // {
+    //     label: `布局`,
+    //     widgets: [].concat(
+    //         Layout
+    //     )
+    // }
+    ,{
+        label: `布局模版`,
+        widgets: [].concat(
+            LayoutTemplate
+        )
     },{
-        label: `布局`,
+        label: `容器`,
         widgets: [].concat(
             Card
         )
