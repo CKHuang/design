@@ -1,6 +1,13 @@
 <style>
 .ide-propseditor-control {
-    margin-bottom: 10px;
+    margin-bottom: 0px;
+}
+.ide-propseditor-control .ivu-form-item{
+    margin-bottom: 0px;
+}
+.ide-propseditor-control .ivu-form-item .ivu-form-item-label{
+    text-align: left;
+    color: #666;
 }
 </style>
 

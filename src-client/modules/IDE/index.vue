@@ -150,9 +150,9 @@ html,body {
                             </div>
                         </SiderMenu>
                         <div class="ide-layout-content" style="width:200px;" v-if="leftSiderContentVisiabled">
-                            <Widget v-if="leftSiderMenuActived == `widget`"></Widget>
-                            <Page v-if="leftSiderMenuActived == `page`"></Page>
-                            <NodeTree v-if="leftSiderMenuActived == `nodetree`"></NodeTree>
+                            <Widget v-show="leftSiderMenuActived == `widget`"></Widget>
+                            <Page v-show="leftSiderMenuActived == `page`"></Page>
+                            <NodeTree v-show="leftSiderMenuActived == `nodetree`"></NodeTree>
                         </div>
                     </div>
                 </div>

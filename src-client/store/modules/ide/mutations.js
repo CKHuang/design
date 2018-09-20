@@ -1,4 +1,5 @@
 import types from './types'
+import page from '../../struct/page'
 
 export default {
     /**
@@ -13,7 +14,19 @@ export default {
             [types.state.ui["ide.loading"]]: isLoading
         })
     },
-
+    /**
+     * @description 显示表单
+     * @param {boolean} visiable 是否可见
+     * @param {string} formType 表单类型，是add还是edit
+     */
+    [types.mutations["update.ui.page.form.visiable"]](state,{visiable,formType = `add`}) {
+        if ( visiable ) {
+            this.commit(types.mutations["update.data.page.form.type"],formType)
+        }
+        return Object.assign(state,{
+            [types.state.ui["page.form.visiable"]]: visiable
+        })
+    },
     /**
      * @description 切换code面板不同的tab
      * @param {string} tab 面板名称,template
@@ -122,10 +135,10 @@ export default {
         )
     },
     /**
-     * @description 更新当前编辑的项目信息
+     * @description 更新选中当前编辑的项目
      * @param {project} project
      */
-    [types.mutations["update.data.project"]](
+    [types.mutations["select.data.project"]](
         state,
         project
     ) {
@@ -146,6 +159,22 @@ export default {
         })
     },
     /**
+     * @description 当前项目列表添加新的页面
+     * @param {page} page 页面配置
+     */
+    [types.mutations["insert.data.project.page.list"]](
+        state,
+        {page}
+    ) { 
+        const project = state[types.state.data[`project`]];
+              page.page_height = project.page_height;
+              page.page_width = project.page_width;
+        state[types.state.data["project.page.list"]].push(page);
+        this.commit(types.mutations["update.ui.page.form.visiable"],{visiable:false})
+        this.commit(types.mutations["reset.data.page.form.data"]);
+        this.commit(types.mutations["select.data.editing.page"],page)
+    },
+    /**
      * @description 选择当前正在编辑的页面
      * @param {page} page
      */
@@ -155,6 +184,50 @@ export default {
     ) {
         return Object.assign(state,{
             [types.state.data["page.editing"]]: page
+        })
+    },
+    /**
+     * @description 更新页面模块的表单类型，有新建以及修改
+     * @param {string} type add/edit
+     */
+    [types.mutations["update.data.page.form.type"]](
+        state,
+        type
+    ) {
+        return Object.assign(state,{
+            [types.state.data["page.form.type"]]: type
+        })
+    },
+    /**
+     * @description 更新当前表单的字段内容
+     * @param {object} data 表单填写的内容
+     */
+    [types.mutations["update.data.page.form.data"]](
+        state,
+        data
+    ) {
+        return Object.assign(state,{
+            [types.state.data["page.form.data"]]: data
+        })
+    },
+    /**
+     * @description 重置page表单的值
+     */
+    [types.mutations["reset.data.page.form.data"]](state) {
+        return Object.assign(state,{
+            [types.state.data["page.form.data"]]: page(``,``,``,``)
+        })
+    },
+    /**
+     * @description 更新当前选中的页面，在编辑页面属性以及删除页面使用
+     * @param {page} page
+     */
+    [types.mutations["update.data.page.select"]](
+        state,
+        {page}
+    ) {
+        return Object.assign(state,{
+            [types.state.data["page.select"]]: page
         })
     }
 }

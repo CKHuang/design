@@ -53,7 +53,8 @@
 
 <template>
     <drag :transfer-data="config">
-        <render-widget :config="config"></render-widget>
+        <!-- <render-widget :config="config"></render-widget> -->
+        <span class="mar-t-sm">{{config.description}}</span>
     </drag>
 </template>
 
@@ -61,6 +62,7 @@
 <script>
     import { mapGetters, mapMutations, mapActions } from 'vuex'
     import renderWidget from './render.js'
+    import storeTypes from '../../../store/modules/ide/types'
 
     export default {
         name: `IDEWidget`,
@@ -89,8 +91,10 @@
         components: {
             renderWidget: renderWidget
         },
-        methods: {
-            
+        computed: {
+            ...mapGetters({
+                'nodeTreeInstance': storeTypes.state.data[`nodetree.instance`]
+            })
         }
     }
 </script>

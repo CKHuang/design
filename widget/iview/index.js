@@ -1,4 +1,7 @@
 import types from '../types'
+import Button from './Button'
+import Card from './Card'
+import Menu from './Menu'
 
 export default {
     name: `iview`,
@@ -6,46 +9,19 @@ export default {
     description: `iview的组件`,
     widgetGroups: [{
         label: `基础`,
-        widgets: [{
-            tag: `span`,
-            description: `文字`,
-            properties: {
-                props: {
-                    
-                },
-                domProps: {
-                    "innerText": {
-                        editControl: {
-                            control: types.Control.Input
-                        },
-                        default: `文字`
-                    }
-                }
-            }
-        },{
-            tag: `Button`,
-            description: `按钮`,
-            properties: {
-                props: {},
-                domProps: {
-                    "innerText": {
-                        editControl: {
-                            control: types.Control.Input
-                        },
-                        default: `按钮`
-                    }
-                }
-            }
-        }]
+        widgets: [].concat(
+            Button
+        )
     },{
         label: `布局`,
-        widgets: [{
-            tag: `Card`,
-            description: `卡片`,
-            properties: {
-                props: {}
-            }
-        }]
+        widgets: [].concat(
+            Card
+        )
+    },{
+        label: `导航`,
+        widgets: [].concat(
+            Menu
+        )
     },{
         label: `表单`,
         widgets: [{

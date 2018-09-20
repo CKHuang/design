@@ -1,9 +1,13 @@
 import Input from './control/Input'
 import Select from './control/Select'
+import Switch from './control/Switch'
+import InputNumber from './control/InputNumber'
 
 const Controls = {
     Input,
-    Select
+    Select,
+    Switch,
+    InputNumber
 }
 
 
@@ -47,10 +51,19 @@ export default {
             return h(`div`,{
                 "class": `ide-propseditor-control`
             },[
-                render(
-                    h,
-                    ctx.props,
-                    ctx
+                h(`FormItem`,{
+                    props: {
+                        label: ctx.props.editorControl.label+`：`,
+                        "label-width": 75
+                    }
+                },
+                [
+                    render(
+                        h,
+                        ctx.props,
+                        ctx
+                    )
+                ]
                 )
             ])
         } else {

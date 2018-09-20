@@ -63,6 +63,11 @@
 }
 
 
+.btn-icon {
+    cursor: pointer;
+    user-select: none;
+}
+
 /*
  * 重置
  * @important 如果更新ivew需要对node_modules的样式进行修改

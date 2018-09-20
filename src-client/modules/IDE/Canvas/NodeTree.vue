@@ -1,6 +1,6 @@
 <style>
-.ide-canvas-node {
-    display: inline-block;
+.ide-canvas-node,.ide-canvas-node-drop-area {
+    display: initial;
 }
 </style>
 
@@ -48,6 +48,7 @@
                         }
                     }
                 },[h(`drop`,{
+                    'class': `ide-canvas-node-drop-area`,
                     on: {
                         drop: (widgetConfig,...args) => {
                             event.preventDefault();

@@ -37,6 +37,13 @@ export default {
         return state[types.state.ui["code.spread"]]
     },
     /**
+     * @description 获取页面编辑表单的可见性
+     * @return {boolean}
+     */
+    [types.state.ui["page.form.visiable"]](state) {
+        return state[types.state.ui["page.form.visiable"]]
+    },
+    /**
      * @description 获取选中的组件库的名称
      * @return {string}
      */
@@ -89,6 +96,13 @@ export default {
         return state[types.state.data[`nodetree`]]
     },
     /**
+     * @description 获取节点树的实例化对象
+     * @return {NodeTree}
+     */
+    [types.state.data["nodetree.instance"]](state) {
+        return state[types.state.data["nodetree.instance"]]
+    },
+    /**
      * @description 获取节点树使用在Tree组件的数据
      * @return {array}
      */
@@ -137,5 +151,26 @@ export default {
      */
     [types.state.data["project.page.list"]](state) {
         return state[types.state.data["project.page.list"]]
+    },
+    /**
+     * @description 获取页面模块表单的类型有add/edit
+     * @return {string}
+     */
+    [types.state.data["page.form.type"]](state) {
+        return state[types.state.data["page.form.type"]]
+    },
+    /**
+     * @description 获取当前要编辑属性或者是要删除的页面
+     * @return {page}
+     */
+    [types.state.data["page.select"]](state) {
+        return state[types.state.data["page.select"]]
+    },
+    /**
+     * @description 获取页面表单填写的数据
+     * @return {object}
+     */
+    [types.state.data["page.form.data"]](state) {
+        return state[types.state.data["page.form.data"]]
     }
 }

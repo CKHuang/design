@@ -1,22 +1,34 @@
-import util from '../../lib/util'
+import util from '../../libs/util'
 
 /**
  * @description 页面数据对象
  * @param {string} name 页面名称
- * @param {Router} router 页面的路由配置
+ * @param {string} router_name 路由名称
+ * @param {string} router_path 路由访问path
+ * @param {object} router_props 路由的初始化参数
+ * @param {number} page_width 页面的宽度
+ * @param {number} page_height 页面的高度
  * @param {string} parentId 页面的父级id
  * @param {string} id 页面的id，如果没有会自动创建
  */
 export default (
     name,
-    router,
-    parentId,
-    id
+    router_name,
+    router_path,
+    router_props,
+    page_width = 0,
+    page_height = 0,
+    parentId = null,
+    id = null
 ) => {
     return Object.assign({
         name: name,
         id: id || `page_${util.randomStr(16)}`,
-        router: router,
+        router_name: router_name,
+        router_path: router_path,
+        router_props: router_props,
+        page_width: page_width,
+        page_height: page_height,
         parentId: parentId
     })
 }

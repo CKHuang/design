@@ -20,7 +20,11 @@ export default {
              /**
              * @description 编辑器正在初始化
              */
-            [`ide.loading`]: `ide.loading`
+            [`ide.loading`]: `ide.loading`,
+            /**
+             * @description 页面模块编辑的表单是否可见
+             */
+            [`page.form.visiable`]: `page.form.visiable`
         },
         data: {
             /**
@@ -71,7 +75,18 @@ export default {
              * @description 当前编辑的页面
              */
             [`page.editing`]: `ide.data.page.editing`,
-            
+            /**
+             * @description 页面表单的类型
+             */
+            [`page.form.type`]: `ide.page.form.type`,
+            /**
+             * @description 页面表单的数据
+             */
+            [`page.form.data`]: `ide.page.form.data`,
+            /**
+             * @description 当前选中修改或者是删除的页面
+             */
+            [`page.select`]: `ide.data.page.select`
         }
     },
     getters: {
@@ -83,18 +98,24 @@ export default {
         [`data.node.editing.widget.config`]: `data.node.editing.widget.config`
     },
     mutations: {
+        [`toggle.ui.code.spread`]: `ide.toggle.ui.code.spread`,
+        [`update.ui.page.form.visiable`]: `update.ui.page.form.visiable`,
         [`update.ide.loading`]: `ide.update.ide.loading`,
         [`insert.data.nodetree.node`]: `ide.insert.data.nodetree.node`,
         [`update.data.widget.lib`]: `ide.update.data.widget.lib`,
-        [`toggle.ui.code.spread`]: `ide.toggle.ui.code.spread`,
         [`select.data.editing.node`]: `select.data.editing.node`,
         [`update.data.editing.node.properties`]: `update.data.editing.node.properties`,
         [`insert.editor.record`]: `insert.editor.record`,
-        [`update.data.project`]: `update.data.project`,
+        [`select.data.project`]: `select.data.project`,
         [`update.data.project.page.list`]: `update.data.project.page.list`,
-        [`select.data.editing.page`]: `select.data.editing.page`
+        [`insert.data.project.page.list`]: `insert.data.project.page.list`,
+        [`select.data.editing.page`]: `select.data.editing.page`,
+        [`update.data.page.form.type`]: `update.data.page.form.type`,
+        [`update.data.page.form.data`]: `update.data.page.form.data`,
+        [`reset.data.page.form.data`]: `reset.data.page.form.data`
     },
     actions: {
-        [`init.data`]: `ide.init.data`
+        [`init.data`]: `ide.init.data`,
+        [`new.page`]: `new.page`
     }
 }

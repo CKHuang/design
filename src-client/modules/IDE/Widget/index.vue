@@ -69,7 +69,6 @@
                                     <Widget 
                                         :config="libWidgetsConfig[index].widgets[widgetItemIndex]"
                                     ></Widget>
-                                    <span class="mar-t-sm">{{libWidgetsConfig[index].widgets[widgetItemIndex].description}}</span>
                                 </div>
                             </li>
                         </div>

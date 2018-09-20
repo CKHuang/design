@@ -1,7 +1,8 @@
 import WIDGETS from '../../../../widget/index'
 import types from './types'
 import NodeTree from '../../struct/NodeTree'
-import Record from '../../struct/Record';
+import Record from '../../struct/Record'
+import page from '../../struct/page'
 
 const nodetree = new NodeTree();
     nodetree.on('change', () => {
@@ -146,6 +147,11 @@ const state = {
         "script": `javascript`,
         "style": `css`
     },
+    /**
+     * @description 页面模块编辑的表单是否可见
+     * @type {boolean}
+     */
+    [types.state.ui["page.form.visiable"]]: false,
      /**
      * @description 选中的控件库
      * @type {string} 例如iview
@@ -206,7 +212,17 @@ const state = {
      * @description 当前正在编辑的页面
      * @type {page}
      */
-    [types.state.data["page.editing"]]: null
+    [types.state.data["page.editing"]]: null,
+    /**
+     * @description 页面模块的表单类型
+     * @type {string}
+     */
+    [types.state.data["page.form.type"]]: null,
+    /**
+     * @description 页面模块的表单数据
+     * @type {object}
+     */
+    [types.state.data["page.form.data"]]: page(``,``,``,``)
 }
 
 export default state

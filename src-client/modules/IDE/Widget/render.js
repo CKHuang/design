@@ -15,11 +15,15 @@ export default {
                 description: ``,
                 properties: {
                     props: {}
-                }
+                },
+                children: []
             })
         }
     },
     render(h,ctx) {
-        return h(ctx.props.config.tag)
+        const props = ctx.parent.nodeTreeInstance._getWidgetConfigPropertiesDefaultValues(
+            ctx.props.config.properties
+        );
+        return h(ctx.props.config.tag,props)
     }
 }

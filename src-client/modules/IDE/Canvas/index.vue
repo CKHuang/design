@@ -90,10 +90,11 @@
                 <span>没有选中任何页面</span>
             </div>
             <div class="ide-canvas-drawboard" v-else>
-                <div class="ide-canvas-info pad-b-sm text-right">
-                    320 x 560
+                <div class="ide-canvas-info pad-b-sm ">
+                    <span class="text-left">{{pageEditing.name}}</span>
+                    <span class="text-right pull-right">{{pageEditing.page_width}} x {{pageEditing.page_height}}</span>
                 </div>
-                <div class="ide-canvas-content" >
+                <div class="ide-canvas-content" :style="{'width':`${pageEditing.page_width}px`,'height':`${pageEditing.page_height}px`}">
                     <drop 
                         @drop="handleDrop(`foo`,...arguments)"
                         class="ide-canvas-content-inner"
@@ -133,7 +134,8 @@
                     parentId: null,
                     nodeConfig: {
                         tag: widgetConfig.tag,
-                        properties: widgetConfig.properties
+                        properties: widgetConfig.properties,
+                        children: widgetConfig.children || []
                     }
                 })
                 console.log('[handleDrag]widgetConfig',widgetConfig);
