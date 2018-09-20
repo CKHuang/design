@@ -1,6 +1,19 @@
+<style>
+.ide-propseditor {
+    max-width: 240px;
+}
+</style>
+
+
 <template>
-    <Card v-if="nodeEditing !== null" :dis-hover="false" style="position:fixed;z-index:9999;right:0px;top:40px;">
-        <span>属性编辑器</span>
+    <Card  class="ide-propseditor" v-if="nodeEditing !== null" :dis-hover="true" style="position:fixed;z-index:9999;right:0px;top:40px;">
+        <p slot="title">
+            属性编辑
+        </p>
+        <a href="#" slot="extra" @click.prevent="removeEditNode({nodeConfig:null})">
+            <Icon type="ios-loop-strong"></Icon>
+            close
+        </a>
         <span>正在编辑的节点<strong>{{nodeEditing.tag}}</strong></span>
         <span>({{nodeEditing.id}})</span>
         <Editor></Editor>
@@ -20,6 +33,11 @@
         computed: {
             ...mapGetters({
                 "nodeEditing": storeTypes.state.data[`node.editing`]
+            })
+        },
+        methods: {
+            ...mapMutations({
+                "removeEditNode": storeTypes.mutations[`select.data.editing.node`]
             })
         }
     }

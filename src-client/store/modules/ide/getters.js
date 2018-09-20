@@ -10,6 +10,13 @@ export default {
         return state[types.state.ui["ide.loading"]]
     },
     /**
+     * @description 获取当前画布是否处于预览状态
+     * @return {boolean}
+     */
+    [types.state.ui["ide.canvas.preview"]](state) {
+        return state[types.state.ui["ide.canvas.preview"]]
+    },
+    /**
      * @description 获取编辑器的配置
      * @return {object}
      */

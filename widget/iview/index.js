@@ -1,10 +1,11 @@
-import types from '../types'
 import Button from './Button'
 import Card from './Card'
 import Menu from './Menu'
 import Layout from './Layout'
 import LayoutTemplate from './LayoutTemplate'
 import './reset.css'
+import Tabs from './Tabs';
+import Form from './Form'
 
 export default {
     name: `iview`,
@@ -30,7 +31,8 @@ export default {
     },{
         label: `容器`,
         widgets: [].concat(
-            Card
+            Card,
+            Tabs
         )
     },{
         label: `导航`,
@@ -39,57 +41,8 @@ export default {
         )
     },{
         label: `表单`,
-        widgets: [{
-            tag: `Input`,
-            description: `输入框`,
-            properties: {
-                props: {
-                    "type": {
-                        editControl: {
-                            control: types.Control.Select,
-                            arguments: [
-                                {value:`text`,label:`text`},
-                                {value:`password`,label:`password`},
-                                {value:`textarea`,label:`textarea`},
-                                {value:`url`,label:`url`},
-                                {value:`email`,label:`email`},
-                                {value:`date`,label:`date`}
-                            ]
-                        },
-                        default: `text`
-                    },
-                    "size": {
-                        editControl: {
-                            control: types.Control.Select,
-                            arguments: [
-                                {value:`small`,label:`small`},
-                                {value:`default`,label:`default`},
-                                {value:`large`,label:`large`}
-                            ]
-                        },
-                        default: `default`
-                    }
-                }
-            }
-            
-        },{
-            tag: `Radio`,
-            description: `单选框`,
-            properties: {
-                props: {
-                    "size": {
-                        editControl: {
-                            control: types.Control.Select,
-                            arguments: [
-                                {value:`small`,label:`small`},
-                                {value:`default`,label:`default`},
-                                {value:`large`,label:`large`}
-                            ]
-                        },
-                        default: `small`
-                    }
-                }
-            }
-        }]
+        widgets: [].concat(
+            Form
+        )
     }]
 }

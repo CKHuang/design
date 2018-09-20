@@ -19,7 +19,8 @@
         name: `IDECanvasNodeTree`,
         computed: {
             ...mapGetters({
-                "nodeTree": storeTypes.state.data[`nodetree`]
+                "nodeTree": storeTypes.state.data[`nodetree`],
+                "previewState": storeTypes.state.ui[`ide.canvas.preview`]
             })
         },
         methods: {
@@ -34,6 +35,9 @@
              * @param {array}  children 子元素列表
              */
             renderNode(h,nodeConfig,children = []) {
+                if (this.previewState) {
+                    return h(nodeConfig.tag,nodeConfig.properties,children);
+                }
                 return h(`div`,{
                     'class': `ide-canvas-node`,
                     props: {},

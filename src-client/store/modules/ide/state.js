@@ -128,6 +128,11 @@ const state = {
      * @type {boolean}
      */
     [types.state.ui["ide.loading"]]: true,
+    /**
+     * @description 当前画布里面的页面是否处于预览状态
+     * @type {boolean}
+     */
+    [types.state.ui["ide.canvas.preview"]]: false,
      /**
      * @description 展开状态
      * @type {boolean} false:收起,true:展开

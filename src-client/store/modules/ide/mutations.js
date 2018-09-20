@@ -3,9 +3,6 @@ import page from '../../struct/page'
 
 export default {
     /**
-     * 优化的
-     */
-    /**
      * @description 更新ide的加载状态
      * @param {boolean} isLoading 是否加载中
      */
@@ -14,6 +11,15 @@ export default {
             [types.state.ui["ide.loading"]]: isLoading
         })
     },
+    /**
+     * @description 设置画布当前编辑页面的预览状态
+     * @param {boolean} isPreview 是否预览状态
+     */
+    [types.mutations["update.ui.ide.canvas.preview"]](state,isPreview) {
+        return Object.assign(state,{
+            [types.state.ui["ide.canvas.preview"]]: isPreview
+        })
+    }, 
     /**
      * @description 显示表单
      * @param {boolean} visiable 是否可见

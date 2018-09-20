@@ -1,9 +1,9 @@
 /*
  * 重置样式，只是做canvas render使用
  */
- .ide-canvas-node .ivu-layout-header,
- .ide-canvas-node .ivu-layout-footer,
- .ide-canvas-node .ivu-layout-content {
+ .ide-canvas-node .ivu-layout-header:empty,
+ .ide-canvas-node .ivu-layout-footer:empty,
+ .ide-canvas-node .ivu-layout-content:empty {
     background-color: #007bff14;
     /* border:1px dashed #007bff; */
  }
@@ -52,6 +52,6 @@
 }
 .ide-canvas-node .ivu-layout-sider {
     position: absolute;
-    background-color: #007bff1a;
+    /* background-color: #007bff1a; */
     height: 100%;
 }

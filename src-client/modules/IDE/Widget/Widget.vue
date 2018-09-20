@@ -49,11 +49,18 @@
     background-color: #fff;
     opacity: .8;
 }
+.ide-widget-icon {
+    display: block !important;
+    text-align: center;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
 </style>
 
 <template>
     <drag :transfer-data="config">
         <!-- <render-widget :config="config"></render-widget> -->
+        <Icon class="ide-widget-icon" :type="config.icon ? config.icon : 'ios-cube-outline'" />
         <span class="mar-t-sm">{{config.description}}</span>
     </drag>
 </template>

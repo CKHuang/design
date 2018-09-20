@@ -84,6 +84,7 @@
 
 <template>
     <div class="ide-canvas">
+        <Preview></Preview>
         <div class="ide-canvas-scroll-view">
             <div class="ide-canvas-no-select" v-if="pageEditing == null">
                 <Icon type="ios-alert-outline" />
@@ -116,12 +117,14 @@
     import storeTypes from '../../../store/modules/ide/types'
     import NodeTree from './NodeTree'
     import PropsEditor from '../PropsEditor/index.vue'
+    import Preview from './preview'
 
     export default {
         name: `IDECanvas`,
         components: {
             NodeTree: NodeTree,
-            PropsEditor: PropsEditor
+            PropsEditor: PropsEditor,
+            Preview: Preview
         },
         computed: {
             ...mapGetters({

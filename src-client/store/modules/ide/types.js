@@ -17,6 +17,10 @@ export default {
              * @description 代码编辑器的渲染模式
              */
             [`code.modes`]: `ide.code.modes`,
+            /**
+             * @description ide的预览状态
+             */
+            [`ide.canvas.preview`]: `ide.preview`,
              /**
              * @description 编辑器正在初始化
              */
@@ -100,6 +104,7 @@ export default {
     mutations: {
         [`toggle.ui.code.spread`]: `ide.toggle.ui.code.spread`,
         [`update.ui.page.form.visiable`]: `update.ui.page.form.visiable`,
+        [`update.ui.ide.canvas.preview`]: `update.ui.ide.canvas.preview`,
         [`update.ide.loading`]: `ide.update.ide.loading`,
         [`insert.data.nodetree.node`]: `ide.insert.data.nodetree.node`,
         [`update.data.widget.lib`]: `ide.update.data.widget.lib`,
@@ -116,8 +121,6 @@ export default {
     },
     actions: {
         [`init.data`]: `ide.init.data`,
-        [`new.page`]: `new.page`,
-        [`act.run.preview`]: `ide.act.run.preview`,
-        [`act.exit.preview`]: `ide.act.exit.preview`
+        [`new.page`]: `new.page`
     }
 }
