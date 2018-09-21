@@ -85,6 +85,7 @@
 <template>
     <div class="ide-canvas">
         <Preview></Preview>
+        
         <div class="ide-canvas-scroll-view">
             <div class="ide-canvas-no-select" v-if="pageEditing == null">
                 <Icon type="ios-alert-outline" />
@@ -100,8 +101,13 @@
                         @drop="handleDrop(`foo`,...arguments)"
                         class="ide-canvas-content-inner"
                     >
-                        <div class="ide-canvas-content-inner">
+                        <div class="ide-canvas-content-inner" 
+                            @contextmenu="handleContextMenu"
+                            @mouseover="handleMouseOver"
+                           
+                        >
                             <NodeTree></NodeTree>
+                            <HoverPlaceHover></HoverPlaceHover>
                         </div>
                         <div class="ide-canvas-widget-placeholder" id="ide-canvas-widget-placeholder"></div>
                     </drop>
@@ -118,12 +124,15 @@
     import NodeTree from './NodeTree'
     import PropsEditor from '../PropsEditor/index.vue'
     import Preview from './preview'
+    import HoverPlaceHover from './hoverPlaceholder.vue'
+    import util from '../../../libs/util';
 
     export default {
         name: `IDECanvas`,
         components: {
             NodeTree: NodeTree,
             PropsEditor: PropsEditor,
+            HoverPlaceHover: HoverPlaceHover,
             Preview: Preview
         },
         computed: {
@@ -133,18 +142,68 @@
         },
         methods: {
             handleDrop(foo,widgetConfig) {
+                let parentId = null;
+                const toElement = event.toElement;
+                if (toElement.id) {
+                    parentId = toElement.id;
+                }
+                console.log(`handleDrop`,foo,widgetConfig,event)
                 this[`insert.node`]({
-                    parentId: null,
-                    nodeConfig: {
-                        tag: widgetConfig.tag,
-                        properties: widgetConfig.properties,
-                        children: widgetConfig.children || []
-                    }
+                    parentId: parentId,
+                    nodeConfig: widgetConfig
                 })
                 console.log('[handleDrag]widgetConfig',widgetConfig);
             },
+            handleContextMenu(event) {
+                event.preventDefault();
+                // event.stopPropagation();
+                const nodeId = this.logicFindNearestNode(event)
+                if (nodeId) {
+                    this[`select.editing.node`]({
+                        nodeId
+                    });
+                }
+            },
+            handleMouseOver(event) {
+                event.preventDefault();
+                const node = this.logicFindNearestNode(event,`node`);
+                if (node) {
+                    const offset = node.getBoundingClientRect();
+                    const width = offset.width;
+                    const height = offset.height;
+                    const nodeId = node.id;
+                    this[`update.hover.placeholder`]({
+                        nodeId,
+                        width,
+                        height
+                    });
+                    console.log('-->offset',offset,node)
+                } else {
+                    this[`update.hover.placeholder`](null);
+                }
+                console.log(`[handleMouseOver]event`,node)
+            },
+            logicFindNearestNode(event, get = 'id') {
+                const toElement = event.toElement;
+                const nearestNode = util.findNearestParent(toElement,(element) => {
+                    if (element.id.indexOf(`node_`) == 0) {
+                        return true;
+                    }
+                    return false;
+                });
+                let result = nearestNode;
+                if (result) {
+                    switch (get) {
+                        case `id`: result = result.id;break;
+                        case `node`: result = result;break;
+                    }
+                }
+                return result;
+            },
             ...mapMutations({
-                "insert.node": storeTypes.mutations[`insert.data.nodetree.node`]
+                "insert.node": storeTypes.mutations[`insert.data.nodetree.node`],
+                "select.editing.node": storeTypes.mutations[`select.data.editing.node`],
+                "update.hover.placeholder": storeTypes.mutations[`update.ui.canvas.hover.placeholder.offset`]
             }),
         }
     }

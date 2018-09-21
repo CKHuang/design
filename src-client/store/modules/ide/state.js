@@ -133,6 +133,16 @@ const state = {
      * @type {boolean}
      */
     [types.state.ui["ide.canvas.preview"]]: false,
+    /**
+     * @description 画布里面hover类型的占位符号的位置，null表示不可见
+     * @type {null|object{width,height,left,top}}
+     */
+    [types.state.ui["ide.canvas.hover.placeholder.offset"]]: null,
+    /**
+     * @description 左侧栏目展示
+     * @type {boolean}
+     */
+    [types.state.ui["sidebar.spread"]]: true,
      /**
      * @description 展开状态
      * @type {boolean} false:收起,true:展开

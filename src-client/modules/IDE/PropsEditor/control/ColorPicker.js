@@ -1,5 +1,6 @@
+
 /**
- * @description 输入框
+ * @description 开关
  * @param {object} ctrlProps 通过../control.js透传过来的
  */
 export default (
@@ -7,13 +8,19 @@ export default (
     {value,fieldName,propsGroup,editorControl,nodeEditing},
     ctx
 ) => {
-    return h(`Input`,{
-        props: {
-            value: value,
-            size: `small`
-        },
+    const argus = editorControl.argus;
+    const props = {
+        value: value,
+        size: `small`,
+        editable: true
+    }
+    for ( let i in argus ) {
+        props[i] = argus[i];
+    }
+    return h(`ColorPicker`,{
+        props: props,
         on: {
-            "input": (newValue) => {
+            "on-change": (newValue) => {
                 ctx.parent.handleChange(
                     propsGroup,
                     fieldName,

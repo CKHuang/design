@@ -10,12 +10,13 @@ export default (
 ) => {
     const argus = editorControl.argus;
     const props = {
-        value: value,
+        value: value || 0,
         size: `small`
     }
     for ( let i in argus ) {
         props[i] = argus[i];
     }
+    console.log(`[InputNumber]`,props,fieldName,propsGroup,editorControl,nodeEditing);
     return h(`InputNumber`,{
         props: props,
         on: {

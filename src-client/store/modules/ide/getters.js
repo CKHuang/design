@@ -17,6 +17,13 @@ export default {
         return state[types.state.ui["ide.canvas.preview"]]
     },
     /**
+     * @description 获取画布hover占位符号的位置信息
+     * @return {object|null}
+     */
+    [types.state.ui["ide.canvas.hover.placeholder.offset"]](state) {
+        return state[types.state.ui["ide.canvas.hover.placeholder.offset"]]
+    },
+    /**
      * @description 获取编辑器的配置
      * @return {object}
      */
@@ -42,6 +49,13 @@ export default {
      */
     [types.state.ui["code.spread"]](state) {
         return state[types.state.ui["code.spread"]]
+    },
+    /**
+     * @description 获取左侧sidebar是否展开
+     * @return {boolean}
+     */
+    [types.state.ui["sidebar.spread"]](state) {
+        return state[types.state.ui["sidebar.spread"]]
     },
     /**
      * @description 获取页面编辑表单的可见性

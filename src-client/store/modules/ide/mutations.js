@@ -16,10 +16,20 @@ export default {
      * @param {boolean} isPreview 是否预览状态
      */
     [types.mutations["update.ui.ide.canvas.preview"]](state,isPreview) {
+        this.commit(types.mutations["update.ui.sidebar.spread"],isPreview ? false : true)
         return Object.assign(state,{
             [types.state.ui["ide.canvas.preview"]]: isPreview
         })
-    }, 
+    },
+    /**
+     * @description 更新画布里面hover占位符号的offset
+     * @param {null|object{width,height,left,top}} offset
+     */
+    [types.mutations["update.ui.canvas.hover.placeholder.offset"]](state,offset) {
+        return Object.assign(state,{
+            [types.state.ui["ide.canvas.hover.placeholder.offset"]]: offset
+        })
+    },
     /**
      * @description 显示表单
      * @param {boolean} visiable 是否可见
@@ -31,6 +41,24 @@ export default {
         }
         return Object.assign(state,{
             [types.state.ui["page.form.visiable"]]: visiable
+        })
+    },
+    /**
+     * @description 设置左侧sidebar展开与否
+     * @param {boolean} isSpread 是否展开
+     */
+    [types.mutations["update.ui.sidebar.spread"]](state,isSpread) {
+        return Object.assign(state,{
+            [types.state.ui["sidebar.spread"]]: isSpread
+        })
+    },
+    /**
+     * @description 切换sidebar的展开
+     */
+    [types.mutations["toggle.ui.sidebar.spread"]](state) {
+        const sidebarSpread = state[types.state.ui["sidebar.spread"]];
+        return Object.assign(state,{
+            [types.state.ui["sidebar.spread"]]: sidebarSpread ? false : true
         })
     },
     /**
@@ -85,12 +113,17 @@ export default {
     },
     /**
      * @description 更换正在编辑的节点
-     * @param {object} nodeConfig
+     * @param {object} nodeConfig 两个其中传一个
+     * @param {object} nodeId nodeId的优先级比nodeConfig高
      */
     [types.mutations["select.data.editing.node"]](
         state,
-        {nodeConfig}
+        {nodeConfig,nodeId}
     ) {
+        if (nodeId) {
+            nodeConfig = state[types.state.data["nodetree.instance"]].find(nodeId)
+        }
+        console.log('--->nodeId',nodeId);
         return Object.assign(state,{
             [types.state.data["node.editing"]]: nodeConfig 
         })

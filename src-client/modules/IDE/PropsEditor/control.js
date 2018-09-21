@@ -2,12 +2,14 @@ import Input from './control/Input'
 import Select from './control/Select'
 import Switch from './control/Switch'
 import InputNumber from './control/InputNumber'
+import ColorPicker from './control/ColorPicker'
 
 const Controls = {
     Input,
     Select,
     Switch,
-    InputNumber
+    InputNumber,
+    ColorPicker
 }
 
 
@@ -47,7 +49,6 @@ export default {
     render(h,ctx) {
         const control = ctx.props.editorControl.control;
         const render = Controls[control];
-        console.log('-->control change',control,ctx.props);
         if ( typeof render == 'function' ) {
             return h(`div`,{
                 "class": `ide-propseditor-control`

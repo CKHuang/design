@@ -61,6 +61,7 @@ export default class NodeTree extends EventEmitter{
             isNewFromWidgetConfig ? this._getWidgetConfigPropertiesDefaultValues(
                 nodeConfig.properties
             ) : nodeConfig.properties,
+            nodeConfig.editOutline,
             nodeConfig.id
         )
     }
@@ -128,11 +129,7 @@ export default class NodeTree extends EventEmitter{
         let  count = 0;
         const cloneNode = (nodes,newNode) => {
             nodes.forEach((item) => {
-                const _node = this.createNode({
-                    lib: item.lib,
-                    tag: item.tag,
-                    properties: item.properties
-                },false);
+                const _node = this.createNode(item,false);
                 this.nodes[_node.id] = _node;
                 newNode.push(_node);
                 count++;
@@ -159,7 +156,8 @@ export default class NodeTree extends EventEmitter{
             lib,
             tag,
             properties,
-            children
+            children,
+            editOutline
         },
         mode = 'push'
     ) {
@@ -220,13 +218,15 @@ export default class NodeTree extends EventEmitter{
         if (set && typeof set[fieldName] != 'undefined') {
             oldValue = set[fieldName]
         }
-        console.log('->oldeValue',oldValue,'->newValue',newValue);
         if (oldValue != undefined) {
             set[fieldName] = newValue;
         } else {
-            let _set = node.properties[propsGroup] || {};
-            _set[fieldName] = newValue;
+            util.objExtendAttr(node.properties,propsGroup,{
+                [fieldName]: newValue
+            })
         }
+        // vuex 对象新增属性的更新不会触发state，需要这样处理一下
+        node.properties = Object.assign({},node.properties);
         return {
             oldValue,
             newValue

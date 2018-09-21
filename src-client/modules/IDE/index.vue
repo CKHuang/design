@@ -146,10 +146,10 @@ html,body {
                             :config="leftSiderMenuConfig"
                         >
                             <div slot="bottom">
-                                <Icon class="ide-tigger" :type="leftSiderContentVisiabled? `ios-arrow-dropright` : `ios-arrow-dropleft`" size="18" @click="handleToggleLeftSideContent"/>
+                                <Icon class="ide-tigger" :type="sidebarSpread? `ios-arrow-dropright` : `ios-arrow-dropleft`" size="18" @click="toggleSidebarSpread"/>
                             </div>
                         </SiderMenu>
-                        <div class="ide-layout-content" style="width:200px;" v-if="leftSiderContentVisiabled">
+                        <div class="ide-layout-content" style="width:200px;" v-show="sidebarSpread">
                             <Widget v-show="leftSiderMenuActived == `widget`"></Widget>
                             <Page v-show="leftSiderMenuActived == `page`"></Page>
                             <NodeTree v-show="leftSiderMenuActived == `nodetree`"></NodeTree>
@@ -223,7 +223,8 @@ html,body {
         },
         computed: {
             ...mapGetters({
-                "loading": storeTypes.state.ui[`ide.loading`]
+                "loading": storeTypes.state.ui[`ide.loading`],
+                "sidebarSpread": storeTypes.state.ui[`sidebar.spread`]
             })
         },
         data() {
@@ -254,10 +255,9 @@ html,body {
             ...mapActions({
                 'init.data': storeTypes.actions[`init.data`]
             }),
-            handleToggleLeftSideContent() {
-                this.leftSiderContentVisiabled 
-                    = this.leftSiderContentVisiabled ? false : true;
-            }
+            ...mapMutations({
+                "toggleSidebarSpread": storeTypes.mutations[`toggle.ui.sidebar.spread`]
+            })
         },
         watch: {
             leftSiderMenuActived: function(newValue,oldValue) {

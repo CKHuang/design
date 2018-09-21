@@ -18,9 +18,17 @@ export default {
              */
             [`code.modes`]: `ide.code.modes`,
             /**
+             * @description 左侧栏展示与否
+             */
+            [`sidebar.spread`]: `sidebar.spread`,
+            /**
              * @description ide的预览状态
              */
             [`ide.canvas.preview`]: `ide.preview`,
+            /**
+             * @description 画布里面hover类型的占位元素是否可见的位置,如果为null表示不可见
+             */
+            [`ide.canvas.hover.placeholder.offset`]: `ide.canvas.hover.placeholder.offset`,
              /**
              * @description 编辑器正在初始化
              */
@@ -103,7 +111,10 @@ export default {
     },
     mutations: {
         [`toggle.ui.code.spread`]: `ide.toggle.ui.code.spread`,
+        [`update.ui.canvas.hover.placeholder.offset`]: `update.ui.canvas.hover.placeholder.offset`,
         [`update.ui.page.form.visiable`]: `update.ui.page.form.visiable`,
+        [`update.ui.sidebar.spread`]: `update.ui.sidebar.spread`,
+        [`toggle.ui.sidebar.spread`]: `toggle.ui.sidebar.spread`,
         [`update.ui.ide.canvas.preview`]: `update.ui.ide.canvas.preview`,
         [`update.ide.loading`]: `ide.update.ide.loading`,
         [`insert.data.nodetree.node`]: `ide.insert.data.nodetree.node`,

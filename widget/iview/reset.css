@@ -1,11 +1,10 @@
 /*
  * 重置样式，只是做canvas render使用
  */
- .ide-canvas-node .ivu-layout-header:empty,
+ /* .ide-canvas-node .ivu-layout-header:empty,
  .ide-canvas-node .ivu-layout-footer:empty,
  .ide-canvas-node .ivu-layout-content:empty {
     background-color: #007bff14;
-    /* border:1px dashed #007bff; */
  }
 .ide-canvas-node .ivu-layout-header:empty:after,
 .ide-canvas-node .ivu-layout-footer:empty:after,
@@ -23,7 +22,6 @@
 .ide-canvas-node .ivu-layout-content:empty:after {
     content: "Content";
     min-height: 120px;
-    /* line-height: 120px; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -52,6 +50,5 @@
 }
 .ide-canvas-node .ivu-layout-sider {
     position: absolute;
-    /* background-color: #007bff1a; */
     height: 100%;
-}
+} */

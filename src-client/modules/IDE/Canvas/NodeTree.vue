@@ -25,7 +25,7 @@
         },
         methods: {
             ...mapMutations({
-                "insert.node": storeTypes.mutations[`insert.data.nodetree.node`],
+                // "insert.node": storeTypes.mutations[`insert.data.nodetree.node`],
                 "select.editing.node": storeTypes.mutations[`select.data.editing.node`]
             }),
             /**
@@ -38,38 +38,68 @@
                 if (this.previewState) {
                     return h(nodeConfig.tag,nodeConfig.properties,children);
                 }
-                return h(`div`,{
-                    'class': `ide-canvas-node`,
-                    props: {},
-                    on: {
-                        contextmenu: (event) => {
-                            event.preventDefault();
-                            event.stopPropagation();
-                            console.log(`点击了鼠标右键`,nodeConfig )
-                            this[`select.editing.node`]({
-                                nodeConfig
-                            });
-                        }
-                    }
-                },[h(`drop`,{
-                    'class': `ide-canvas-node-drop-area`,
-                    on: {
-                        drop: (widgetConfig,...args) => {
-                            event.preventDefault();
-                            event.stopPropagation();
-                            this["insert.node"]({
-                                parentId: nodeConfig.id,
-                                nodeConfig: {
-                                    tag: widgetConfig.tag,
-                                    properties: widgetConfig.properties,
-                                    children: widgetConfig.children
-                                }
-                            })
-                        }
-                    }
-                },[
-                    h(nodeConfig.tag,nodeConfig.properties,children)
-                ])])
+                // 设置id
+                nodeConfig.properties.attrs = {
+                    id: nodeConfig.id
+                }
+                // 设置编辑外框
+                if (nodeConfig.editOutline) {
+                    util.objExtendAttr(nodeConfig.properties,`style`,{
+                        outline: `1px dashed rgba(170,170,170,0.7)`,
+                        outlineOffset: `-2px`
+                    })       
+                }
+                console.log('-->nodeConfig',nodeConfig)
+                return h(nodeConfig.tag,nodeConfig.properties,children);
+                // return h(`div`,{
+                //     'class': `ide-canvas-node`,
+                //     domProps: {
+                //         id: nodeConfig.id
+                //     },
+                //     props: {},
+                //     on: {
+                //         contextmenu: (event) => {
+                //             event.preventDefault();
+                //             event.stopPropagation();
+                //             console.log(`点击了鼠标右键`,nodeConfig )
+                //             this[`select.editing.node`]({
+                //                 nodeConfig
+                //             });
+                //         }
+                //     }
+                // },[h(nodeConfig.tag,nodeConfig.properties,children)])
+                // return h(`div`,{
+                //     'class': `ide-canvas-node`,
+                //     props: {},
+                //     on: {
+                //         contextmenu: (event) => {
+                //             event.preventDefault();
+                //             event.stopPropagation();
+                //             console.log(`点击了鼠标右键`,nodeConfig )
+                //             this[`select.editing.node`]({
+                //                 nodeConfig
+                //             });
+                //         }
+                //     }
+                // },[h(`drop`,{
+                //     'class': `ide-canvas-node-drop-area`,
+                //     on: {
+                //         drop: (widgetConfig,...args) => {
+                //             event.preventDefault();
+                //             event.stopPropagation();
+                //             this["insert.node"]({
+                //                 parentId: nodeConfig.id,
+                //                 nodeConfig: {
+                //                     tag: widgetConfig.tag,
+                //                     properties: widgetConfig.properties,
+                //                     children: widgetConfig.children
+                //                 }
+                //             })
+                //         }
+                //     }
+                // },[
+                //     h(nodeConfig.tag,nodeConfig.properties,children)
+                // ])])
             },
             /**
              * 采用深度遍历的方式来渲染
@@ -77,7 +107,7 @@
              * 2048的方式来实现
              */
             renderNodeTree(h,topNode) {
-                console.log(`node-tree`,util.deepClone(topNode))
+                console.log(`[渲染节点树克隆]renderNodeTree`,util.deepClone(topNode))
                 let res = [];
                 const stack = [];
                 const pushStack = (node) => {
@@ -115,7 +145,7 @@
             }
         },
         render(h) {
-            console.log(`canvas nodeTree`,this.nodeTree)
+            console.log(`[渲染画布节点树]canvas nodeTree`,this.nodeTree)
             return this.renderNodeTree(h,{
                 tag: `div`,
                 properties: {

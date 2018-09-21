@@ -30,6 +30,45 @@ util.max = arr => arr.reduce((acc, cur) => {
 
 
 /**
+ * 找到指定规则最近的父节点
+ * @param {htmlelement} htmlElement 
+ * @param {function} rule 
+ */
+util.findNearestParent = (htmlElement,rule) => {
+    let result = null;
+    const run = (element) => {
+        if (rule(element)) {
+            result = element;
+        } else if (element.parentElement) {
+            run(element.parentElement)
+        }
+    }
+    run(htmlElement);
+    return result
+}
+
+/**
+ * 为object扩展对象
+ * @param {object} obj 
+ * @param {object} extend 
+ */
+util.objExtendAttr = (obj,key,extend,isCover = true) => {
+    if (typeof obj[key] == 'undefined') {
+        obj[key] = {};
+    }
+    for ( let i in extend ) {
+        if (isCover) {
+            obj[key][i] = extend[i];
+        } else {
+            if (typeof obj[key][i] == 'undefined') {
+                obj[key][i] = extend[i]
+            }
+        }
+    }    
+    return obj;
+}
+
+/**
  * 求树的最大深度
  * @param {array} nodeTree 
  */

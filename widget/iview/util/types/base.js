@@ -36,5 +36,19 @@ export default {
         if (output == 'option') {
             return placement
         }
+    },
+
+
+    position(
+        output = 'option'
+    ) {
+        const position = [
+            {value:`left`,label:`left`},
+            {value:`right`,label:`right`},
+            {value:`top`,label:`top`}
+        ]
+        if (output == 'option') {
+            return position
+        }
     }
 }

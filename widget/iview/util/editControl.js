@@ -56,9 +56,20 @@ const InputNumber = (
     }
 }
 
+
+const ColorPicker = (
+    label = '名称'
+) => {
+    return {
+        label: label,
+        control: types.Control.ColorPicker
+    }
+}
+
 export default {
     Select,
     Input,
     InputNumber,
-    Switch
+    Switch,
+    ColorPicker
 }
