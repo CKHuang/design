@@ -138,6 +138,16 @@ const state = {
      * @type {null|object{width,height,left,top}}
      */
     [types.state.ui["ide.canvas.hover.placeholder.offset"]]: null,
+     /**
+     * @description 画布里面hover类型的占位符号的node配置
+     * @type {null|object{width,height,left,top}}
+     */
+    [types.state.ui["ide.canvas.hover.placeholder.node"]]: null,
+    /**
+     * @description 保存cavas的dom节点
+     * @type {htmlelement}
+     */
+    [types.state.ui["ide.canvas.ref"]]: null,
     /**
      * @description 左侧栏目展示
      * @type {boolean}

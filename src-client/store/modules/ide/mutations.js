@@ -12,6 +12,15 @@ export default {
         })
     },
     /**
+     * @description 更新canvas节点
+     * @param {htmlelement} htmlelement
+     */
+    [types.mutations["update.ui.canvas.ref"]](state,htmlelement) {
+        return Object.assign(state,{
+            [types.state.ui["ide.canvas.ref"]]: htmlelement
+        })
+    },  
+    /**
      * @description 设置画布当前编辑页面的预览状态
      * @param {boolean} isPreview 是否预览状态
      */
@@ -28,6 +37,20 @@ export default {
     [types.mutations["update.ui.canvas.hover.placeholder.offset"]](state,offset) {
         return Object.assign(state,{
             [types.state.ui["ide.canvas.hover.placeholder.offset"]]: offset
+        })
+    },
+    /**
+     * @description 更新画布里面hover占位符号的节点配置
+     * @param {nodeConfig} nodeConfig
+     */
+    [types.mutations["update.ui.canvas.hover.placeholder.node"]](state,nodeId) {
+        let nodeConfig = nodeId;
+        if (nodeId != null) {
+            const nodeTreeInstance = state[types.state.data["nodetree.instance"]]
+            nodeConfig = nodeTreeInstance.find(nodeId);
+        }
+        return Object.assign(state,{
+            [types.state.ui["ide.canvas.hover.placeholder.node"]]: nodeConfig
         })
     },
     /**

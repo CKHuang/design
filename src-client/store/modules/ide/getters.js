@@ -17,11 +17,25 @@ export default {
         return state[types.state.ui["ide.canvas.preview"]]
     },
     /**
+     * @description 获取canvas节点
+     * @return {htmlelement}
+     */
+    [types.state.ui["ide.canvas.ref"]](state){
+        return state[types.state.ui["ide.canvas.ref"]]
+    },
+    /**
      * @description 获取画布hover占位符号的位置信息
      * @return {object|null}
      */
     [types.state.ui["ide.canvas.hover.placeholder.offset"]](state) {
         return state[types.state.ui["ide.canvas.hover.placeholder.offset"]]
+    },
+    /**
+     * @description 获取画布hover占位符号的node
+     * @return {nodeConfig}
+     */
+    [types.state.ui["ide.canvas.hover.placeholder.node"]](state) {
+        return state[types.state.ui["ide.canvas.hover.placeholder.node"]]
     },
     /**
      * @description 获取编辑器的配置

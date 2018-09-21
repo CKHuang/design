@@ -2,6 +2,11 @@
 .ide-canvas-node,.ide-canvas-node-drop-area {
     display: initial;
 }
+.ide-canvas-nodetree-root {
+    position: relative;
+    z-index: 100;
+}
+
 </style>
 
 
@@ -49,6 +54,7 @@
                         outlineOffset: `-2px`
                     })       
                 }
+               
                 console.log('-->nodeConfig',nodeConfig)
                 return h(nodeConfig.tag,nodeConfig.properties,children);
                 // return h(`div`,{
@@ -149,7 +155,9 @@
             return this.renderNodeTree(h,{
                 tag: `div`,
                 properties: {
-                    'class': `ide-canvas-nodetree-root`
+                    'class': {
+                        ["ide-canvas-nodetree-root"]:"ide-canvas-nodetree-root"
+                    }
                 },
                 id: `node_${util.randomStr(12)}`,
                 children: util.deepClone(this.nodeTree)

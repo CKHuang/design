@@ -96,7 +96,7 @@
                     <span class="text-left">{{pageEditing.name}}</span>
                     <span class="text-right pull-right">{{pageEditing.page_width}} x {{pageEditing.page_height}}</span>
                 </div>
-                <div class="ide-canvas-content" :style="{'width':`${pageEditing.page_width}px`,'height':`${pageEditing.page_height}px`}">
+                <div class="ide-canvas-content" ref="canvas" :style="{'width':`${pageEditing.page_width}px`,'height':`${pageEditing.page_height}px`}">
                     <drop 
                         @drop="handleDrop(`foo`,...arguments)"
                         class="ide-canvas-content-inner"
@@ -104,7 +104,7 @@
                         <div class="ide-canvas-content-inner" 
                             @contextmenu="handleContextMenu"
                             @mouseover="handleMouseOver"
-                           
+                            @mouseleave="handleMouseOut"
                         >
                             <NodeTree></NodeTree>
                             <HoverPlaceHover></HoverPlaceHover>
@@ -137,7 +137,14 @@
         },
         computed: {
             ...mapGetters({
-                "pageEditing": storeTypes.state.data[`page.editing`]
+                "pageEditing": storeTypes.state.data[`page.editing`],
+                "canvasRef": storeTypes.state.ui[`ide.canvas.ref`],
+                "hoverPlaceOffset": storeTypes.state.ui[`ide.canvas.hover.placeholder.offset`]
+            })
+        },
+        updated() {
+            this.$nextTick(function(){
+                this[`update.canvas.ref`](this.$refs['canvas'])
             })
         },
         methods: {
@@ -155,9 +162,11 @@
                 console.log('[handleDrag]widgetConfig',widgetConfig);
             },
             handleContextMenu(event) {
+                console.log('-->鼠标右键',event);
                 event.preventDefault();
                 // event.stopPropagation();
                 const nodeId = this.logicFindNearestNode(event)
+                 console.log('-->鼠标右键 nodeId',nodeId);
                 if (nodeId) {
                     this[`select.editing.node`]({
                         nodeId
@@ -166,22 +175,36 @@
             },
             handleMouseOver(event) {
                 event.preventDefault();
+                event.stopPropagation();
                 const node = this.logicFindNearestNode(event,`node`);
                 if (node) {
+                    console.log('[触发了hover place更新]')
+                    const canvasRef = this[`canvasRef`];
+                    const canvasOffset = canvasRef.getBoundingClientRect();
                     const offset = node.getBoundingClientRect();
                     const width = offset.width;
                     const height = offset.height;
                     const nodeId = node.id;
-                    this[`update.hover.placeholder`]({
-                        nodeId,
+                    const left = - (canvasOffset.x - offset.x);
+                    const top = - (canvasOffset.y - offset.y);
+                    this[`update.hover.placeholder.offset`]({
                         width,
-                        height
+                        height,
+                        left,
+                        top
                     });
-                    console.log('-->offset',offset,node)
+                    this[`update.hover.placeholder.node`](nodeId);
+                    
                 } else {
-                    this[`update.hover.placeholder`](null);
+                    this[`update.hover.placeholder.offset`](null);
+                    this[`update.hover.placeholder.node`](null);
                 }
-                console.log(`[handleMouseOver]event`,node)
+                console.log(`[handleMouseOver]event`,node,event)
+            },
+            handleMouseOut(event) {
+                event.preventDefault();
+                this[`update.hover.placeholder.offset`](null);
+                this[`update.hover.placeholder.node`](null);
             },
             logicFindNearestNode(event, get = 'id') {
                 const toElement = event.toElement;
@@ -203,7 +226,9 @@
             ...mapMutations({
                 "insert.node": storeTypes.mutations[`insert.data.nodetree.node`],
                 "select.editing.node": storeTypes.mutations[`select.data.editing.node`],
-                "update.hover.placeholder": storeTypes.mutations[`update.ui.canvas.hover.placeholder.offset`]
+                "update.hover.placeholder.offset": storeTypes.mutations[`update.ui.canvas.hover.placeholder.offset`],
+                "update.hover.placeholder.node": storeTypes.mutations[`update.ui.canvas.hover.placeholder.node`],
+                "update.canvas.ref": storeTypes.mutations[`update.ui.canvas.ref`]
             }),
         }
     }

@@ -22,6 +22,10 @@ export default {
              */
             [`sidebar.spread`]: `sidebar.spread`,
             /**
+             * @description dom节点
+             */
+            [`ide.canvas.ref`]: `ide.canvas.ref`,
+            /**
              * @description ide的预览状态
              */
             [`ide.canvas.preview`]: `ide.preview`,
@@ -29,6 +33,10 @@ export default {
              * @description 画布里面hover类型的占位元素是否可见的位置,如果为null表示不可见
              */
             [`ide.canvas.hover.placeholder.offset`]: `ide.canvas.hover.placeholder.offset`,
+            /**
+             * @description 画布里面hover类型的占位符focus的节点配置
+             */
+            [`ide.canvas.hover.placeholder.node`]: `ide.canvas.hover.placeholder.node`,
              /**
              * @description 编辑器正在初始化
              */
@@ -111,7 +119,9 @@ export default {
     },
     mutations: {
         [`toggle.ui.code.spread`]: `ide.toggle.ui.code.spread`,
+        [`update.ui.canvas.ref`]: `update.ui.canvas.ref`,
         [`update.ui.canvas.hover.placeholder.offset`]: `update.ui.canvas.hover.placeholder.offset`,
+        [`update.ui.canvas.hover.placeholder.node`]: `update.ui.canvas.hover.placeholder.node`,
         [`update.ui.page.form.visiable`]: `update.ui.page.form.visiable`,
         [`update.ui.sidebar.spread`]: `update.ui.sidebar.spread`,
         [`toggle.ui.sidebar.spread`]: `toggle.ui.sidebar.spread`,

@@ -3,22 +3,39 @@
     position: absolute;
     top:0px;
     left: 0px;
+    z-index: 101
 }
 .ide-canvas-hoverplaceholder-mask {
-    width: 100%;
+    /* width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, .4)
+    background-color: rgba(232, 245, 253, 0.397);
+    outline: rgb(59, 151, 227) 2px dashed; */
+}
+.ide-canvas-hoverplaceholder-tag {
+    position: absolute;
+    top: -19px;
+    background-color: #3b97e3;
+    color: #fff;
+    padding: 1px 5px;
+    display: inline-block;
+    left: -1px; 
+}
+
+.ide-canvas-node-hover {
+    background-color: rgba(232, 245, 253, 0.397) !important;
+    outline: rgb(59, 151, 227) 2px dashed !important;
+    outline-offset: 0px !important;
 }
 </style>
 
 
 <template>
     <div class="ide-canvas-hoverplaceholder" v-if="offset" 
-        :style="{'width':offset.width+'px','height':offset.height+'px'}"
+        :style="{top:(offset.top - 1)+'px',left:(offset.left-1)+'px'}"
         @mouseover="handleMouseOver"
-        @mousemove="handleMouseOver"
-    >
-        <div class="ide-canvas-hoverplaceholder-mask"></div>
+    >   
+        <span class="ide-canvas-hoverplaceholder-tag">{{ nodeConfig.tag }}</span>
+        <!-- <div class="ide-canvas-hoverplaceholder-mask"></div> -->
     </div>
 </template>
 
@@ -31,14 +48,34 @@
         name: `IDECanvasHoverPlaceHolder`,
         computed: {
             ...mapGetters({
-                "offset": storeTypes.state.ui[`ide.canvas.hover.placeholder.offset`]
+                "offset": storeTypes.state.ui[`ide.canvas.hover.placeholder.offset`],
+                "nodeConfig": storeTypes.state.ui[`ide.canvas.hover.placeholder.node`]
             })
         },
         methods: {
             handleMouseOver(event) {
-                console.log('->over handleMouseOver')
                 event.preventDefault();
-                event.stopPropagation();
+                event.stopPropagation()
+            },
+            clearOldHoverClass(oldValue) {
+                if (oldValue) {
+                    const dom = document.querySelector(`#${oldValue.id}`);
+                    util.removeClass(dom,`ide-canvas-node-hover`)
+                }
+            },
+            setNewHoverClass(newValue) {
+                if (newValue) {
+                    const dom = document.querySelector(`#${newValue.id}`);
+                    util.addClass(dom,`ide-canvas-node-hover`);
+                }
+            }
+        },
+        watch: {
+            nodeConfig: function(newValue,oldValue) {
+                if (newValue != oldValue) {
+                    this.clearOldHoverClass(oldValue);
+                    this.setNewHoverClass(newValue);
+                }
             }
         }
     }

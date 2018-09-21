@@ -58,11 +58,13 @@
 </style>
 
 <template>
-    <drag :transfer-data="config">
-        <!-- <render-widget :config="config"></render-widget> -->
-        <Icon class="ide-widget-icon" :type="config.icon ? config.icon : 'ios-cube-outline'" />
+    <div>
+        <drag :transfer-data="config">
+            <!-- <render-widget :config="config"></render-widget> -->
+            <Icon class="ide-widget-icon" :type="config.icon ? config.icon : 'ios-cube-outline'" />  
+        </drag>
         <span class="mar-t-sm">{{config.description}}</span>
-    </drag>
+    </div>
 </template>
 
 

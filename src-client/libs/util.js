@@ -29,6 +29,22 @@ util.max = arr => arr.reduce((acc, cur) => {
 }, arr[0]);
 
 
+util.hasClass = ( elements,cName ) => {
+    return !!elements.className.match( new RegExp( "(\\s|^)" + cName + "(\\s|$)") );
+}
+
+util.addClass = ( elements,cName ) => {
+    if( !util.hasClass( elements,cName ) ){
+        elements.className += " " + cName;
+    };
+}
+
+util.removeClass = (elements, cName) => {
+    if (util.hasClass(elements, cName)) {
+        elements.className = elements.className.replace(new RegExp("(\\s|^)" + cName + "(\\s|$)"), " "); 
+    };
+};
+
 /**
  * 找到指定规则最近的父节点
  * @param {htmlelement} htmlElement 
