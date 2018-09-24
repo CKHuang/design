@@ -8,6 +8,7 @@ import util from '../../libs/util'
  * @param {object} router_props 路由的初始化参数
  * @param {number} page_width 页面的宽度
  * @param {number} page_height 页面的高度
+ * @param {array} nodetree 页面的节点树
  * @param {string} parentId 页面的父级id
  * @param {string} id 页面的id，如果没有会自动创建
  */
@@ -18,6 +19,7 @@ export default (
     router_props,
     page_width = 0,
     page_height = 0,
+    nodetree = [],
     parentId = null,
     id = null
 ) => {
@@ -29,6 +31,7 @@ export default (
         router_props: router_props,
         page_width: page_width,
         page_height: page_height,
+        nodetree: nodetree,
         parentId: parentId
     })
 }

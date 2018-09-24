@@ -14,7 +14,7 @@
 .ide-canvas-hoverplaceholder-tag {
     position: absolute;
     top: -19px;
-    background-color: #3b97e3;
+    background-color: rgb(164, 201, 231);
     color: #fff;
     padding: 1px 5px;
     display: inline-block;
@@ -22,9 +22,11 @@
 }
 
 .ide-canvas-node-hover {
-    background-color: rgba(232, 245, 253, 0.397) !important;
-    outline: rgb(59, 151, 227) 2px dashed !important;
+    background-color: rgba(232, 245, 253, 0.397);
+    outline: rgb(164, 201, 231) 2px dashed !important;
     outline-offset: 0px !important;
+    position: relative !important;
+    z-index: 900;
 }
 </style>
 

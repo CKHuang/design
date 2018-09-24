@@ -111,6 +111,31 @@ export default {
         })
     },
     /**
+     * @description 更新当前节点树的树，主要是页面变更的时候触发
+     * @param {NodeTree} nodeTree 存储的节点树 
+     */
+    [types.mutations["select.data.nodetree"]](state,{nodeTree}) {
+        state[types.state.data["nodetree.instance"]].set(nodeTree);
+    },
+    /**
+     * @description 删除节点树中的某个节点以及其子节点
+     * @param {string} nodeId 节点id
+     */
+    [types.mutations["delete.data.nodetree.node"]](
+        state,
+        nodeId
+    ) {
+        state[types.state.data['nodetree.instance']].delete(nodeId)
+        this.commit(types.mutations["insert.editor.record"],{
+            mod: state[types.state.data["record.mod"]][`node`],
+            act: state[types.state.data['record.act']][`delete`],
+            config: nodeId,
+            newValue: null,
+            oldValue: nodeId
+        });
+        this.commit(types.mutations["select.data.editing.node"],{nodeConfig:null})
+    },
+    /**
      * @description 在节点树插入节点对象
      * @param {object} parentId 父亲节点的id，如果是顶级则这个为null
      * @param {object} nodeConfig 节点配置

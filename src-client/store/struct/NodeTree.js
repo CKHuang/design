@@ -26,7 +26,7 @@ export default class NodeTree extends EventEmitter{
         this.nodeTree = [];
         this.nodes = {};
         this.nodeCount = 0;
-        this._emit(this.EVENT.CHANGE)
+        //this._emit(this.EVENT.CHANGE)
     }
 
     /**
@@ -125,7 +125,7 @@ export default class NodeTree extends EventEmitter{
     set(
         nodeTree
     ) {
-        this.nodes = {};
+        this._reset();
         let  count = 0;
         const cloneNode = (nodes,newNode) => {
             nodes.forEach((item) => {
@@ -143,6 +143,44 @@ export default class NodeTree extends EventEmitter{
         this.nodeTree = newTree;
         this.nodeCount = count;
         this._emit(this.EVENT.CHANGE);
+    }
+
+    /**
+     * 删除节点以及其子节点
+     * @param {string} nodeId 
+     */
+    delete(nodeId) {
+        const node = this.find(nodeId);
+        console.log(`[删除节点]nodeId`,nodeId,`node`,util.deepClone(node))
+        const stack = [];
+        const pushStack = (node) => {
+            if (node) {
+                stack.push(node);
+                if (node.children && node.children.length > 0) {
+                    node.children.forEach((childNode) => {
+                        pushStack(childNode)
+                    })
+                }
+             }
+        }
+        pushStack(node);
+        while (stack.length > 0) {
+            const item = stack.pop();
+            delete this.nodes[item.id];
+            this.nodeCount--;
+        }
+        const findDelete = (childrens) => {
+            for ( let i = 0, len = childrens.length; i < len; i++) {
+                if (childrens[i].id == nodeId) {
+                    childrens.splice(i,1)
+                } else {
+                    findDelete(childrens[i].children);
+                }
+            }
+        }
+        findDelete(this.nodeTree);
+        this._emit(this.EVENT.CHANGE);
+
     }
 
     /**

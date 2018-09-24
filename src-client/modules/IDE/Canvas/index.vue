@@ -99,15 +99,19 @@
                 <div class="ide-canvas-content" ref="canvas" :style="{'width':`${pageEditing.page_width}px`,'height':`${pageEditing.page_height}px`}">
                     <drop 
                         @drop="handleDrop(`foo`,...arguments)"
+                        @dragenter="handleDrag(`dragenter`)"
+                        
+                        @dragleave="handleDrag(`dragleave`)"
                         class="ide-canvas-content-inner"
                     >
                         <div class="ide-canvas-content-inner" 
-                            @contextmenu="handleContextMenu"
+                            @click.capture="handleContextMenu"
                             @mouseover="handleMouseOver"
                             @mouseleave="handleMouseOut"
                         >
                             <NodeTree></NodeTree>
                             <HoverPlaceHover></HoverPlaceHover>
+                            <EditNode></EditNode>
                         </div>
                         <div class="ide-canvas-widget-placeholder" id="ide-canvas-widget-placeholder"></div>
                     </drop>
@@ -125,6 +129,7 @@
     import PropsEditor from '../PropsEditor/index.vue'
     import Preview from './preview'
     import HoverPlaceHover from './hoverPlaceholder.vue'
+    import EditNode from './EditNode.vue'
     import util from '../../../libs/util';
 
     export default {
@@ -133,6 +138,7 @@
             NodeTree: NodeTree,
             PropsEditor: PropsEditor,
             HoverPlaceHover: HoverPlaceHover,
+            EditNode: EditNode,
             Preview: Preview
         },
         computed: {
@@ -148,12 +154,11 @@
             })
         },
         methods: {
+            handleDrag(type){
+                console.log(`[${type}]`,event)
+            },
             handleDrop(foo,widgetConfig) {
-                let parentId = null;
-                const toElement = event.toElement;
-                if (toElement.id) {
-                    parentId = toElement.id;
-                }
+                const parentId = this.logicFindNearestNode(event)
                 console.log(`handleDrop`,foo,widgetConfig,event)
                 this[`insert.node`]({
                     parentId: parentId,
@@ -162,11 +167,9 @@
                 console.log('[handleDrag]widgetConfig',widgetConfig);
             },
             handleContextMenu(event) {
-                console.log('-->鼠标右键',event);
                 event.preventDefault();
                 // event.stopPropagation();
                 const nodeId = this.logicFindNearestNode(event)
-                 console.log('-->鼠标右键 nodeId',nodeId);
                 if (nodeId) {
                     this[`select.editing.node`]({
                         nodeId
