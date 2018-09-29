@@ -1,7 +1,7 @@
 import Http from '../libs/Http'
 import httpConfig from '../../config/http'
 
-export default new class PageModel extends Http {
+export default class PageModel extends Http {
 
     constructor() {
         super();

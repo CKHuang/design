@@ -1,6 +1,9 @@
 import types from './types'
-import projectModel from '../../../models/project'
-import pageModel from '../../../models/page'
+import Project from '../../../models/Project'
+import Page from '../../../models/Page'
+
+const projectModel = new Project();
+const pageModel = new Page();
 
 export default {
     /**
@@ -10,7 +13,7 @@ export default {
      */
     async [types.actions["init.data"]]({ dispatch, commit },{projectKey,pageKey}) {
         try {
-            const project  = await projectModel.queryProject(projectKey);
+            const project  = await projectModel.one(projectKey);
             const pageList = await pageModel.queryProjectPages(projectKey);
             commit(types.mutations["select.data.project"],project);
             commit(types.mutations["update.data.project.page.list"],pageList);

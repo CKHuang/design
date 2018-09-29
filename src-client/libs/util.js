@@ -1,6 +1,7 @@
 import axios from 'axios';
 import code from './util/code'
 import vue from './util/vue'
+import validator from './util/validator'
 
 let util = {
 
@@ -10,6 +11,8 @@ util.title = function(title) {
     window.document.title = title;
 };
 
+
+util.validator = validator;
 
 /**
  * 代码操作

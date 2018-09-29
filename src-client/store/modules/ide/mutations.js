@@ -171,7 +171,6 @@ export default {
         if (nodeId) {
             nodeConfig = state[types.state.data["nodetree.instance"]].find(nodeId)
         }
-        console.log('--->nodeId',nodeId);
         return Object.assign(state,{
             [types.state.data["node.editing"]]: nodeConfig 
         })
@@ -269,9 +268,10 @@ export default {
         state,
         page
     ) {
-        return Object.assign(state,{
+        Object.assign(state,{
             [types.state.data["page.editing"]]: page
         })
+        this.commit(types.mutations["select.data.nodetree"],{nodeTree:page.nodetree}); 
     },
     /**
      * @description 更新页面模块的表单类型，有新建以及修改

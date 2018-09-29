@@ -60,7 +60,7 @@
     <div class="ide-toolbar">
         <div class="toolbar-left">
             <Icon type="ios-arrow-back" class="back-btn" />
-            <span class="title" title="雷克萨斯供应商管理雷克萨斯供应商管理雷克萨斯供雷克萨斯供应商管理雷克萨斯供应商管理雷克萨斯供应商管理应商管理">雷克萨斯供应商管理雷克萨斯供雷克萨斯供应商管理雷克萨斯供应商管理雷克萨斯供应商管理应商管理雷克萨斯供应商管理</span>  
+            <span class="title" :title="project.name">{{ project.name }}</span>  
         </div>
         <div class="toolbar-center">
             <div class="opera-btn">
@@ -78,10 +78,15 @@
 </template>
 
 <script>
+    import { mapGetters, mapMutations, mapActions } from 'vuex'
+    import storeTypes from '../../../store/modules/ide/types'
+
     export default {
         name: `IDEToolBar`,
-        data() {
-            return {}
+        computed: {
+            ...mapGetters({
+                'project': storeTypes.state.data[`project`]
+            })
         }
     }
 </script>

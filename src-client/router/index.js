@@ -4,6 +4,7 @@ import LayoutEmpty from '../pages/Common/Layout/empty.vue'
 
 import errorRoute from './routes/error'
 import workSpaceRoute from './routes/workspace'
+import projectRoute from './routes/project'
 
 export default {
     routes: [{
@@ -22,6 +23,7 @@ export default {
             name: `layout`,
             component: Layout,
             children: [
+                projectRoute
                 // workSpaceRoute
             ],
             meta: {
@@ -34,6 +36,7 @@ export default {
     }],
     beforeEach: (to, from, next) => {
         if (to.matched.some(record => record.meta.requiresAuth)) {
+            next();
             // if (!auth.loggedIn()) {
             //     next();
             //     // next({

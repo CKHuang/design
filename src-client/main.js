@@ -5,6 +5,8 @@ import Routers from './router/index';
 import Util from './libs/util';
 import App from './App.vue';
 import store from './store'
+import types from '../config/types'
+import models from './models/index'
 import VueDragDrop from 'vue-drag-drop';
 import 'iview/dist/styles/iview.css'
 import './styles/common.css'
@@ -18,6 +20,8 @@ Vue.use(iView);
 Vue.use({
     install(Vue) {
         Vue.prototype.util = Util;
+        Vue.prototype.types = types;
+        Vue.prototype.models = models;
     }
 })
 

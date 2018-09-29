@@ -207,5 +207,12 @@ export default {
      */
     [types.state.data["page.form.data"]](state) {
         return state[types.state.data["page.form.data"]]
+    },
+    /**
+     * @description 获取当前编辑的项目信息
+     * @return {object}
+     */
+    [types.state.data.project](state) {
+        return state[types.state.data.project]
     }
 }

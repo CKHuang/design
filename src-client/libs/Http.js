@@ -48,7 +48,7 @@ export default class Http {
                 opts.headers = {}
             }
             opts.headers['X-Requested-With'] = `XMLHttpRequest`
-            axios({
+            const req = {
                 method: method,
                 url: url,
                 headers: opts.headers,
@@ -56,19 +56,22 @@ export default class Http {
                 data: opts.data,
                 timeout: opts.timeout,
                 responseType: opts.responseType
-            }).then((response) => {
+            }
+            axios(req).then((response) => {
                 const httpStatus = response.status;
                 const httpBody = response.data;
                 if (httpStatus == 200) {
                     resolve(httpBody.data);
                 } else {
                     this.errorHandler(
+                        req,
                         response,
                         reject
                     )
                 }
             }).catch((error) => {
                 this.errorHandler(
+                    req,
                     error.response,
                     reject
                 )
@@ -76,14 +79,39 @@ export default class Http {
         });
     }
 
-    errorHandler(response,reject) {
+    errorHandler(req,response,reject) {
         const httpStatus = response.status;
         const httpBody = response.data;
         if (httpStatus == 401) {
             this.toLogin()
         } else {
-            reject(httpBody)
+            reject({
+                req: req,
+                res: {
+                    httpBody,
+                    httpStatus
+                }
+            })
         }
+    }
+
+    /**
+     * @description 处理并提示错误
+     */
+    showErrorMessage(error,handleMessage) {
+        const req = error.req,
+              res = error.res;
+        let message = `请求网络接口返回失败`,
+            subMessage = ``;
+        if (res.httpStatus == '404') {
+            subMessage = `调用接口不存在`
+        } else {
+            subMessage = res.httpBody.message;
+        }
+        handleMessage({
+            message,
+            subMessage
+        },error)
     }
 
 

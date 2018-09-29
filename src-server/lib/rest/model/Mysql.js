@@ -361,24 +361,27 @@ export default class Mysql {
             args: []
         },
         opts = {
-            table: this.table
+            table: this.table,
+            orderby: this.primaryKey
         }
     ) {
-        console.log('--->rule.method',rule.method)
         if (!rule.method || !util.oneOf(rule.method,['where','whereLike','whereIn']) ) {
             throw this.error(`arguments rule.method error`,`method:${rule.method}`);
         }
         if (!rule.args || !Array.isArray(rule.args)) {
             throw this.error(`arguments rule.args error`,`method:${rule.method}`)
         }
-        const sql = this.sql();
+        let sql = this.sql();
+        sql = sql
+                .select('*')
+                .from(opts.table)
+        if (rule.args.length != 0) {
+            sql[rule.method].apply(sql,rule.args)
+        }
+        sql = sql.sort(opts.orderby)
         return await this.result.all(
             await this.query(
-                sql
-                    .select('*')
-                    .from(opts.table)
-                    [rule.method].apply(sql,rule.args)
-                    .toString()
+                sql.toString()
             )
         )
     }

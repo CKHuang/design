@@ -4,17 +4,15 @@ export default class Logic {
 
     constructor() {}
 
-
     /**
      * 执行某个逻辑
-     * @param {string} opUser  逻辑操作的用户
      * @param {string} method  要执行的逻辑方法名
      * @param {any}    args    传递给逻辑方法的参数
      */
-    async invoke(opUser,method,...args) {
+    async invoke(method,...args) {
         try {
             if (typeof this[method] == 'function') {
-               return await this[method].call(this,opUser,...args)
+               return await this[method].call(this,...args)
             } else {
                 throw new StatusError(
                     `no ${method} logic`,

@@ -1,6 +1,5 @@
 <template>
-    <Layout>
-        <h1>Header</h1>
+    <Layout class="layout-fullscreen">
         <Header></Header>
         <Content></Content>
         <Footer></Footer>
@@ -19,6 +18,9 @@
             Header,
             Content,
             Footer
+        },
+        created() {
+            console.log('--->layout');
         }
     }
 </script>

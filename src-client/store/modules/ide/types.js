@@ -84,14 +84,6 @@ export default {
              */
             [`record.act`]: `ide.data.record.act`,
             /**
-             * @description 项目相关的信息
-             */
-            [`project`]: `ide.data.project`,
-            /**
-             * @description 项目相关的页面列表
-             */
-            [`project.page.list`]: `ide.data.project.list`,
-            /**
              * @description 当前编辑的页面
              */
             [`page.editing`]: `ide.data.page.editing`,
@@ -106,7 +98,22 @@ export default {
             /**
              * @description 当前选中修改或者是删除的页面
              */
-            [`page.select`]: `ide.data.page.select`
+            [`page.select`]: `ide.data.page.select`,
+
+
+            
+            /**
+             * @description 项目相关的信息
+             */
+            [`project`]: `ide.data.project`,
+            /**
+             * @description 项目相关的页面列表
+             */
+            [`project.page.list`]: `ide.data.project.list`,
+            /**
+             * @description 相关页面相关的节点树
+             */
+            [`project.page.nodetrees`]: `ide.data.project.page.nodetrees`
         }
     },
     getters: {
@@ -143,7 +150,17 @@ export default {
         [`reset.data.page.form.data`]: `reset.data.page.form.data`
     },
     actions: {
+        /**
+         * @description 初始化ide的数据
+         */
         [`init.data`]: `ide.init.data`,
-        [`new.page`]: `new.page`
+        /**
+         * @description 创建新的页面
+         */
+        [`new.page`]: `new.page`,
+        /**
+         * @description 改变选中其他页面
+         */
+        [`change.page`]: `change.page`
     }
 }

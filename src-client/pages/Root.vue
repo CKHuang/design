@@ -1,7 +1,5 @@
 <template>
-    <div>
-        <router-view :key="key"></router-view>
-    </div>
+    <router-view :key="key"></router-view>
 </template>
 <script>
     export default {

@@ -1,6 +1,7 @@
 import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
 import cors from 'koa-cors'
+import auth from './middleware/auth'
 import parameter from './middleware/parameter'
 import routes from './routes'
 import config from '../config/app'
@@ -10,6 +11,8 @@ const app = new Koa();
 app.use(cors());
 
 app.use(parameter());
+
+app.use(auth());
 
 app.use(bodyParser());
 

@@ -1,4 +1,5 @@
 import Controller from '../lib/rest/Controller'
+import logic from '../logic/project'
 
 export default new class ProjectController extends Controller {
 
@@ -12,17 +13,28 @@ export default new class ProjectController extends Controller {
     /**
      * @description 查询某个项目的详情
      */
-    async queryOneAction(ctx,res) {
-        res.data({
-            id: 12,
-            key: `projxu8061uhyolhfjxy`,
-            name: `测试项目`,
-            create_time: `2018-09-20 10:20:30`,
-            creater: `CK.Huang`,
-            page_width: 1024,
-            page_height: 960,
-            type: 1,
-            owner: `CK.Huang`
-        })
+    async oneAction(ctx,res) {
+        res.data(
+            await logic.invoke(
+                `one`,
+                ctx.params.projectKey
+            )
+        )
+    }
+
+    async allAction(ctx,res) {
+        res.data(
+            await logic.invoke(`all`)
+        )
+    }
+
+    async insertAction(ctx,res) {
+        const inserted = ctx.parameter.inserted();
+              inserted.owner = ctx.user;
+              inserted.creater = ctx.user;
+              inserted.create_time = Date.now()
+        res.data(
+            await logic.invoke(`insert`,inserted)
+        )
     }
 }

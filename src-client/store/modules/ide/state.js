@@ -7,6 +7,7 @@ import page from '../../struct/page'
 const nodetree = new NodeTree();
     nodetree.on('change', () => {
         state[types.state.data[`nodetree`]] = nodetree.nodeTree
+        state[types.state.data["page.editing"]].nodetree = nodetree.nodeTree;
     })
 
 const record = new Record();
@@ -14,113 +15,6 @@ const record = new Record();
           console.log(`[Record change]`,record.record)
           state[types.state.data[`record`]] = record.record
       })
-
-    // setTimeout(() => {
-    //     nodetree.set([{
-    //         tag: `Layout`,
-    //         properties: {},
-    //         children: [{
-    //             tag: `Menu`,
-    //             properties: {
-    //                 props: {
-    //                     'mode': `horizontal`
-    //                 }
-    //             },
-    //             children: [{
-    //                 tag: `MenuItem`,
-    //                 properties: {
-    //                     props: {
-    //                         name: `1`
-    //                     }
-    //                 },
-    //                 children: [{
-    //                     tag: `Icon`,
-    //                     properties: {
-    //                         props: {
-    //                             type: `ios-paper`
-    //                         }
-    //                     },
-    //                     children: []
-    //                 }]
-    //             },{
-    //                 tag: `MenuItem`,
-    //                 properties: {
-    //                     props: {
-    //                         name: `1`
-    //                     }
-    //                 },
-    //                 children: [{
-    //                     tag: `Icon`,
-    //                     properties: {
-    //                         props: {
-    //                             type: `ios-paper`
-    //                         }
-    //                     },
-    //                     children: []
-    //                 }]
-    //             },{
-    //                 tag: `MenuItem`,
-    //                 properties: {
-    //                     props: {
-    //                         name: `1`
-    //                     }
-    //                 },
-    //                 children: [{
-    //                     tag: `Icon`,
-    //                     properties: {
-    //                         props: {
-    //                             type: `ios-paper`
-    //                         }
-    //                     },
-    //                     children: []
-    //                 }]
-    //             }]
-    //         },{
-    //             tag: `Content`,
-    //             properties: {},
-    //             children: [{
-    //                 tag: `Card`,
-    //                 properties: {},
-    //                 children: [{
-    //                     tag: `Form`,
-    //                     properties: {
-    //                         props: {
-                                
-    //                         }
-    //                     },
-    //                     children: [{
-    //                         tag: `FormItem`,
-    //                         properties: {
-    //                             props: {
-    //                                 label: `name`
-    //                             }
-    //                         },
-    //                         children: [{
-    //                             tag: `Input`,
-    //                             properties: {
-    //                                 props: {
-    //                                     size: `default`
-    //                                 }
-    //                             },children: []
-    //                         }]
-    //                     },{
-    //                         tag: `FormItem`,
-    //                         properties: {
-    //                             props: {
-    //                                 label: `password`
-    //                             }
-    //                         },
-    //                         children: [{
-    //                             tag: `Input`,
-    //                             properties: {}
-    //                             ,children: []
-    //                         }]
-    //                     }]
-    //                 }]
-    //             }]
-    //         }]  
-    //     }])
-    //   },1000);
 
 const state = {
      /**
@@ -227,7 +121,7 @@ const state = {
      * @description 当前编辑的项目相关信息
      * @type {project}
      */
-    [types.state.data["project"]]: null,
+    [types.state.data["project"]]: {},
     /**
      * @description 当前编辑项目相关的页面列表
      * @type {array}
