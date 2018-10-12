@@ -1,4 +1,5 @@
 import Controller from '../lib/rest/Controller'
+import logic from '../logic/page'
 
 export default new class PageController extends Controller {
 
@@ -9,6 +10,12 @@ export default new class PageController extends Controller {
     async _beforeAction(ctx,res) {}
     async _afterAction(ctx,res) {}
 
+
+    async projectsAction(ctx,res) {
+        res.data(
+            
+        )
+    }
     /**
      * @description 查询某个项目的所有页面列表
      */

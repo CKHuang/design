@@ -44,29 +44,55 @@
                 if (widgetProps === null || Object.keys(widgetProps) == 0) {
                     return h(`span`,`该节点没有可添加属性`);
                 }
-                const controls = [];
+                const groups = [];
                 for ( let i in widgetProps ) {
-                    const widgetPropsGroups = widgetProps[i]; 
-                    for ( let k in widgetPropsGroups ) {
-                        const widgetPropsItem = widgetPropsGroups[k];
-                        if ( widgetPropsItem.editControl ) {
-                            let value = undefined;
-                            if (nodeProps[i] && typeof nodeProps[i][k] != 'undefined') {
-                                value = nodeProps[i][k];
-                            }
-                            controls.push(
-                                this.renderControl(
-                                    h,
-                                    i,
-                                    k,
-                                    widgetPropsItem.editControl,
-                                    value
-                                )
-                            )
+                    const widgetPropsGroups = widgetProps[i];
+                    let nodePropsGroups = {};
+                    if (nodeProps[i]) {
+                        nodePropsGroups = nodeProps[i]
+                    }
+                    groups.push(
+                        this.renderEditorGroup(
+                            h,
+                            i,
+                            widgetPropsGroups,
+                            nodePropsGroups
+                        )
+                    )
+                }
+                return groups;
+            },
+            renderEditorGroup(h,propsGroupKey,widgetPropsGroups,nodeProps) {
+                const controls = []
+                for ( let k in widgetPropsGroups ) {
+                    const widgetPropsItem = widgetPropsGroups[k];
+                    if (widgetPropsItem.editControl ) {
+                        let value = undefined;
+                        if (typeof nodeProps[k] != 'undefined') {
+                            value = nodeProps[k]
                         }
+                        controls.push(
+                            this.renderControl(
+                                h,
+                                propsGroupKey,
+                                k,
+                                widgetPropsItem.editControl,
+                                value
+                            )
+                        )
                     }
                 }
-                return controls;
+                return h('Panel',{
+                    props: {name:propsGroupKey}
+                },[
+                    h('span',propsGroupKey),
+                    h('Form',{
+                        props: {
+                            labelWidth: 100
+                        },
+                        slot: 'content'
+                    },[controls])
+                ])
             },
             renderControl(h,propsGroup,fieldName,editControl,value) {
                 return h(`render-control`,{
@@ -81,9 +107,9 @@
             }
         },
         render(h,ctx) {
-            return h(`Form`,{
+            return h('Collapse',{
                 props: {
-                    labelWidth: 80
+                    simple: true
                 }
             },this.renderEditor(
                 h,

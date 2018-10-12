@@ -1,5 +1,6 @@
 import types from './types'
 import page from '../../struct/page'
+import tpyesConfig from '../../../../config/types'
 
 export default {
     /**
@@ -252,9 +253,10 @@ export default {
         state,
         {page}
     ) { 
-        const project = state[types.state.data[`project`]];
-              page.page_height = project.page_height;
-              page.page_width = project.page_width;
+        const project = state[types.state.data[`project`]],
+              pageSize = tpyesConfig.PAGE_SIZE[project.type];
+              page.page_height = pageSize.height;
+              page.page_width = pageSize.width;
         state[types.state.data["project.page.list"]].push(page);
         this.commit(types.mutations["update.ui.page.form.visiable"],{visiable:false})
         this.commit(types.mutations["reset.data.page.form.data"]);

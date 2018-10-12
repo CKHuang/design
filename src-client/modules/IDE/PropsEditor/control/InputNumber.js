@@ -8,23 +8,29 @@ export default (
     {value,fieldName,propsGroup,editorControl,nodeEditing},
     ctx
 ) => {
-    const argus = editorControl.argus;
+    const arg = editorControl.arguments;
+    
+    const suffix = arg && arg.suffix ? arg.suffix : null,
+          prefix = arg && arg.prefix ? arg.prefix : null;
+    let _value = value;
+    if (typeof _value == 'string') {
+        suffix && _value.replace(suffix,'');
+        prefix && _value.replace(prefix,'')
+        _value = Number(value)
+    }
     const props = {
-        value: value || 0,
+        value: _value || 0,
         size: `small`
     }
-    for ( let i in argus ) {
-        props[i] = argus[i];
-    }
-    console.log(`[InputNumber]`,props,fieldName,propsGroup,editorControl,nodeEditing);
     return h(`InputNumber`,{
         props: props,
         on: {
             "on-change": (newValue) => {
+                let _newValue = `${prefix?prefix:''}${newValue}${suffix?suffix:''}`;
                 ctx.parent.handleChange(
                     propsGroup,
                     fieldName,
-                    newValue
+                    _newValue
                 )
             }
         }

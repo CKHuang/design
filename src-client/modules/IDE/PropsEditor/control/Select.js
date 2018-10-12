@@ -21,6 +21,8 @@ export default (
     {value,fieldName,propsGroup,editorControl,nodeEditing},
     ctx
 ) => {
+    const args = editorControl.arguments,
+          options = args.options || []
     return h(`Select`,{
         props: {
             value: value,
@@ -35,5 +37,5 @@ export default (
                 )
             }
         }
-    },Options(h,editorControl.arguments));
+    },Options(h,options));
 }

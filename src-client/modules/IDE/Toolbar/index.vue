@@ -59,7 +59,9 @@
 <template>
     <div class="ide-toolbar">
         <div class="toolbar-left">
-            <Icon type="ios-arrow-back" class="back-btn" />
+            <router-link :to="{name:'project-home'}" tag="span">
+                <Icon type="ios-arrow-back" class="back-btn" />
+            </router-link>
             <span class="title" :title="project.name">{{ project.name }}</span>  
         </div>
         <div class="toolbar-center">

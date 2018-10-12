@@ -1,12 +1,28 @@
 <style>
 .ide-propseditor {
     max-width: 240px;
+    min-width: 240px;
+    position: absolute !important;
+    top: 0px;
+    z-index: 999;
+    right: 0px;
+    max-height: 100%;
+    overflow: auto;
+}
+.ide-propseditor .ivu-card-head {
+    border-bottom: none;
+}
+.ide-propseditor .ivu-collapse>.ivu-collapse-item {
+    border-top-style: dashed;  
+}
+.ide-propseditor .ivu-collapse{
+    border-bottom: none;
 }
 </style>
 
 
 <template>
-    <Card  class="ide-propseditor" v-if="nodeEditing !== null" :dis-hover="true" style="position:fixed;z-index:9999;right:0px;top:40px;">
+    <Card class="ide-propseditor" v-if="nodeEditing !== null" :padding="0" :dis-hover="true">
         <p slot="title">
             属性编辑
         </p>
@@ -14,8 +30,8 @@
             <Icon type="ios-loop-strong"></Icon>
             close
         </a>
-        <span>正在编辑的节点<strong>{{nodeEditing.tag}}</strong></span>
-        <span>({{nodeEditing.id}})</span>
+        <!-- <span>正在编辑的节点<strong>{{nodeEditing.tag}}</strong></span> -->
+        <!-- <span>({{nodeEditing.id}})</span> -->
         <Editor></Editor>
     </Card>
 </template>

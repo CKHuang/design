@@ -1,12 +1,12 @@
-import iview from './iview'
-import html from './html'
-
-console.log(`iview配置`,iview);
+//import iview from './iview'
+import html from './libs/html'
+import iview2 from './libs/iview2'
 
 export default {
     libs: {
         html,
-        iview
+        iview2
+        //,iview
     },
-    default: `iview`
+    default: `iview2`
 }

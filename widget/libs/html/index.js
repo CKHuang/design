@@ -1,5 +1,5 @@
-import types from '../types'
-import span from './span'
+import Div from './Div'
+import Span from './Span'
 
 export default {
     name: `html`,
@@ -8,7 +8,8 @@ export default {
     widgetGroups: [{
         label: `基础`,
         widgets: [].concat(
-            span
+            new Div().config,
+            new Span().config
         )
     }]
 }
