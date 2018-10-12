@@ -1,12 +1,12 @@
 //import iview from './iview'
 import html from './libs/html'
-import iview2 from './libs/iview2'
+import iview from './libs/iview'
 
 export default {
     libs: {
         html,
-        iview2
+        iview
         //,iview
     },
-    default: `iview2`
+    default: `iview`
 }

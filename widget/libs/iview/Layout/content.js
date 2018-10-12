@@ -1,15 +1,11 @@
-const Content = (opts) => {
-    return {
-        tag: `Content`,
-        lib: 'iview',
-        description: opts.description || `内容容器`,
-        properties: {},
-        children: opts.children || []
+import Widget from '../../../base/Widget'
+
+export default class Content extends Widget {
+    constructor() {
+        super(
+            `Content`,
+            `iview`,
+            `Content`
+        )
     }
-}
-
-
-export default {
-    Content,
-    widgets: [Content()]
 }

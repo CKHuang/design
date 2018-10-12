@@ -14,10 +14,11 @@ export default (
           prefix = arg && arg.prefix ? arg.prefix : null;
     let _value = value;
     if (typeof _value == 'string') {
-        suffix && _value.replace(suffix,'');
-        prefix && _value.replace(prefix,'')
-        _value = Number(value)
+        suffix && (_value = _value.replace(suffix,''));
+        prefix && (_value = _value.replace(prefix,''))
+        _value = Number(_value)
     }
+   
     const props = {
         value: _value || 0,
         size: `small`

@@ -41,6 +41,7 @@
                 });
             },
             renderEditor(h,widgetProps,nodeProps) {
+                console.log('->renderEditor',widgetProps,nodeProps)
                 if (widgetProps === null || Object.keys(widgetProps) == 0) {
                     return h(`span`,`该节点没有可添加属性`);
                 }

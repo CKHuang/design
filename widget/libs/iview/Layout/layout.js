@@ -1,14 +1,11 @@
-const Layout = (opts) => {
-    return {
-        tag: `Layout`,
-        lib: `iview`,
-        description: opts.description || `布局容器`,
-        properties: {},
-        children: opts.children || []
-    }
-}
+import Widget from '../../../base/Widget'
 
-export default {
-    Layout,
-    widgets: [Layout()]
+export default class Layout extends Widget {
+    constructor() {
+        super(
+            `Layout`,
+            `iview`,
+            `Layout`
+        )
+    }
 }

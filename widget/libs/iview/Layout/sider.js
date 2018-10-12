@@ -1,14 +1,11 @@
-const Sider = (opts) => {
-    return {
-        tag: `Sider`,
-        lib: `iview`,
-        description: opts.description || `侧边栏`,
-        properties: {},
-        children: opts.children || []
-    }
-}
+import Widget from '../../../base/Widget'
 
-export default {
-    Sider,
-    widgets: [Sider()]
+export default class Sider extends Widget {
+    constructor() {
+        super(
+            `Sider`,
+            `iview`,
+            `Sider`
+        )
+    }
 }

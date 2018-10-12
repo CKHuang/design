@@ -1,11 +1,13 @@
-import layout from './layout'
-import content from './content'
-import sider from './sider'
-import footer from './footer'
+import Layout from './Layout'
+import Content from './Content'
+import Sider from './Sider'
+import Header from './Header'
+import Footer from './Footer'
 
-export default [].concat(
-    layout.widgets,
-    content.widgets,
-    sider.widgets,
-    footer.widgets
-)
+export default {
+    Layout,
+    Content,
+    Header,
+    Sider,
+    Footer
+}

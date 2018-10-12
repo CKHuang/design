@@ -98,11 +98,12 @@
             }
         },
         watch: {
-            nodeConfig: function(newValue,oldValue) {
-                if (newValue != oldValue) {
+            nodeConfig: {
+                handler: function(newValue,oldValue) {
                     this.clearOldHoverClass(oldValue);
                     this.setNewHoverClass(newValue);
-                }
+                },
+                deep: true
             }
         }
         

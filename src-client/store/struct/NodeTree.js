@@ -43,7 +43,7 @@ export default class NodeTree extends EventEmitter{
                 }
             }
         }
-        console.log(`[_getWidgetConfigPropertiesDefaultValues]`,result);
+
         return result;  
     }
 
@@ -54,7 +54,7 @@ export default class NodeTree extends EventEmitter{
      * @param {boolean} isNewFromWidgetConfig 从widget的配置里面初始化
      */
     createNode(nodeConfig,isNewFromWidgetConfig = true) {
-        console.log(`createNode nodeConfig`,nodeConfig);
+        
         return node(
             nodeConfig.lib,
             nodeConfig.tag,
@@ -113,7 +113,7 @@ export default class NodeTree extends EventEmitter{
                 node = _cache[0]
             }
         }
-        console.log('--->stack',node,nodeCount,nodes);
+        
         return {node,nodeCount,nodes}
         
     }
@@ -228,7 +228,7 @@ export default class NodeTree extends EventEmitter{
         }
         
         
-        console.log(`=======[insert node] nodeConfig`,nodeConfig,`parentId`,parentId,`parent`,parent.tag)
+        
         
     }
     /**

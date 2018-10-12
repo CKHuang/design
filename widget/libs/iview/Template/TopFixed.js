@@ -1,33 +1,40 @@
-import layout from '../Layout/layout'
-import content from '../Layout/content'
-import header from '../Layout/header'
-import footer from '../Layout/footer'
+import Widget from '../../../base/Widget'
+import Span from '../../html/Span'
+import layout from '../Layout'
+import nav from '../Nav'
 
-const TopFixed = () => {
-    return layout.Layout({
-        description: `顶部固定布局`,
-        children: [
-            header.Header({
-                props: {
-                    style: {
-                        position: 'fixed',
-                        width: '100%'
-                    }
-                },
-                children: []
-            }),
-            content.Content({
-                props: {
-                    style: {
-                        margin: '88px 20px 0',
-                        background: `#fff`,
-                        minHeight: '500px'
-                    }
-                }
-            }),
-            footer.Footer()
-        ]
-    })
+export default () => {
+    const span = new Span(),
+          _layout = new layout.Layout(),
+          _header = new layout.Header(),
+          _content = new layout.Content(),
+          _footer = new layout.Footer(),
+          _menu = new nav.Menu(),
+          _menuItem = new nav.MenuItem(),
+          _menuItemSpan = new Span();
+          _menuItem.children = [_menuItemSpan.config]
+          _menu.children = [
+              _menuItem.config
+          ]
+          _header.children = [
+              _menu.config
+          ]
+          _content.style = {
+              "marginTop": `20px`,
+              "marginRight": `88px`,
+              "marginLeft": `88px`,
+              "marginBottom": `20px`,
+              "background": `#fff`,
+              "height": `500px` 
+          }
+          _content.children = [span.config]
+
+    
+    _layout.children = [
+        _header.config,
+        _content.config,
+        _footer.config
+    ]
+
+    return _layout
 }
-
-export default TopFixed

@@ -1,11 +1,11 @@
 import Widget from '../../../base/Widget'
 
-export default class Footer extends Widget {
+export default class Menu extends Widget {
     constructor() {
         super(
-            `Footer`,
+            `Menu`,
             `iview`,
-            `Footer`
+            `Menu`
         )
     }
 }

@@ -193,6 +193,12 @@ export default {
             fieldName,
             newValue
         )
+        /**
+         * 更新了属性，不会触发editor里面的正在编辑节点的变动，需要重新设置值
+         */
+        this.commit(types.mutations['select.data.editing.node'],{
+            nodeId
+        })
         this.commit(types.mutations["insert.editor.record"],{
             mod: state[types.state.data["record.mod"]][`node.properties`],
             act: state[types.state.data["record.act"]][`update`],

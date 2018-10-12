@@ -1,14 +1,11 @@
-const Header = (opts) => {
-    return {
-        tag: `i-header`,
-        lib: 'iview',
-        description: opts.description || `顶部布局`,
-        properties: {},
-        children: opts.children || []
-    }
-}
+import Widget from '../../../base/Widget'
 
-export default {
-    Header,
-    widgets: [Header()]
+export default class Header extends Widget {
+    constructor() {
+        super(
+            `Header`,
+            `iview`,
+            `Header`
+        )
+    }
 }
