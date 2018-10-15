@@ -46,10 +46,18 @@ const ColorPicker = (label) => {
     }
 }
 
+const JumpInput = (label) => {
+    return {
+        label,
+        control: `JumpInput`
+    }
+}
+
 export default {
     Select,
     Input,
     Switch,
     InputNumber,
-    ColorPicker
+    ColorPicker,
+    JumpInput
 }

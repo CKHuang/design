@@ -1,9 +1,9 @@
-import template from '../../../base/template'
-import Span from '../../html/Span'
-import Div from '../../html/Div'
-import P from '../../html/P'
-import layout from '../Layout'
-import nav from '../Nav'
+import template from '../../../../base/template'
+import Span from '../../../html/Span'
+import Div from '../../../html/Div'
+import P from '../../../html/P'
+import layout from '../../Layout'
+import nav from '../../Nav'
 
 const Layout = layout.Layout,
       Header = layout.Header,
@@ -17,7 +17,7 @@ export default () => {
 
     const nodetree = {
         tag: Layout,
-        description: `上中下布局`,
+        opts: {description: `上中下布局`},
         properties: {
             "style": {
                 "minHeight": "100%"

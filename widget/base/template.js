@@ -4,8 +4,8 @@ export default (nodetree) => {
     const node = (config,children = []) => {
         const Tag = config.tag,
               properties = config.properties || null,
-              description = config.description ? config.description : null;
-        const tag = description ? new Tag(description) : new Tag();
+              opts = config.opts ? config.opts : null;
+        const tag = opts ? new Tag(opts) : new Tag();
         if (properties) {
             for (let i in properties) {
                 tag[i] = properties[i]
@@ -42,7 +42,5 @@ export default (nodetree) => {
             res = _cache[0]
         }
     }
-    return res;
-
-   
+    return res; 
 }

@@ -25,7 +25,8 @@
          computed: {
             ...mapGetters({
                 "nodeEditing": storeTypes.state.data[`node.editing`],
-                "widgetConfig": storeTypes.getters[`data.node.editing.widget.config`]
+                "widgetConfig": storeTypes.getters[`data.node.editing.widget.config`],
+                "pageList": storeTypes.state.data[`project.page.list`]
             })
         },
         methods: {
@@ -41,7 +42,6 @@
                 });
             },
             renderEditor(h,widgetProps,nodeProps) {
-                console.log('->renderEditor',widgetProps,nodeProps)
                 if (widgetProps === null || Object.keys(widgetProps) == 0) {
                     return h(`span`,`该节点没有可添加属性`);
                 }
@@ -51,6 +51,9 @@
                     let nodePropsGroups = {};
                     if (nodeProps[i]) {
                         nodePropsGroups = nodeProps[i]
+                    }
+                    if (Object.keys(widgetPropsGroups).length == 0) {
+                        continue;
                     }
                     groups.push(
                         this.renderEditorGroup(

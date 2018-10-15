@@ -1,6 +1,8 @@
-import template from './Template'
+import layoutTmpl from './Template/layout'
+import formTmpl from './Template/form'
 import layout from './Layout'
 import nav from './Nav'
+import form from './Form'
 
 export default {
     name: `iview`,
@@ -9,7 +11,12 @@ export default {
     widgetGroups: [{
         label: `布局模版`,
         widgets: [].concat(
-            template.TopFixed()
+            layoutTmpl.TopFixed()
+        )
+    },{
+        label: `表单模版`,
+        widgets: [].concat(
+            formTmpl.Personal()
         )
     },{
         label: `布局`,
@@ -24,6 +31,24 @@ export default {
         widgets: [].concat(
             new nav.IMenu().getConfig(),
             new nav.IMenuItem().getConfig()
+        )
+    },{
+        label: `表单`,
+        widgets: [].concat(
+            new form.Input().getConfig(),
+            new form.Radio().getConfig(),
+            new form.RadioGroup().getConfig(),
+            new form.Checkbox().getConfig(),
+            new form.CheckboxGroup().getConfig(),
+            new form.Switch().getConfig(),
+            new form.Select().getConfig(),
+            new form.Slider().getConfig(),
+            new form.DatePicker().getConfig(),
+            new form.TimePicker().getConfig(),
+            new form.InputNumber().getConfig(),
+            new form.Rate().getConfig(),
+            new form.Form().getConfig(),
+            new form.FormItem().getConfig()
         )
     }]
 }

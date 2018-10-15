@@ -5,12 +5,14 @@ const recursion = (nodes) => {
             res.push({
                 title: item,
                 expand: false,
-                children: []
+                children: [],
+                id: item.id
             })
         } else {
             res.push({
                 title: item.tag,
                 expand: item.children.length > 0,
+                id: item.id,
                 children: recursion(item.children)
             })
         } 

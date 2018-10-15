@@ -3,13 +3,15 @@ import Select from './control/Select'
 import Switch from './control/Switch'
 import InputNumber from './control/InputNumber'
 import ColorPicker from './control/ColorPicker'
+import JumpInput from './control/JumpInput'
 
 const Controls = {
     Input,
     Select,
     Switch,
     InputNumber,
-    ColorPicker
+    ColorPicker,
+    JumpInput
 }
 
 

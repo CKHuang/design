@@ -9,7 +9,8 @@ export default class IMenuItem extends Widget {
             `iview`,
             `MenuItem`,
             {
-                "name": controls.Input(`名称`)
+                "name": controls.Input(`名称`),
+                "to": controls.JumpInput(`跳转`)
             },
             [new Span('MenuItem').getConfig()]
         )

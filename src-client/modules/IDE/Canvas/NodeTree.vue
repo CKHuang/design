@@ -26,10 +26,6 @@
             })
         },
         methods: {
-            ...mapMutations({
-                // "insert.node": storeTypes.mutations[`insert.data.nodetree.node`],
-                "select.editing.node": storeTypes.mutations[`select.data.editing.node`]
-            }),
             /**
              * 渲染节点
              * @param {function} h createElement
