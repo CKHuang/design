@@ -16,36 +16,19 @@ export default class Widget {
         this.domProps = {};
         this.props = {}
         this.style = {}
+        this.initCommonControl();
     }
 
-    buildConfig(controls,defaultValues) {
-        const config = {};
-        for ( let i in controls) {
-            config[i] = {}
-            config[i].editControl = controls[i]
-            if ( typeof defaultValues[i] !== 'undefined') {
-                config[i].default = defaultValues[i]
-            }
-        }
-       return config;
-    }
-
-    get domPropsControl() {
-        return {
-            "innerHTML": controls.Input(`innerHTML`)
-        }
-    }
-    
-    get styleControl() {
-        return {
-            "marginTop": controls.InputNumber(`外边距(顶)`,{suffix:`px`}),
-            "marginRight": controls.InputNumber(`外边距(右)`,{suffix:`px`}),
-            "marginBottom": controls.InputNumber(`外边距(底)`,{suffix:`px`}),
-            "marginLeft": controls.InputNumber(`外边距(左)`,{suffix:`px`}),
-            "paddingTop": controls.InputNumber(`内边距(顶)`,{suffix:`px`}),
-            "paddingRight": controls.InputNumber(`内边距(右)`,{suffix:`px`}),
-            "paddingBottom": controls.InputNumber(`内边距(底)`,{suffix:`px`}),
-            "paddingLeft": controls.InputNumber(`内边距(左)`,{suffix:`px`}),
+    initCommonControl() {
+        this.styleControl = {
+            "marginTop": controls.Input(`外边距(顶)`),
+            "marginRight": controls.Input(`外边距(右)`),
+            "marginBottom": controls.Input(`外边距(底)`),
+            "marginLeft": controls.Input(`外边距(左)`),
+            "paddingTop": controls.Input(`内边距(顶)`),
+            "paddingRight": controls.Input(`内边距(右)`),
+            "paddingBottom": controls.Input(`内边距(底)`),
+            "paddingLeft": controls.Input(`内边距(左)`),
             "float": controls.Select(`浮动`,{
                 options: [
                     {value:`left`,label:`左`},
@@ -59,23 +42,69 @@ export default class Widget {
                     {value:`absolute`,label:`absolute`}
                 ]
             }),
-            "width": controls.InputNumber(`宽度`,{suffix:'px'}),
-            "height": controls.InputNumber(`高度`,{suffix:'px'}),
+            "display": controls.Select(`显示`,{
+                options: [
+                    {value:`none`,label:`none`},
+                    {value:`block`,label:`block`},
+                    {value:`flex`,label:`flex`},
+                    {value:`inline-block`,label:`inline-block`}
+                ]
+            }),
+            "flex": controls.Select(`flex`,{
+                options: [
+                    {value:`none`,label:`none`},
+                    {value:`auto`,label:`auto`}
+                ]
+            }),
+            "top": controls.Input(`偏移(顶)`),
+            "left": controls.Input(`偏移(左)`),
+            "right": controls.Input(`偏移(右)`),
+            "bottom": controls.Input(`偏移(底)`),
+            "width": controls.Input(`宽度`,{suffix:'px'}),
+            "minWidth": controls.Input(`宽度(最小)`),
+            "maxWidth": controls.Input(`宽度(最大)`),
+            "height": controls.Input(`高度`,{suffix:'px'}),
+            "minHeight": controls.Input(`高度(最小)`),
+            "maxHeight": controls.Input(`高度(最大)`),
             "background": controls.ColorPicker(`背景`),
             "border": controls.Input(`边框`),
-            "fontSize": controls.InputNumber(`大小(字)`),
+            "fontSize": controls.InputNumber(`大小(字)`,{
+                suffix: 'px'
+            }),
+            "fontWeight": controls.Input(`粗细(字)`),
             "color": controls.ColorPicker(`颜色(字)`),
+            "lineHeight": controls.Input(`行高(字)`),
             "textAlign": controls.Select(`对齐(字)`,{
                 options: [
                     {value:`left`,label:`左`},
                     {value:`center`,label:`中`},
                     {value:`right`,label:`右`}
                 ]
-            })
+            }),
+            "boxShadow": controls.Input(`阴影`)
+        }
+        this.domPropsControl = {
+            "innerHTML": controls.Input(`innerHTML`)
         }
     }
 
-    get properties() {
+    buildConfig(controls,defaultValues) {
+        const config = {};
+        for ( let i in controls) {
+            config[i] = {}
+            config[i].editControl = controls[i]
+            if ( typeof defaultValues[i] !== 'undefined') {
+                config[i].default = defaultValues[i]
+            }
+        }
+        if (this.tag == 'Menu') {
+            console.log('Menu',config,controls,defaultValues);
+        }
+       return config;
+    }
+    
+  
+    properties() {
         return {
             props: this.buildConfig(
                 this.propsControl,
@@ -91,14 +120,14 @@ export default class Widget {
             )
         }
     }
-    
-    get config() {
+
+    getConfig() {
         return {
             tag: this.tag,
             lib: this.lib,
             description: this.description,
-            properties: this.properties,
+            properties: this.properties(),
             children: this.children
-        }
+        } 
     }
 }

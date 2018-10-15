@@ -1,7 +1,7 @@
-import Menu from './Menu'
-import MenuItem from './MenuItem'
+import IMenu from './IMenu'
+import IMenuItem from './IMenuItem'
 
 export default {
-    Menu,
-    MenuItem
+    IMenu,
+    IMenuItem
 }

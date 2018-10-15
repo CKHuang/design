@@ -1,6 +1,6 @@
 import template from './Template'
 import layout from './Layout'
-import nav from './nav'
+import nav from './Nav'
 
 export default {
     name: `iview`,
@@ -14,17 +14,16 @@ export default {
     },{
         label: `布局`,
         widgets: [].concat(
-            new layout.Layout().config,
-            new layout.Header().config,
-            new layout.Content().config,
-            new layout.Sider().config
+            new layout.Layout().getConfig(),
+            new layout.Header().getConfig(),
+            new layout.Content().getConfig(),
+            new layout.Sider().getConfig()
         )
     },{
         label: `导航`,
         widgets: [].concat(
-            
-            new nav.Menu().config,
-            new nav.MenuItem().config
+            new nav.IMenu().getConfig(),
+            new nav.IMenuItem().getConfig()
         )
     }]
 }

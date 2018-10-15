@@ -1,5 +1,6 @@
 import Div from './Div'
 import Span from './Span'
+import P from './P'
 
 export default {
     name: `html`,
@@ -8,8 +9,9 @@ export default {
     widgetGroups: [{
         label: `基础`,
         widgets: [].concat(
-            new Div().config,
-            new Span().config
+            new Div().getConfig(),
+            new Span().getConfig(),
+            new P().getConfig()
         )
     }]
 }

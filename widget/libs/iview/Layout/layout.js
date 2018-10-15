@@ -1,11 +1,11 @@
 import Widget from '../../../base/Widget'
 
 export default class Layout extends Widget {
-    constructor() {
+    constructor(description = 'Layout') {
         super(
             `Layout`,
             `iview`,
-            `Layout`
+            description
         )
     }
 }

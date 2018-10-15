@@ -2,10 +2,7 @@
 .ide-canvas-node,.ide-canvas-node-drop-area {
     display: initial;
 }
-.ide-canvas-nodetree-root {
-    position: relative;
-    z-index: 100;
-}
+
 
 </style>
 
@@ -57,55 +54,6 @@
                
                 console.log('-->nodeConfig',nodeConfig)
                 return h(nodeConfig.tag,nodeConfig.properties,children);
-                // return h(`div`,{
-                //     'class': `ide-canvas-node`,
-                //     domProps: {
-                //         id: nodeConfig.id
-                //     },
-                //     props: {},
-                //     on: {
-                //         contextmenu: (event) => {
-                //             event.preventDefault();
-                //             event.stopPropagation();
-                //             console.log(`点击了鼠标右键`,nodeConfig )
-                //             this[`select.editing.node`]({
-                //                 nodeConfig
-                //             });
-                //         }
-                //     }
-                // },[h(nodeConfig.tag,nodeConfig.properties,children)])
-                // return h(`div`,{
-                //     'class': `ide-canvas-node`,
-                //     props: {},
-                //     on: {
-                //         contextmenu: (event) => {
-                //             event.preventDefault();
-                //             event.stopPropagation();
-                //             console.log(`点击了鼠标右键`,nodeConfig )
-                //             this[`select.editing.node`]({
-                //                 nodeConfig
-                //             });
-                //         }
-                //     }
-                // },[h(`drop`,{
-                //     'class': `ide-canvas-node-drop-area`,
-                //     on: {
-                //         drop: (widgetConfig,...args) => {
-                //             event.preventDefault();
-                //             event.stopPropagation();
-                //             this["insert.node"]({
-                //                 parentId: nodeConfig.id,
-                //                 nodeConfig: {
-                //                     tag: widgetConfig.tag,
-                //                     properties: widgetConfig.properties,
-                //                     children: widgetConfig.children
-                //                 }
-                //             })
-                //         }
-                //     }
-                // },[
-                //     h(nodeConfig.tag,nodeConfig.properties,children)
-                // ])])
             },
             /**
              * 采用深度遍历的方式来渲染
@@ -155,11 +103,13 @@
             return this.renderNodeTree(h,{
                 tag: `div`,
                 properties: {
-                    'class': {
-                        ["ide-canvas-nodetree-root"]:"ide-canvas-nodetree-root"
+                    "style": {
+                        "height": "100%",
+                        "position": "relative",
+                        "zIndex": 100
                     }
                 },
-                id: `node_${util.randomStr(12)}`,
+                id: `root_${util.randomStr(12)}`,
                 children: util.deepClone(this.nodeTree)
             });
         }
