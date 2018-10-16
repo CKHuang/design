@@ -1,6 +1,7 @@
 import template from '../../../../base/template'
 import form from '../../Form'
-import Span from '../../../html/Span';
+import Span from '../../../html/Span'
+import base from '../../Base'
 
 const Form = form.Form,
       FormItem = form.FormItem,
@@ -10,7 +11,8 @@ const Form = form.Form,
       RadioGroup = form.RadioGroup,
       Radio = form.Radio,
       Checkbox = form.Checkbox,
-      CheckboxGroup = form.CheckboxGroup;
+      CheckboxGroup = form.CheckboxGroup,
+      Button = base.Button;
 
 export default () => {
 
@@ -154,6 +156,28 @@ export default () => {
                         }
                     }
                 }]
+            }]
+        },{
+            tag: FormItem,
+            children: [{
+                tag: Button,
+                opts: {text:`提交`},
+                properties: {
+                    'props': {
+                        'type': 'primary'
+                    }
+                }
+            },{
+                tag: Button,
+                opts: {'text':`重置`},
+                properties: {
+                    'props': {
+                        'type': 'default'
+                    },
+                    'style': {
+                        'marginLeft': '8px'
+                    }
+                }
             }]
         }]
     }

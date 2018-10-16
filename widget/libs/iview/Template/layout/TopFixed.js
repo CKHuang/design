@@ -55,6 +55,7 @@ export default () => {
                 }
             },{
                 tag: IMenu,
+                menuitems: [],
                 properties: {
                     "style": {
                         "width": "450px"
@@ -67,34 +68,20 @@ export default () => {
                 },
                 children: [{
                     tag: IMenuItem,
+                    opts: {text:'Item 1'},
                     properties: {
                         "props": {
                             "name": "1"
                         }
-                    },
-                    children: [{
-                        tag: Span,
-                        properties: {
-                            "domProps": {
-                                "innerHTML": "Item 1"
-                            }
-                        }
-                    }]
+                    }
                 },{
                     tag: IMenuItem,
+                    opts: {text:'Item 2'},
                     properties: {
                         "props": {
                             "name": "2"
                         }
-                    },
-                    children: [{
-                        tag: Span,
-                        properties: {
-                            "domProps": {
-                                "innerHTML": "Item 2"
-                            }
-                        }
-                    }]
+                    }
                 }]
             }]
         },{

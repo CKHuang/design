@@ -5,7 +5,9 @@ import IMenuItem from './IMenuItem'
 
 
 export default class IMenu extends Widget {
-    constructor() {
+    constructor(opts = {
+        menuitems: [new IMenuItem().getConfig()]
+    }){
         super(
             `Menu`,
             `iview`,
@@ -25,8 +27,7 @@ export default class IMenu extends Widget {
                     ]
                 }),
                 "active-name": controls.Input(`激活`)
-            },
-            [new IMenuItem().getConfig()]
+            }
         )
         this.props = {
             "mode": "horizontal"

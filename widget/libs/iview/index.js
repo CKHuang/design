@@ -1,6 +1,7 @@
 import layoutTmpl from './Template/layout'
 import formTmpl from './Template/form'
 import layout from './Layout'
+import base from './Base'
 import nav from './Nav'
 import form from './Form'
 
@@ -31,6 +32,11 @@ export default {
         widgets: [].concat(
             new nav.IMenu().getConfig(),
             new nav.IMenuItem().getConfig()
+        )
+    },{
+        label: `基础`,
+        widgets: [].concat(
+            new base.Button().getConfig()
         )
     },{
         label: `表单`,

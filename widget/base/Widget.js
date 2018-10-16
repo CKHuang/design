@@ -97,9 +97,6 @@ export default class Widget {
                 config[i].default = defaultValues[i]
             }
         }
-        if (this.tag == 'Menu') {
-            console.log('Menu',config,controls,defaultValues);
-        }
        return config;
     }
     

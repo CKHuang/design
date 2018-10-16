@@ -3,7 +3,10 @@ import controls from '../../../base/controls'
 import Span from '../../html/Span'
 
 export default class IMenuItem extends Widget {
-    constructor() {
+    constructor(opts = {
+        text: `MenuItem`
+    }) {
+        console.log('-->MenuItem',opts)
         super(
             `MenuItem`,
             `iview`,
@@ -12,7 +15,7 @@ export default class IMenuItem extends Widget {
                 "name": controls.Input(`名称`),
                 "to": controls.JumpInput(`跳转`)
             },
-            [new Span('MenuItem').getConfig()]
+            [new Span({text:opts.text}).getConfig()]
         )
         this.props = {
             "name": `name_${String(Date.now())}`
