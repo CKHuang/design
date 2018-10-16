@@ -3,7 +3,7 @@ import controls from '../../../base/controls'
 import Span from '../../../libs/html/Span'
 
 export default class Radio extends Widget {
-    constructor() {
+    constructor(opts = {text:`Radio`}) {
         super(
             `Radio`,
             `iview`,
@@ -19,7 +19,7 @@ export default class Radio extends Widget {
                 'label': controls.Input(`标签`),
                 'disabled': controls.Switch(`禁用`),   
             },
-            [new Span(`Radio`).getConfig()]
+            [new Span({text:opts.text}).getConfig()]
         )
     }
 }

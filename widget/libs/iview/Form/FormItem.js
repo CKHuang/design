@@ -20,5 +20,9 @@ export default class FormItem extends Widget {
                 "label-width": controls.InputNumber(`标签宽度`)
             }
         )
+        this.style = {
+            'paddingLeft': '10px',
+            'paddingRight': '10px'
+        }
     }   
 }

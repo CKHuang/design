@@ -2,11 +2,13 @@ import Widget from '../../../base/Widget'
 import controls from '../../../base/controls'
 
 export default class Form extends Widget {
-    constructor(description = 'Form') {
+    constructor(opt = {
+        description: 'Form'
+    }) {
         super(
             `Form`,
             `iview`,
-            description,
+            opt.description,
             {
                 inline: controls.Switch(`行内模式`),
                 "label-position": controls.Select(`标签位置`,{

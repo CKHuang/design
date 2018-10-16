@@ -11,7 +11,9 @@ export default (nodetree) => {
                 tag[i] = properties[i]
             }
         }
-        tag.children = children;
+        if (tag.children.length == 0) {
+            tag.children = children
+        }
         return tag.getConfig();
     }
     const pushStack = (node) => {

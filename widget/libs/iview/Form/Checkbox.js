@@ -19,7 +19,8 @@ export default class Checkbox extends Widget {
                     ]
                 }),
                 'disabled': controls.Switch(`禁用`),
-            }
+            },
+            [new Span({text:opts.text}).getConfig()]
         )
     }
 }

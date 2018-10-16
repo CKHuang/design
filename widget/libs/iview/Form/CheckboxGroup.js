@@ -3,7 +3,7 @@ import controls from '../../../base/controls'
 import Checkbox from './Checkbox'
 
 export default class CheckboxGroup extends Widget {
-    constructor(opts = {checkbox: [new Checkbox().getConfig(),new Checkbox().getConfig()]}) {
+    constructor(opts = {checkboxs: [new Checkbox().getConfig(),new Checkbox().getConfig()]}) {
         super(
             `CheckboxGroup`,
             `iview`,
@@ -18,7 +18,7 @@ export default class CheckboxGroup extends Widget {
                     ]
                 })
             },
-            opts.checkbox  
+            opts.checkboxs 
         )
         this.style = {
             "paddingLeft": '10px',

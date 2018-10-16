@@ -1,5 +1,6 @@
 import template from '../../../../base/template'
 import form from '../../Form'
+import Span from '../../../html/Span';
 
 const Form = form.Form,
       FormItem = form.FormItem,
@@ -15,7 +16,7 @@ export default () => {
 
     const nodetree = {
         tag: Form,
-        description: `个人信息`,
+        opts: {description:`个人信息`},
         properties: {
             'props': {
                 "label-position": 'right',
@@ -65,6 +66,17 @@ export default () => {
             children: [{
                 tag: DatePicker
             },{
+                tag: Span,
+                opts: {
+                    'text': `-`
+                },
+                properties: {
+                    'style': {
+                        'paddingLeft': '10px',
+                        'paddingRight': '10px'
+                    }
+                }
+            },{
                 tag: TimePicker
             }]
         },{
@@ -77,11 +89,25 @@ export default () => {
             },
             children: [{
                 tag: RadioGroup,
-                opts: {radio: []},
+                opts: {radios: []},
                 children: [{
-                    tag: Radio
+                    tag: Radio,
+                    properties: {
+                        'props': {
+                            'label': 'boy'
+                        }
+                        
+                    },
+                    opts: {'text':`男`}
                 },{
-                    tag: Radio
+                    tag: Radio,
+                    properties: {
+                        'props': {
+                            'label': 'girl'
+                        }
+                        
+                    },
+                    opts: {'text':`女`}
                 }]
             }]
         },{
@@ -94,11 +120,39 @@ export default () => {
             },
             children: [{
                 tag: CheckboxGroup,
-                opts: {checkbox: []},
+                opts: {checkboxs: []},
                 children: [{
-                    tag: Checkbox
+                    tag: Checkbox,
+                    opts: {text:`美食`},
+                    properties: {
+                        'props': {
+                            'label': `food`
+                        }
+                    }
                 },{
-                    tag: Checkbox
+                    tag: Checkbox,
+                    opts: {text:`跑步`},
+                    properties: {
+                        'props': {
+                            'label': 'run'
+                        }
+                    }
+                },{
+                    tag: Checkbox,
+                    opts: {text:`电影`},
+                    properties: {
+                        'props': {
+                            'label': 'movie'
+                        }
+                    }
+                },{
+                    tag: Checkbox,
+                    opts: {text:`摄影`},
+                    properties: {
+                        'props': {
+                            'label': 'photo'
+                        }
+                    }
                 }]
             }]
         }]
