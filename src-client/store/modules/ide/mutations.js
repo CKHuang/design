@@ -140,23 +140,25 @@ export default {
      * @description 在节点树插入节点对象
      * @param {object} parentId 父亲节点的id，如果是顶级则这个为null
      * @param {object} nodeConfig 节点配置
-     * @param {string} mode 插入的方式，push、unshift，默认是push
+     * @param {string} insertMethod 插入的方式，push、unshift、还是slice，默认是push
+     * @param {number} insertIndex 插入的位置，对于slice有效
      */
     [types.mutations["insert.data.nodetree.node"]](
         state,
-        {parentId,nodeConfig,mode = 'push'}
+        {parentId,nodeConfig,insertMethod = 'push',insertIndex = 0}
     ) {
         nodeConfig.lib = state[types.state.data["widget.lib"]];
         state[types.state.data["nodetree.instance"]].insert(
             parentId,
             nodeConfig,
-            mode
+            insertMethod,
+            insertIndex
         )
         this.commit(types.mutations["insert.editor.record"],{
             mod: state[types.state.data["record.mod"]][`node`],
             act: state[types.state.data["record.act"]][`insert`],
             config: null,
-            newValue: {parentId,nodeConfig,mode},
+            newValue: {parentId,nodeConfig,insertMethod,insertIndex},
             oldValue: null
         })
     },

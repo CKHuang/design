@@ -197,17 +197,28 @@ export default class NodeTree extends EventEmitter{
             children,
             editOutline
         },
-        mode = 'push'
+        insertMethod = 'push',
+        insertIndex = 0
     ) {
         const parent = parentId ? this.find(parentId)
                                 : this.nodeTree;
+        const insertAction = (parent,newNode) => {
+            console.log('--->insertAction',insertMethod,insertIndex)
+            if (insertMethod == 'push' || insertMethod == 'unshift') {
+                parent[insertMethod](newNode);
+            } else if (insertMethod == 'slice') {
+                parent[insertMethod](insertIndex,0,newNode)
+            }
+        }
         // 没有子节点，不是复合节点，直接创建即可
         if (typeof nodeConfig.children == 'undefined' || nodeConfig.children.length == 0) {
             const _node = this.createNode(nodeConfig);
             if (Array.isArray(parent)) {
-                parent[mode](_node);
+                insertAction(parent,_node);
+                //parent[mode](_node);
             } else {
-                parent.children[mode](_node);
+                insertAction(parent.children,_node)
+                //parent.children[mode](_node);
             }
             this.nodes[_node.id] = _node;
             this.nodeCount++;
@@ -216,9 +227,11 @@ export default class NodeTree extends EventEmitter{
             // 复合节点
             const _res = this.createUnitNode(nodeConfig)
             if ( Array.isArray(parent)) {
-                parent[mode](_res.node)
+                insertAction(parent,_res.node);
+                //parent[mode](_res.node)
             } else {
-                parent.children[mode](_res.node)
+                insertAction(parent.children,_res.node)
+                //parent.children[mode](_res.node)
             }
             for ( let i in _res.nodes ) {
                 this.nodes[i] = _res.nodes[i];

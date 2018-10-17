@@ -122,6 +122,7 @@ export default {
         [`data.widget.lib.widgets.config`]: `data.widget.lib.widgets.config`,
         [`data.widget.libs.options`]: `ide.widget.libs.options`,
         [`data.nodetree.tree`]: `ide.nodetree.tree`,
+        [`data.nodetree.node`]: `ide.nodetree.node`,
         [`data.node.editing.widget.config`]: `data.node.editing.widget.config`
     },
     mutations: {

@@ -146,6 +146,10 @@ export default {
             state[types.state.data[`nodetree`]]
         )
     },
+    [types.getters["data.nodetree.node"]]: (state) => (nodeId) => {
+        const nodetreeInstance = state[types.state.data["nodetree.instance"]];
+        return nodetreeInstance.find(nodeId);
+    },
     /**
      * @description 获取正在更新的节点
      * @return {Node}

@@ -121,6 +121,9 @@
                     },[
                         h(`Icon`,{
                             'class': `btn-item`,
+                            style: {
+                                'display':'none'
+                            },
                             props: {
                                 type: `ios-create-outline`,
                                 size: 15
@@ -137,9 +140,6 @@
                                     this[`updatePageSelectData`]({
                                         page: page
                                     })
-                                    //const page = this[`projectPageList`][data.nodeKey]
-                                    console.log('-->点击编辑页面',page)
-                                    //this[`updatePageFormVisiable`]()
                                 }
                             }
                         }),

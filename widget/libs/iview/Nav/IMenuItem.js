@@ -6,7 +6,6 @@ export default class IMenuItem extends Widget {
     constructor(opts = {
         text: `MenuItem`
     }) {
-        console.log('-->MenuItem',opts)
         super(
             `MenuItem`,
             `iview`,

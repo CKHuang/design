@@ -1,7 +1,7 @@
 
 <style>
 .ide-page-form {
-    width: 95%;
+    width: 96%;
     transition: all  .25s  ease-in;
     -moz-transition: all  .25s  ease-in;
     -webkit-transition: all  .25s  ease-in;
@@ -9,7 +9,7 @@
     background-color: #fff;
     height: 100%;
     position: absolute;
-    top: 53px;
+    top: 10px;
     border-radius: 2px;
     box-shadow: 1px 1px 8px #e0e0e0;
     border-top: 1px solid #e8e8e8;
@@ -20,12 +20,21 @@
 .ide-page-form.show {
     transform: translateX(0px)
 }
+.ide-page-form-body {
+    padding: 20px 8px;
+}
+.ide-page-form-body .ivu-form-item {
+    margin-bottom: 20px;
+}
 .ide-page-form-header {
     border-bottom: 1px solid #eee;
     display: flex;
     flex-direction: row;
     align-items: center;
     padding: 8px;
+}
+.ide-page-form-header span {
+    width: 100%;
 }
 .ide-page-form-header .close-btn {
     flex: 1 0 15px;
@@ -39,9 +48,9 @@
             <Icon class="btn-icon close-btn" type="md-close" @click="updatePageFormVisiable({visiable:false})"/> 
         </div>
         <div class="ide-page-form-body">
-            <Form>
+            <Form label-position="top">
                 <FormItem label="页面名称">
-                    <Input size="small" v-model="formData.name" placeholder="填写页面名称"></Input>
+                    <Input size="small" autofocus v-model="formData.name" placeholder="填写页面名称"></Input>
                 </FormItem>
                 <FormItem label="路由组件">
                     <Input size="small" v-model="formData.router_name" placeholder="路由名称"></Input>
@@ -66,6 +75,7 @@
         name: `IDEPageForm`,
         computed: {
             ...mapGetters({
+                "project": storeTypes.state.data[`project`],
                 "visiable": storeTypes.state.ui[`page.form.visiable`],
                 "formType": storeTypes.state.data[`page.form.type`],
                 "formData": storeTypes.state.data[`page.form.data`]

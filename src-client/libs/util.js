@@ -67,6 +67,22 @@ util.findNearestParent = (htmlElement,rule) => {
 }
 
 /**
+ * 查到指定条件的子对象
+ * @param {htmlelement} htmlElement 
+ */
+util.findChildNodes = (htmlElement,rule = () => {return true}) => {
+    let nodes = [],
+        childNodes = htmlElement.childNodes;
+    console.log('->childNodes',htmlElement,childNodes);
+    childNodes.forEach((child) => {
+        if (rule(child)) {
+            nodes.push(child)
+        }
+    });
+    return nodes;
+}
+
+/**
  * 为object扩展对象
  * @param {object} obj 
  * @param {object} extend 

@@ -2,7 +2,10 @@
 .ide-canvas-node,.ide-canvas-node-drop-area {
     display: initial;
 }
-
+.ide-canvas-content-inner [data-node="1"] {
+    outline: 1px dashed rgba(170,170,170,0.7);
+    outline-offset: 0px;
+}
 
 </style>
 
@@ -38,8 +41,10 @@
                 }
                 // 设置id
                 nodeConfig.properties.attrs = {
-                    id: nodeConfig.id
+                    id: nodeConfig.id,
+                    'data-node': '1'
                 }
+                
                 // 设置编辑外框
                 if (nodeConfig.editOutline) {
                     util.objExtendAttr(nodeConfig.properties,`style`,{
@@ -47,8 +52,6 @@
                         outlineOffset: `-2px`
                     })       
                 }
-               
-                console.log('-->nodeConfig',nodeConfig)
                 return h(nodeConfig.tag,nodeConfig.properties,children);
             },
             /**
@@ -71,7 +74,6 @@
                     }
                 }
                 pushStack(topNode);
-                console.log(`[node tree stack]`,stack);
                 let _stack = util.deepClone(stack),
                     _cache = [],
                     _hasUnMergeFinalNode = false;
