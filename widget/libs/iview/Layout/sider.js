@@ -7,5 +7,8 @@ export default class Sider extends Widget {
             `iview`,
             `Sider`
         )
+        this.style = {
+            "minHeight": "10px"
+        }
     }
 }

@@ -7,5 +7,10 @@ export default class Content extends Widget {
             `iview`,
             `Content`
         )
+        this.style = {
+            "minHeight": '10px',
+            "marginBottom": '20px',
+            "marginTop": '20px'
+        }
     }
 }

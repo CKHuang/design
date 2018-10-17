@@ -22,8 +22,7 @@ export default class Form extends Widget {
             }
         )
         this.style = {
-            "paddingTop":"10px",
-            "paddingBottom":"10px"
+            "minHeight": "10px"
         }
     }   
 }

@@ -21,8 +21,7 @@ export default class FormItem extends Widget {
             }
         )
         this.style = {
-            'paddingLeft': '10px',
-            'paddingRight': '10px'
+            'minHeight': '10px'
         }
     }   
 }

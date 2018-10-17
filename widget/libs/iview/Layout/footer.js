@@ -7,5 +7,8 @@ export default class Footer extends Widget {
             `iview`,
             `Footer`
         )
+        this.style = {
+            "minHeight": '10px'
+        }
     }
 }

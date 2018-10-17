@@ -169,16 +169,23 @@ export default class NodeTree extends EventEmitter{
             delete this.nodes[item.id];
             this.nodeCount--;
         }
-        const findDelete = (childrens) => {
+        let parentNodeId,
+            nodeIndex;
+        const findParentNodeId = (parentId,childrens) => {
             for ( let i = 0, len = childrens.length; i < len; i++) {
                 if (childrens[i].id == nodeId) {
-                    childrens.splice(i,1)
+                    parentNodeId = parentId;
+                    nodeIndex = i;
+                    break ;
                 } else {
-                    findDelete(childrens[i].children);
+                    findParentNodeId(childrens[i].id,childrens[i].children);
                 }
             }
         }
-        findDelete(this.nodeTree);
+        findParentNodeId(null,this.nodeTree);
+        parentNodeId == null 
+            ? this.nodeTree.splice(nodeIndex,1)
+            : this.find(parentNodeId).children.splice(nodeIndex,1)
         this._emit(this.EVENT.CHANGE);
 
     }
@@ -206,7 +213,7 @@ export default class NodeTree extends EventEmitter{
             console.log('--->insertAction',insertMethod,insertIndex)
             if (insertMethod == 'push' || insertMethod == 'unshift') {
                 parent[insertMethod](newNode);
-            } else if (insertMethod == 'slice') {
+            } else if (insertMethod == 'splice') {
                 parent[insertMethod](insertIndex,0,newNode)
             }
         }

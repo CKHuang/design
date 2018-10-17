@@ -201,20 +201,16 @@
                             dimDown = dim.y + dim.height;
                             xCenter = dim.x + dim.width / 2;
                             yCenter = dim.y + dim.height / 2;
-                            if (dragX == parseInt(dim.x,10) || dragY == parseInt(dim.y,10)) {
-                                method = 'on'
-                            } else {
-                                if (dragX < dim.x) {
-                                    method = `before`
-                                } else if (dragX > dimRight) {
-                                    method = 'after'
-                                }
-                                if (dragY < dim.y) {
-                                    method = `before`
-                                } else if (dragY > dimDown) {
-                                    method = 'after'
-                                }
+                            if (dragX < dim.x) {
+                                method = `before`
+                            } else if (dragX > dimRight) {
+                                method = 'after'
                             }
+                            if (dragY < dim.y) {
+                                method = `before`
+                            } else if (dragY > dimDown) {
+                                method = 'after'
+                            } 
                             poses.push(method)
                         });
                         /**
@@ -226,12 +222,12 @@
                         if (nearestBeforeNode == 0) {
                             action = 'unshift'
                         } else if (nearestBeforeNode > 0) {
-                            action = 'slice'
+                            action = 'splice'
                             index = nearestBeforeNode
                         }
                         this.insertMethod = action;
                         this.insertIndex = index;
-                        console.log('-->set',this.insertMethod )
+                        console.log('-->insertMethod',this.insertMethod )
                         /**
                          * @description 设置placeholder
                          */
@@ -249,13 +245,18 @@
                                 10,
                                 attachNodeDim.height
                             )
-                        } else if (action == 'slice') {
-                            const dim = childNodeDims[index];
+                        } else if (action == 'splice') {
+                            const dim = childNodeDims[index],
+                                  larger = dim.width < dim.height ? 'h' : 'w',
+                                  w = larger == 'w' ? dim.width : 10,
+                                  h = larger == 'h' ? dim.width : 10,
+                                  x = larger == 'w' ? dim.x : dim.x - 10,
+                                  y = larger == 'h' ? dim.y : dim.y - 10 ;
                             this.setPlaceHolder(
-                                dim.x,
-                                dim.y,
-                                10,
-                                dim.height
+                                x,
+                                y,
+                                w,
+                                h
                             )
                         }
 
@@ -295,8 +296,11 @@
                 this.dragPosition.x = -1;
                 this.dragPosition.y = -1;
                 this.attachNode = ``;
+                this.insertIndex = 0;
+                this.insertMethod = 'push'
                 const placeholderRef = this.$refs['placeholder'];
                 placeholderRef.style.display = 'none'
+                
             },
             handleDrop(foo,widgetConfig) {
                 const parentId = this.logicFindNearestNode(event)

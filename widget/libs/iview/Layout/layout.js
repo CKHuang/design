@@ -7,5 +7,8 @@ export default class Layout extends Widget {
             `iview`,
             opts.description
         )
+        this.style = {
+            "minHeight": "10px"
+        }
     }
 }
