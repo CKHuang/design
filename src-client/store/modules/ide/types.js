@@ -44,7 +44,11 @@ export default {
             /**
              * @description 页面模块编辑的表单是否可见
              */
-            [`page.form.visiable`]: `page.form.visiable`
+            [`page.form.visiable`]: `page.form.visiable`,
+            /**
+             * @description 数据管理器的额表单是否可见
+             */
+            [`data.form.visiable`]: `data.form.visiable`
         },
         data: {
             /**
@@ -101,7 +105,6 @@ export default {
             [`page.select`]: `ide.data.page.select`,
 
 
-            
             /**
              * @description 项目相关的信息
              */
@@ -113,7 +116,11 @@ export default {
             /**
              * @description 相关页面相关的节点树
              */
-            [`project.page.nodetrees`]: `ide.data.project.page.nodetrees`
+            [`project.page.nodetrees`]: `ide.data.project.page.nodetrees`,
+            /**
+             * @description 项目数据中心
+             */
+            [`project.data`]: `ide.data.project.data`,
         }
     },
     getters: {
@@ -123,7 +130,8 @@ export default {
         [`data.widget.libs.options`]: `ide.widget.libs.options`,
         [`data.nodetree.tree`]: `ide.nodetree.tree`,
         [`data.nodetree.node`]: `ide.nodetree.node`,
-        [`data.node.editing.widget.config`]: `data.node.editing.widget.config`
+        [`data.node.editing.widget.config`]: `data.node.editing.widget.config`,
+        [`data.project.data.json`]: `data.project.data.json`
     },
     mutations: {
         [`toggle.ui.code.spread`]: `ide.toggle.ui.code.spread`,
@@ -131,6 +139,7 @@ export default {
         [`update.ui.canvas.hover.placeholder.offset`]: `update.ui.canvas.hover.placeholder.offset`,
         [`update.ui.canvas.hover.placeholder.node`]: `update.ui.canvas.hover.placeholder.node`,
         [`update.ui.page.form.visiable`]: `update.ui.page.form.visiable`,
+        [`update.ui.data.form.visiable`]: `update.ui.data.form.visiable`,
         [`update.ui.sidebar.spread`]: `update.ui.sidebar.spread`,
         [`toggle.ui.sidebar.spread`]: `toggle.ui.sidebar.spread`,
         [`update.ui.ide.canvas.preview`]: `update.ui.ide.canvas.preview`,
@@ -145,6 +154,9 @@ export default {
         [`select.data.project`]: `select.data.project`,
         [`update.data.project.page.list`]: `update.data.project.page.list`,
         [`insert.data.project.page.list`]: `insert.data.project.page.list`,
+        [`set.project.data`]: `set.project.data`,
+        [`update.project.data.item`]: `update.project.data.item`,
+        [`delete.project.data.item`]: `delete.project.data.item`,
         [`select.data.editing.page`]: `select.data.editing.page`,
         [`update.data.page.form.type`]: `update.data.page.form.type`,
         [`update.data.page.form.data`]: `update.data.page.form.data`,

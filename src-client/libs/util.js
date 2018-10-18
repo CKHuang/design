@@ -49,6 +49,13 @@ util.removeClass = (elements, cName) => {
 };
 
 /**
+ * @description 将项目数据转成json可用的
+ */
+util.projectDataToJson = (projData) => {
+    
+}
+
+/**
  * 找到指定规则最近的父节点
  * @param {htmlelement} htmlElement 
  * @param {function} rule 

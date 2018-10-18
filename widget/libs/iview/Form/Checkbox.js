@@ -3,7 +3,7 @@ import controls from '../../../base/controls'
 import Span from '../../../libs/html/Span'
 
 export default class Checkbox extends Widget {
-    constructor(opts = {text: ''}) {
+    constructor(opts = {text: 'Checkbox'}) {
         super(
             `Checkbox`,
             `iview`,

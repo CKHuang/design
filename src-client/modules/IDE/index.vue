@@ -45,10 +45,9 @@
     -webkit-box-flex: 1;
     -ms-flex: auto;
     flex: auto;
-    overflow: auto;
     position: relative;
     height: 100%;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 .ide-layout.layout-horiz .ide-layout-sider {
     width: 240px;
@@ -153,6 +152,7 @@ html,body {
                             <Widget v-show="leftSiderMenuActived == `widget`"></Widget>
                             <Page v-show="leftSiderMenuActived == `page`"></Page>
                             <NodeTree v-show="leftSiderMenuActived == `nodetree`"></NodeTree>
+                            <DataManager v-show="leftSiderMenuActived == `datamanager`"></DataManager>
                         </div>
                     </div>
                 </div>
@@ -188,6 +188,7 @@ html,body {
     import SiderMenu from './Menu/siderMenu.vue'
     import PropsEditor from './PropsEditor/index.vue'
     import NodeTree from './NodeTree/index.vue'
+    import DataManager from './DataManager/index.vue'
     import { mapGetters, mapMutations, mapActions } from 'vuex'
     import storeTypes from '../../store/modules/ide/types'
 
@@ -213,7 +214,8 @@ html,body {
             Page: Page,
             SiderMenu: SiderMenu,
             NodeTree: NodeTree,
-            PropsEditor: PropsEditor
+            PropsEditor: PropsEditor,
+            DataManager: DataManager
         },
         async created() {
             await this[`init.data`]({
@@ -242,7 +244,7 @@ html,body {
                     label: `组件树`,
                     icon: `ios-list`
                 },{
-                    name: `database`,
+                    name: `datamanager`,
                     label: `数据层`,
                     icon: `logo-buffer`
                 }],

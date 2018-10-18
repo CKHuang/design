@@ -14,9 +14,11 @@ export default {
     async [types.actions["init.data"]]({ dispatch, commit },{projectKey,pageKey}) {
         try {
             const project  = await projectModel.one(projectKey);
+            const projectData = await projectModel.projectData(projectKey);
             const pageList = await pageModel.queryProjectPages(projectKey);
             commit(types.mutations["select.data.project"],project);
             commit(types.mutations["update.data.project.page.list"],pageList);
+            commit(types.mutations["set.project.data"],{data:projectData})
             if (pageList && pageList.length > 0) {
                 let selectPage = pageList[0];
                 if ( pageKey ) {

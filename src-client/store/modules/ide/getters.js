@@ -78,6 +78,9 @@ export default {
     [types.state.ui["page.form.visiable"]](state) {
         return state[types.state.ui["page.form.visiable"]]
     },
+    [types.state.ui["data.form.visiable"]](state) {
+        return state[types.state.ui["data.form.visiable"]]
+    },
     /**
      * @description 获取选中的组件库的名称
      * @return {string}
@@ -218,5 +221,41 @@ export default {
      */
     [types.state.data.project](state) {
         return state[types.state.data.project]
+    },
+    /**
+     * @description 获取项目的数据配置
+     * @return {array}
+     */
+    [types.state.data["project.data"]](state) {
+        return state[types.state.data["project.data"]]
+    },
+    /**
+     * @description 获取项目数据的json数据类型
+     * @return {object}
+     */
+    [types.getters["data.project.data.json"]](state) {
+        const configs = state[types.state.data["project.data"]];
+        const json = {}
+        const translater = (config,parent,key) => {
+            const type = config.type,
+                  value = config.value;
+            if (type == 'number' || type == 'string') {
+               parent[key] = value;
+            } else if (type == 'array') {
+                parent[key] = [];
+                value.forEach((item,index) => {
+                    translater(item,parent[key],index)
+                })
+            } else if (type == 'object') {
+                parent[key] = {};
+                value.forEach((item) => {
+                    translater(item,parent[key],item.key)
+                })
+            }
+        }
+        configs.forEach((item) => {
+            translater(item,json,item.key)
+        })
+        return json
     }
 }

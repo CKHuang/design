@@ -68,6 +68,18 @@ export default {
         })
     },
     /**
+     * @description 更新数据管理表单可视化
+     */
+    [types.mutations["update.ui.data.form.visiable"]](state,{visiable,formType = `add`}) {
+        if (visiable) {
+            
+        }
+        console.log('--->visiable',visiable);
+        return Object.assign(state,{
+            [types.state.ui["data.form.visiable"]]: visiable
+        })
+    },
+    /**
      * @description 设置左侧sidebar展开与否
      * @param {boolean} isSpread 是否展开
      */
@@ -326,5 +338,40 @@ export default {
         return Object.assign(state,{
             [types.state.data["page.select"]]: page
         })
+    },
+    /**
+     * @description 重新设置项目的数据
+     * @param {object} data
+     */
+    [types.mutations["set.project.data"]](
+        state,
+        {data}
+    ) {
+        return Object.assign(state,{
+            [types.state.data["project.data"]]: data
+        })
+    },
+    /**
+     * @description 更新项目数据某个数据项的数据
+     * @param {string} key 字段内容
+     * @param {object} data
+     */
+    [types.mutations["update.project.data.item"]](
+        state,
+        {key,data}
+    ) {
+        const datas = state[types.state.data["project.data"]];
+        return Object.assign(datas[key],data);
+    },
+    /**
+     * @description 删除项目某个数据项的数据
+     * @param {string} key 字段内容
+     */
+    [types.mutations["delete.project.data.item"]](
+        state,
+        {key}
+    ) {
+        const datas = state[types.state.data["project.data"]];
+        delete datas[key];
     }
 }

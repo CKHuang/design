@@ -71,6 +71,7 @@ const state = {
      * @type {boolean}
      */
     [types.state.ui["page.form.visiable"]]: false,
+    [types.state.ui["data.form.visiable"]]: false,
      /**
      * @description 选中的控件库
      * @type {string} 例如iview
@@ -127,6 +128,11 @@ const state = {
      * @type {array}
      */
     [types.state.data["project.page.list"]]: [],
+    /**
+     * @description 项目数据
+     * @type {object} [key:string]: Data
+     */
+    [types.state.data["project.data"]]: [],
     /**
      * @description 当前正在编辑的页面
      * @type {page}

@@ -40,11 +40,10 @@
                     return h(nodeConfig.tag,nodeConfig.properties,children);
                 }
                 // 设置id
-                nodeConfig.properties.attrs = {
+                util.objExtendAttr(nodeConfig.properties,`attrs`,{
                     id: nodeConfig.id,
                     'data-node': '1'
-                }
-                
+                })
                 // 设置编辑外框
                 if (nodeConfig.editOutline) {
                     util.objExtendAttr(nodeConfig.properties,`style`,{
@@ -103,11 +102,12 @@
                 properties: {
                     "style": {
                         "height": "100%",
-                        "position": "relative",
+                        "width": "100%",
+                        "position": "absolute",
                         "zIndex": 100
                     }
                 },
-                id: `root_${util.randomStr(12)}`,
+                id: `nodetree_root`,
                 children: util.deepClone(this.nodeTree)
             });
         }
