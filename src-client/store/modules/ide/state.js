@@ -147,7 +147,10 @@ const state = {
      * @description 页面模块的表单数据
      * @type {object}
      */
-    [types.state.data["page.form.data"]]: page(``,``,``,``)
+    [types.state.data["page.form.data"]]: page(``,``,``,``),
+
+    [types.state.data["project.data.form.data"]]: {key:``,value:``,type:``,desc:``},
+    [types.state.data["project.data.form.type"]]: null
 }
 
 export default state

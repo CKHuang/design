@@ -215,6 +215,9 @@ export default {
     [types.state.data["page.form.data"]](state) {
         return state[types.state.data["page.form.data"]]
     },
+    [types.state.data["project.data.form.data"]](state){
+        return state[types.state.data["project.data.form.data"]]
+    },
     /**
      * @description 获取当前编辑的项目信息
      * @return {object}

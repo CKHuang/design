@@ -121,6 +121,14 @@ export default {
              * @description 项目数据中心
              */
             [`project.data`]: `ide.data.project.data`,
+            /**
+             * @description 项目数据中心表单编辑类型
+             */
+            [`project.data.form.type`]: `ide.project.data.form.type`,
+            /**
+             * @description 项目数据中心编辑中的表单数据
+             */
+            [`project.data.form.data`]: `ide.project.data.form.data`
         }
     },
     getters: {
@@ -155,12 +163,15 @@ export default {
         [`update.data.project.page.list`]: `update.data.project.page.list`,
         [`insert.data.project.page.list`]: `insert.data.project.page.list`,
         [`set.project.data`]: `set.project.data`,
+        [`insert.project.data.item`]: `insert.project.data.item`,
         [`update.project.data.item`]: `update.project.data.item`,
         [`delete.project.data.item`]: `delete.project.data.item`,
         [`select.data.editing.page`]: `select.data.editing.page`,
         [`update.data.page.form.type`]: `update.data.page.form.type`,
         [`update.data.page.form.data`]: `update.data.page.form.data`,
-        [`reset.data.page.form.data`]: `reset.data.page.form.data`
+        [`reset.data.page.form.data`]: `reset.data.page.form.data`,
+        [`update.data.project.data.form.data`]: `update.data.project.data.form.data`,
+        [`reset.data.project.data.form.data`]: `reset.data.project.data.form.data`
     },
     actions: {
         /**

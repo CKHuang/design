@@ -1,6 +1,7 @@
 import types from './types'
 import page from '../../struct/page'
 import tpyesConfig from '../../../../config/types'
+import util from '../../../libs/util';
 
 export default {
     /**
@@ -351,6 +352,10 @@ export default {
             [types.state.data["project.data"]]: data
         })
     },
+    [types.mutations["insert.project.data.item"]](state,{data}) {
+        const datas = state[types.state.data["project.data"]];
+        datas.unshift(data)
+    },
     /**
      * @description 更新项目数据某个数据项的数据
      * @param {string} key 字段内容
@@ -360,8 +365,13 @@ export default {
         state,
         {key,data}
     ) {
-        const datas = state[types.state.data["project.data"]];
-        return Object.assign(datas[key],data);
+        state[types.state.data["project.data"]].splice(key,1)
+        this.commit(types.mutations["insert.project.data.item"],{
+            data: data
+        })
+        // state[types.state.data["project.data"]][key] = null;
+        // state[types.state.data["project.data"]][key] = data;
+        //console.log('-->after update',state[types.state.data["project.data"]][key])
     },
     /**
      * @description 删除项目某个数据项的数据
@@ -373,5 +383,23 @@ export default {
     ) {
         const datas = state[types.state.data["project.data"]];
         delete datas[key];
+    },
+    /**
+     * @description 更新项目数据表单编辑的数据
+     */
+    [types.mutations["update.data.project.data.form.data"]](
+        state,
+        {dataItem}
+    ) {
+        return Object.assign(state,{
+            [types.state.data["project.data.form.data"]]: dataItem
+        })
+    },
+    [types.mutations["reset.data.project.data.form.data"]](
+        state
+    ) {
+        return Object.assign(state,{
+            [types.state.data["project.data.form.data"]]: {key:``,value:``,type:`string`,desc:``}
+        })
     }
 }

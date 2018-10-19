@@ -16,6 +16,8 @@
     border-right: 1px solid #e8e8e8;
     position: absolute;
     z-index: 100;
+        display: flex;
+    flex-direction: column;
 }
 .ide-page-form.show {
     transform: translateX(0px)
@@ -38,6 +40,13 @@
 }
 .ide-page-form-header .close-btn {
     flex: 1 0 15px;
+}
+.ide-page-form-footer {
+        padding-bottom: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 </style>
 

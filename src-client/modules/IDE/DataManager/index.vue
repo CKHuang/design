@@ -28,7 +28,8 @@
         },
         methods: {
             ...mapMutations({
-                'updateFormVisiable': storeTypes.mutations[`update.ui.data.form.visiable`]
+                'updateFormVisiable': storeTypes.mutations[`update.ui.data.form.visiable`],
+                
             })
         }
     }

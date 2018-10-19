@@ -1,7 +1,16 @@
 <style>
     .ide-datamanager-form {
         width: 300%;
-        transform: translateX(-2000px);
+        transform: translateX(-600px);
+    }
+    .ide-datamanager-form-body {
+        padding: 0px;
+        overflow: auto;
+        height: 100%;
+    }
+    .ide-datamanager-form-body .inner {
+        position: relative;
+        padding: 10px;
     }
 </style>
 
@@ -9,29 +18,16 @@
     <div :class="[`ide-page-form`, `ide-datamanager-form`, visiable ? `show` : ``]">
         <div class="ide-page-form-header">
             <span>新增数据项</span>
-            <Icon class="btn-icon close-btn" @click="updateVisiable({visiable:false})" type="md-close"/> 
+            <Icon class="btn-icon close-btn" @click="hide" type="md-close"/> 
         </div>
-        <div class="ide-page-form-body">
-            <Button size="small">+添加</Button>
-            <Form inline>
-                <FormItem>
-                    <Input v-model="key" type="text" placeholder="键名" size="small"></Input>
-                </FormItem>
-                <FormItem>
-                    <Input v-model="desc" type="text" placeholder="说明" size="small"></Input>
-                </FormItem>
-                <FormItem>
-                    <Select v-model="type" size="small" placeholder="类型">
-                        <Option v-for="item in types" :value="item.value" :key="item.value">{{item.label}}</Option>
-                    </Select>
-                </FormItem>
-                <FormItem v-if="type == 'string'">
-                    <Input size="small" type="text" v-model="value"></Input>
-                </FormItem>
-                <FormItem v-else-if="type == 'number'">
-                    <InputNumber size="small" v-model="value"></InputNumber>
-                </FormItem>
-            </Form>
+        <div class="ide-page-form-body ide-datamanager-form-body">
+            <div class="inner">
+                <RenderEditor ref="renderEditor"></RenderEditor>
+            </div>
+        </div>
+        <div class="ide-page-form-footer text-right">
+            <Button @click="handleResetForm">还原数据</Button>
+            <Button type="primary" @click="handleSaveForm" style="margin-left:10px" >保存更新</Button>
         </div>
         
     </div>
@@ -40,9 +36,13 @@
 <script>
     import { mapGetters, mapMutations, mapActions } from 'vuex'
     import storeTypes from '../../../store/modules/ide/types'
+    import RenderEditor from './renderEditor.vue'
 
     export default {
         name: `DataManagerForm`,
+        components: {
+            RenderEditor: RenderEditor
+        },
         computed: {
             ...mapGetters({
                 'visiable': storeTypes.state.ui[`data.form.visiable`]
@@ -50,31 +50,18 @@
         },
         methods: {
             ...mapMutations({
-                'updateVisiable': storeTypes.mutations[`update.ui.data.form.visiable`]
-            })
-        },
-        data() {
-            return {
-                types: [
-                    {label:`字符串`,value:`string`},
-                    {label:`数值`,value:`number`},
-                    {label:`数组`,value:`array`},
-                    {label:`对象`,value:`object`}
-                ],
-                key: ``,
-                type: `string`,
-                value: ``,
-                desc: ``
-            }
-        },
-        watch: {
-            type: function(newValue) {
-                switch(newValue) {
-                    case `number`: this.value = 0;break;
-                    case `string`: this.value = ``;break;
-                    case `object`: this.value = [];break;
-                    case `array`: this.value = [];break;
-                }
+                'updateVisiable': storeTypes.mutations[`update.ui.data.form.visiable`],
+                'resetForm': storeTypes.mutations[`reset.data.project.data.form.data`]
+            }),
+            hide() {
+                this.updateVisiable({visiable:false})
+                this.resetForm();
+            },
+            handleSaveForm() {
+                this.$refs['renderEditor'].handleSaveForm()
+            },
+            handleResetForm() {
+                this.$refs['renderEditor'].handleResetForm()
             }
         }
     }
