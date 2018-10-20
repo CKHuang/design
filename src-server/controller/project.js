@@ -42,12 +42,13 @@ export default new class ProjectController extends Controller {
     /**
      * @description 构建项目代码
      */
-    async buildSourceAction(ctx,res) {
+    async buildAction(ctx,res) {
         res.data(
             await logic.invoke(
-                `buildSource`,
+                `build`,
                 ctx.params.projectKey
             )
         )
     }
+    
 }

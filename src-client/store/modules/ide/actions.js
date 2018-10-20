@@ -86,6 +86,7 @@ export default {
             }
             await submitPages();
             await submitData();
+            await projectModel.build(project.key);
             console.log('--->datas',datas,'--->pages',pages,'-->project',project);
         } catch (error) {
             console.log(`save.project error`,error)

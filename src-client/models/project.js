@@ -42,4 +42,15 @@ export default class Project extends Http {
             {data:form}
         )
     }
+
+    /**
+     * 构建项目
+     * @param {string} projectKey 
+     */
+    async build(projectKey) {
+        return await this.request(
+            `PUT`,
+            this.merge(this.baseURL,`/project/${projectKey}/build`)
+        )
+    }
 }

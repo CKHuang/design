@@ -1,5 +1,71 @@
+import fs from 'fs'
+import path from 'path'
+
 const util = {}
 
+util.fs = {
+    emptyDir: (dirPath) => {
+        const main = () => {
+            const files = fs.readdirSync(dirPath);
+            files.forEach((file) => {
+                const filePath = `${dirPath}/${file}`
+                const stats = fs.statSync(filePath);
+                if (stats.isDirectory()) {
+                    console.log('--->filePath',filePath)
+                    main(filePath);
+                } else {
+                    fs.unlinkSync(filePath)
+                    deleteFiles.push(filePath)
+                }
+            })
+        },
+        deleteFiles = [];
+        if (fs.existsSync(dirPath)) {
+            main(dirPath);
+        }
+        return deleteFiles;
+    },
+    removeDir: (dirPath) => {
+        util.fs.emptyDir(dirPath);
+        fs.rmdirSync(dirPath);
+    },
+    mkdir: (dirPath,dirname) => {
+        if(typeof dirname === "undefined"){ 
+			if(fs.existsSync(dirPath)){
+				return;
+			}else{
+				util.fs.mkdir(
+                    dirPath,
+                    path.dirname(dirPath)
+                );
+			}
+		}else{
+			if(dirname !== path.dirname(dirPath)){ 
+				util.fs.mkdir(dirPath);
+				return;
+			}
+			if(fs.existsSync(dirname)){
+				fs.mkdirSync(dirPath)
+			}else{
+				util.fs.mkdir(dirname,path.dirname(dirname));
+				fs.mkdirSync(dirPath);
+			}
+        }
+    },
+    writeFile: (dirPath,fileName,content,options = {mode:0o755,encoding:'utf8'}) => {
+        util.fs.mkdir(dirPath);
+        const filePath = path.resolve(dirPath,`./${fileName}`);
+        fs.writeFileSync(filePath,content,options);
+    },
+    isExist: (path) => {
+        try{
+            fs.accessSync(path);
+        }catch(e){
+            return false;
+        }
+        return true;
+    }
+}
 
 /**
  * 目标数组对比原始数组，获取原始数组比目标数据多出来的数据

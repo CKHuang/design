@@ -1,5 +1,6 @@
 import types from './types'
 import util from '../../../libs/util'
+import translater from '../../../../config/translater'
 
 export default {
     /**
@@ -238,27 +239,6 @@ export default {
      */
     [types.getters["data.project.data.json"]](state) {
         const configs = state[types.state.data["project.data"]];
-        const json = {}
-        const translater = (config,parent,key) => {
-            const type = config.type,
-                  value = config.value;
-            if (type == 'number' || type == 'string') {
-               parent[key] = value;
-            } else if (type == 'array') {
-                parent[key] = [];
-                value.forEach((item,index) => {
-                    translater(item,parent[key],index)
-                })
-            } else if (type == 'object') {
-                parent[key] = {};
-                value.forEach((item) => {
-                    translater(item,parent[key],item.key)
-                })
-            }
-        }
-        configs.forEach((item) => {
-            translater(item,json,item.key)
-        })
-        return json
+        return translater["project.data.json"](configs)
     }
 }

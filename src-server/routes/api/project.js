@@ -18,7 +18,7 @@ export default router([{
     action: projectCtrl.invokeAction(`all`)
 },{
     desc: `构建项目源码`,
-    method: `GET`,
-    path: `/api/build/source`,
-    action: projectCtrl.invokeAction(`buildSource`)
+    method: `PUT`,
+    path: `/api/project/:projectKey/build`,
+    action: projectCtrl.invokeAction(`build`)
 }])

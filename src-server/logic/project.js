@@ -1,6 +1,7 @@
 import Logic from '../lib/rest/Logic'
 import crypto from 'crypto'
 import ProjectModel from '../model/Project'
+import buildLogic from './build'
 
 export default new class ProjectLogic extends Logic {
 
@@ -48,7 +49,7 @@ export default new class ProjectLogic extends Logic {
         return await this.projectModel.all()
     }
 
-    async buildSource(projectKey) {
-
+    async build(projectKey) {
+        return await buildLogic.main(projectKey);
     }
 }
