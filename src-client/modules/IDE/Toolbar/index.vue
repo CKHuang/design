@@ -66,13 +66,8 @@
         </div>
         <div class="toolbar-center">
             <div class="opera-btn">
-                <Tooltip content="保存">
-                    <Icon type="ios-cloud-upload-outline" />
-                </Tooltip>
-            </div>
-            <div class="opera-btn">
-                <Tooltip content="预览">
-                    <Icon type="ios-eye-outline" />
+                <Tooltip content="保存" transfer>
+                    <Icon type="ios-cloud-upload-outline" @click="submit" />
                 </Tooltip>
             </div>
         </div>
@@ -88,6 +83,11 @@
         computed: {
             ...mapGetters({
                 'project': storeTypes.state.data[`project`]
+            })
+        },
+        methods: {
+            ...mapActions({
+                "submit": storeTypes.actions[`save.project`]
             })
         }
     }

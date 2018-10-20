@@ -7,7 +7,7 @@ import page from '../../struct/page'
 const nodetree = new NodeTree();
     nodetree.on('change', () => {
         state[types.state.data[`nodetree`]] = nodetree.nodeTree
-        state[types.state.data["page.editing"]].nodetree = nodetree.nodeTree;
+        state[types.state.data["page.editing"]].JSON_nodetree = nodetree.nodeTree;
     })
 
 const record = new Record();

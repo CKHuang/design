@@ -18,4 +18,20 @@ export default class PageModel extends Http {
             this.merge(this.baseURL,`/project/${projectKey}/page`)
         )
     }
+
+    async insert(projectKey,inserted) {
+        return await this.request(
+            `POST`,
+            this.merge(this.baseURL,`/project/${projectKey}/page`),
+            {data:inserted}
+        )
+    }
+
+    async update(pid,updated) {
+        return await this.request(
+            `PUT`,
+            this.merge(this.baseURL,`/page/${pid}`),
+            {data:updated}
+        )
+    }
 }

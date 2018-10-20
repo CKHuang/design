@@ -37,4 +37,17 @@ export default new class ProjectController extends Controller {
             await logic.invoke(`insert`,inserted)
         )
     }
+    
+
+    /**
+     * @description 构建项目代码
+     */
+    async buildSourceAction(ctx,res) {
+        res.data(
+            await logic.invoke(
+                `buildSource`,
+                ctx.params.projectKey
+            )
+        )
+    }
 }

@@ -18,4 +18,12 @@ export default new class extends Logic {
             args: [{'project_key':projectKey}]
         })
     }
+
+    async insert(inserted) {
+        return await this.pageModel.insert(inserted)
+    }
+
+    async update(id,updated) {
+        return await this.pageModel.update(id,updated)
+    }
 }

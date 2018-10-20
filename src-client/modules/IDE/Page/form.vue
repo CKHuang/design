@@ -68,7 +68,7 @@
                     <Input size="small" v-model="formData.router_path" placeholder="路由路径"></Input>
                 </FormItem>
                 <FormItem>
-                    <Button v-if=" formType == 'add'" size="small" type="primary" @click="addNewPage({page:formData})">新建页面</Button>
+                    <Button v-if=" formType == 'add'" size="small" type="primary" @click="handleNewPage({page:formData})">新建页面</Button>
                     <Button v-else-if=" formType == 'edit'" size="small" type="primary">修改页面</Button>
                 </FormItem>
             </Form>
@@ -93,8 +93,18 @@
         methods: {
             ...mapMutations({
                 "updatePageFormVisiable": storeTypes.mutations[`update.ui.page.form.visiable`],
-                "addNewPage": storeTypes.mutations[`insert.data.project.page.list`]
-            })
+                // "addNewPage": storeTypes.mutations[`insert.data.project.page.list`]
+            }),
+            ...mapActions({
+                "addNewPage": storeTypes.actions[`new.page`]
+            }),
+            async handleNewPage({page}) {
+                try {
+                    await this.addNewPage({page})
+                } catch (error) {
+                    this.$Message.error(`添加页面失败`)
+                }
+            }
         }
     }
 </script>

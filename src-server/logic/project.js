@@ -47,4 +47,8 @@ export default new class ProjectLogic extends Logic {
     async all() {
         return await this.projectModel.all()
     }
+
+    async buildSource(projectKey) {
+
+    }
 }

@@ -1,5 +1,6 @@
 import Project from './Project'
 import Http from '../libs/Http'
+import Data from './Data.js'
 
 const http = new Http();
 
@@ -12,5 +13,6 @@ export default {
             vnode.$Message.error(`${message.message}[${message.subMessage}]`);
         })
     },
-    project: new Project()
+    project: new Project(),
+    data: new Data()
 }

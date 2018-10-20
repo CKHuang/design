@@ -185,6 +185,10 @@ export default {
         /**
          * @description 改变选中其他页面
          */
-        [`change.page`]: `change.page`
+        [`change.page`]: `change.page`,
+        /**
+         * @description 保存页面编辑更新
+         */
+        [`save.project`]: `ide.save.project`
     }
 }

@@ -182,6 +182,7 @@ export default class Mysql {
                 }
                 for ( let field of jsonFields ) {
                     try {
+                        console.log('======>JSON',result[field])
                         if ( result[field] != "" && result[field]) {
                             result[field] = JSON.parse(result[field]);
                         }
@@ -432,7 +433,7 @@ export default class Mysql {
     /**
      * 更新某个数据
 
-     * @param {number} id 数据的id
+     * @param {number|object} id 数据的id
      * @param {object|function} updated 更新的数据，如果是function则需要return一个object
      */
     async update(
@@ -449,7 +450,10 @@ export default class Mysql {
                             ? updated()
                             : updated
                     ))
-                    .where({
+                    .where(typeof id == 'object' 
+                        ? id 
+                        :
+                    {
                         [this.primaryKey]:id
                     })
                     .toString()

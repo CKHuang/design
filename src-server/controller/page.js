@@ -11,29 +11,33 @@ export default new class PageController extends Controller {
     async _afterAction(ctx,res) {}
 
 
-    async projectsAction(ctx,res) {
+    async insertAction(ctx,res) {
+        let inserted = ctx.parameter.inserted();
+              inserted.create_time = Date.now();
+              inserted.creater = ctx.user;
+              inserted.project_key = ctx.params.projectKey;
+              delete inserted.parentId;
         res.data(
-            
+            await logic.invoke(`insert`,inserted)
         )
     }
-    /**
-     * @description 查询某个项目的所有页面列表
-     */
-    async queryProjectPagesAction(ctx,res) {
-        res.data([]);
-        // res.data([{
-        //     id: 12,
-        //     key: `pageui827uwhxjsi73gs`,
-        //     pkey: `projxu8061uhyolhfjxy`,
-        //     name: `主页`,
-        //     create_time: `2018-09-20 10:20:30`,
-        //     owner: `CK.Huang`,
-        //     router_name: `index`,
-        //     router_path: `/index`,
-        //     page_width: 1024,
-        //     page_height: 960,
-            
-        //     lock: ``
-        // }])
+
+    async projectsAction(ctx,res) {
+        res.data(
+            await logic.invoke(`projects`,ctx.params.projectKey)
+        )
     }
+
+    async updateAction(ctx,res) {
+        const updated = ctx.parameter.updated();
+              delete updated.pid;
+        res.data(
+            await logic.invoke(
+                `update`,
+                ctx.params.pid,
+                updated
+            )
+        )
+    }
+    
 }

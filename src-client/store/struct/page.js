@@ -31,7 +31,6 @@ export default (
         router_props: router_props,
         page_width: page_width,
         page_height: page_height,
-        nodetree: nodetree,
-        parentId: parentId
+        JSON_nodetree: nodetree
     })
 }

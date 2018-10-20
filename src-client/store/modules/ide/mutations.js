@@ -274,10 +274,6 @@ export default {
         state,
         {page}
     ) { 
-        const project = state[types.state.data[`project`]],
-              pageSize = tpyesConfig.PAGE_SIZE[project.type];
-              page.page_height = pageSize.height;
-              page.page_width = pageSize.width;
         state[types.state.data["project.page.list"]].push(page);
         this.commit(types.mutations["update.ui.page.form.visiable"],{visiable:false})
         this.commit(types.mutations["reset.data.page.form.data"]);
@@ -294,7 +290,7 @@ export default {
         Object.assign(state,{
             [types.state.data["page.editing"]]: page
         })
-        this.commit(types.mutations["select.data.nodetree"],{nodeTree:page.nodetree}); 
+        this.commit(types.mutations["select.data.nodetree"],{nodeTree:page.JSON_nodetree}); 
     },
     /**
      * @description 更新页面模块的表单类型，有新建以及修改
@@ -369,9 +365,6 @@ export default {
         this.commit(types.mutations["insert.project.data.item"],{
             data: data
         })
-        // state[types.state.data["project.data"]][key] = null;
-        // state[types.state.data["project.data"]][key] = data;
-        //console.log('-->after update',state[types.state.data["project.data"]][key])
     },
     /**
      * @description 删除项目某个数据项的数据
