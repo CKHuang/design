@@ -5,19 +5,21 @@ const util = {}
 
 util.fs = {
     emptyDir: (dirPath) => {
-        const main = () => {
-            const files = fs.readdirSync(dirPath);
+        const main = (innerDirPath) => {
+            const files = fs.readdirSync(innerDirPath);
             files.forEach((file) => {
-                const filePath = `${dirPath}/${file}`
+                const filePath = `${innerDirPath}/${file}`
                 const stats = fs.statSync(filePath);
                 if (stats.isDirectory()) {
-                    console.log('--->filePath',filePath)
                     main(filePath);
                 } else {
                     fs.unlinkSync(filePath)
                     deleteFiles.push(filePath)
                 }
             })
+            if (innerDirPath !== dirPath) {
+                fs.rmdirSync(innerDirPath)
+            }
         },
         deleteFiles = [];
         if (fs.existsSync(dirPath)) {
@@ -26,7 +28,7 @@ util.fs = {
         return deleteFiles;
     },
     removeDir: (dirPath) => {
-        util.fs.emptyDir(dirPath);
+        const deletFiles = util.fs.emptyDir(dirPath);
         fs.rmdirSync(dirPath);
     },
     mkdir: (dirPath,dirname) => {

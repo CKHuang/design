@@ -182,7 +182,6 @@ export default class Mysql {
                 }
                 for ( let field of jsonFields ) {
                     try {
-                        console.log('======>JSON',result[field])
                         if ( result[field] != "" && result[field]) {
                             result[field] = JSON.parse(result[field]);
                         }

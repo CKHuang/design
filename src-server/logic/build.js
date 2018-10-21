@@ -20,7 +20,7 @@ export default new class BuildLogic extends Logic {
               projectDatas = await dataLogic.all(projectKey),
               projectDatasJson = translater["project.data.json"](projectDatas),
               projectPages = await pageLogic.projects(projectKey);
-        await this._initProjectFolder(project);
+        await this._mkdirProjectFolder(project);
         await this._buildDir([
             `${projectRootPath}/src`,
             `${projectRootPath}/src/Page`
@@ -37,6 +37,7 @@ export default new class BuildLogic extends Logic {
             }
         },{
             fileName: `project.data.js`,
+            dirPath: `${projectRootPath}/src`,
             content: () => {
                 return tmpl["project.data.js"](projectDatasJson)
             }
@@ -52,13 +53,20 @@ export default new class BuildLogic extends Logic {
             content: () => {
                 return tmpl["main.js"]()
             }
+        },{
+            fileName: `App.vue`,
+            dirPath: `${projectRootPath}/src`,
+            content: () => {
+                return tmpl["App.vue"]()
+            }
         }])
+        await this._buildPages(projectPages,project,projectDatas);
     }
 
     /**
      * @description 初始化项目文件
      */
-    async _initProjectFolder(project) {
+    async _mkdirProjectFolder(project) {
         const key = project.key,
               projectPath = this._resolveProjectPath(key);
         if (util.fs.isExist(projectPath)) {
@@ -81,6 +89,25 @@ export default new class BuildLogic extends Logic {
         dirPaths.forEach((dir) => {
             util.fs.mkdir(dir)
         })
+    }
+
+
+    async _buildPages(projectPages,project,projectDatas) {
+        console.log('------->projectPages',projectPages)
+        projectPages.forEach(async (paegConfig) => {
+            await this._buildEachPage(paegConfig,project,projectDatas)
+        });
+    }
+
+    async _buildEachPage(pageConfig,project,projectDatas) {
+        const pageName = tmpl.helper.pageName(pageConfig),
+              nodetreeTmpl = tmpl.page(pageConfig),
+              projectRootPath = this._resolveProjectPath(project.key);
+        await this._buildFiles(project,[{
+            fileName: `${pageName}.vue`,
+            dirPath: `${projectRootPath}/src/Page`,
+            content: () => nodetreeTmpl
+        }])  
     }
 
     _resolveProjectPath(projectKey) {

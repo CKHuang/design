@@ -57,7 +57,7 @@
     import util from '../../../libs/util'
     import { mapGetters, mapMutations, mapActions } from 'vuex'
     import storeTypes from '../../../store/modules/ide/types'
-
+   
     export default {
         name: `IDECanvasEditNode`,
         computed: {
