@@ -2,8 +2,53 @@ import fs from 'fs'
 import path from 'path'
 
 const helper = {
+    properties(nodeConfig) {
+        const properties = nodeConfig.properties,
+              style = properties.style || {},
+              props = properties.props || {},
+              domProps = properties.domProps || {},
+              exp = [];
+        exp.push(`:style='${JSON.stringify(style)}'`)
+        for (let i in props) {
+            let value,
+                typeValue = typeof props[i],
+                vBind = typeValue != 'variable' ? '' : ':';
+            if (typeValue == 'number') {
+                value = props[i]
+            } else if (typeValue == 'string') {
+                value = `'${props[i]}'`
+            } else if (typeValue == 'boolean') {
+                value = null
+            }
+            if (typeValue == 'boolean' && props[i] == true) {
+                exp.push(`${i}`)
+            } else if (value != null){
+                exp.push(`${vBind}${i}=${value}`)
+            }  
+        }
+        return exp.join(' ');
+    },
     pageName(pageConfig) {
         return `Page${pageConfig.id.replace('page_','')}`
+    },
+    replace(content,obj) {
+        for ( let i in obj ) {
+            let str = ``
+            if (typeof obj[i] == 'function') {
+                str = obj[i]()
+            } else if (typeof obj[i] == 'object') {
+                str = JSON.stringify(obj[i])
+            } else if (typeof obj[i] == 'number') {
+                str = String(obj[i])
+            } else {
+                str = obj[i];
+            }
+            content = content.replace(
+                new RegExp('\\$\{'+i+'\}','g'),
+                str
+            );
+        }
+        return content
     }
 }
 
@@ -14,10 +59,13 @@ export default {
             path.resolve(__dirname,`./files/.babelrc`)
         )
     },
-    [`index.ejs`]() {
-        return fs.readFileSync(
+    [`index.ejs`](project) {
+        let content = fs.readFileSync(
             path.resolve(__dirname,'./files/index.ejs')
-        )
+        ).toString();
+        return helper.replace(content,{
+            projectKey: project.key
+        })
     },
     README(project){
         return `# ${project.name}\r\n
@@ -32,8 +80,9 @@ export default {
     "version":"1.0.0",
     "description":"${project.name}",
     "scripts":{
-        "dev": "./node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=development ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base ./ --open --inline --hot --compress --history-api-fallback --config webpack.dev.config.js",
-        "build": "../../node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=production ../../node_modules/webpack/bin/webpack.js --progress --hide-modules --config webpack.prod.config.js"
+        "dev": "../../node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=development ../../node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base ./ --open --inline --hot --compress --history-api-fallback --config webpack.dev.config.js",
+        "build": "../../node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=production ../../node_modules/webpack/bin/webpack.js --progress --hide-modules --config webpack.prod.config.js",
+        "start": "../../node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=production ./app"
     },
     "author":{
         "name":"${project.creater}@tencent.com"
@@ -41,12 +90,15 @@ export default {
     "homepage":"",
     "dependencies": {
         "cross-env": "^5.2.0",
+        "koa": "^2.5.1",
+        "koa-bodyparser": "^4.2.1",
+        "koa-static-cache": "^5.1.2"
+    },
+    "devDependencies":{
         "iview": "^3.0.0",
         "vue": "^2.5.2",
         "vue-router": "^3.0.1",
-        "vuex": "^2.2.1"
-    },
-    "devDependencies":{
+        "vuex": "^2.2.1",
         "autoprefixer-loader": "^3.2.0",
         "babel": "^6.23.0",
         "babel-core": "^6.23.1",
@@ -119,8 +171,9 @@ export default {
             itemTmpl += `            name:"${name}",\r\n`;
             itemTmpl += `            component:${component}\r\n`
             items.push(itemTmpl)
-            impr.push(`import ${component} from './Page/${component}'`)
+            impr.push(`import ${component} from './Page/${component}.vue'`)
         }
+        impr.push(`import Root from './Root.vue'`)
         exp += items.join(`        },{\r\n`);
         exp += `        }]\r\n`;
         exp += `    }]\r\n`;
@@ -148,7 +201,7 @@ export default {
             `\r`,
             `const RouterConfig = {`,
             `   mode: 'history',`,
-            `   routes: routes`,
+            `   routes: routes.routes`,
             `};`,
             `\r`,
             `const router = new VueRouter(RouterConfig);`,
@@ -173,6 +226,11 @@ export default {
             `</script>`
         ];
         return exp.join(`\r\n`)
+    },
+    [`Root.vue`]() {
+        return fs.readFileSync(
+            path.resolve(__dirname,`./files/Root.vue`)
+        )
     },
     page(pageConfig){
         const template = this['page.template'](pageConfig.JSON_nodetree),
@@ -207,8 +265,12 @@ export default {
             if (Array.isArray(children) && children.length > 0) {
                 childrenTmpl = `${children.join(`\r\n`)}`
             }
+            console.log('-->properties.domProps',properties.domProps)
+            if (properties.domProps && properties.domProps.innerHTML) {
+                childrenTmpl = properties.domProps.innerHTML
+            }
             let exp = [
-                `${tabSpae(level)}<${tag} data-lvl=${nodeConfig.level}>`,
+                `${tabSpae(level)}<${tag} ${helper.properties(nodeConfig)}>`,
                 `${tabSpae(level)}</${tag}>`
             ]
             if (childrenTmpl != ``) {
@@ -262,10 +324,13 @@ export default {
         ]
         return exp.join(`\r\n`)
     },
-    [`webpack.base.config.js`]() {
-        return fs.readFileSync(
+    [`webpack.base.config.js`](project) {
+        let content = fs.readFileSync(
             path.resolve(__dirname,'./files/webpack.base.config.js')
-        )
+        ).toString()
+        return helper.replace(content,{
+            projectKey: project.key
+        })
     },
     [`webpack.dev.config.js`]() {
         return fs.readFileSync(
@@ -276,5 +341,36 @@ export default {
         return fs.readFileSync(
             path.resolve(__dirname,'./files/webpack.prod.config.js')
         )
+    },
+    [`app.js`](project,projectPages) {
+        let content = fs.readFileSync(
+            path.resolve(__dirname,'./files/app.js')
+        ).toString(),
+            routes = [];
+        projectPages.forEach((page) => {
+            routes.push(`router.get("/${project.key}${page.router_path}",responseIndex);`)
+        })
+        return helper.replace(content,{
+            projectKey: project.key,
+            port: 9002 + project.id,
+            routeContent: routes.join(`\r\n`)
+        })
+    },
+    [`404.html`](project,projectPages) {
+        let content = fs.readFileSync(
+            path.resolve(__dirname,'./files/404.html')
+        ).toString(),
+            pages = [];
+        projectPages.forEach((page) => {
+            pages.push([
+                `<div class="page-item">`,
+                    `<p class="page-name">${page.name}</p>`,
+                    `<p class="page-url">/${project.key}${page.router_path}</p>`,
+                `<div>`
+            ].join('\r\n'))
+        })
+        return helper.replace(content,{
+            owner: project.owner
+        })
     }
 }

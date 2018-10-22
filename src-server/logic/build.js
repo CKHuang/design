@@ -30,6 +30,16 @@ export default new class BuildLogic extends Logic {
             `${projectRootPath}/src/template`
         ])
         await this._buildFiles(project,[{
+            fileName: `404.html`,
+            content: () => {
+                return tmpl["404.html"](project,projectPages);
+            }
+        },{
+            fileName: `app.js`,
+            content: () => {
+                return tmpl["app.js"](project,projectPages)
+            }
+        },{
             fileName: `env.js`,
             dirPath: `${projectRootPath}/config`,
             content: () => {
@@ -38,7 +48,7 @@ export default new class BuildLogic extends Logic {
         },{
             fileName: `webpack.base.config.js`,
             content: () => {
-                return tmpl["webpack.base.config.js"]()
+                return tmpl["webpack.base.config.js"](project)
             }
         },{
             fileName: `webpack.dev.config.js`,
@@ -54,7 +64,7 @@ export default new class BuildLogic extends Logic {
             fileName: `index.ejs`,
             dirPath: `${projectRootPath}/src/template`,
             content: () => {
-                return tmpl["index.ejs"]()
+                return tmpl["index.ejs"](project)
             }
         },{
             fileName: `.babelrc`,
@@ -94,6 +104,12 @@ export default new class BuildLogic extends Logic {
             dirPath: `${projectRootPath}/src`,
             content: () => {
                 return tmpl["App.vue"]()
+            }
+        },{
+            fileName: `Root.vue`,
+            dirPath: `${projectRootPath}/src`,
+            content: () => {
+                return tmpl["Root.vue"]()
             }
         }])
         await this._buildPages(projectPages,project,projectDatas);
