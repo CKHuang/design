@@ -1,3 +1,6 @@
+import fs from 'fs'
+import path from 'path'
+
 const helper = {
     pageName(pageConfig) {
         return `Page${pageConfig.id.replace('page_','')}`
@@ -6,6 +9,16 @@ const helper = {
 
 export default {
     helper: helper,
+    [`babelrc`]() {
+        return fs.readFileSync(
+            path.resolve(__dirname,`./files/.babelrc`)
+        )
+    },
+    [`index.ejs`]() {
+        return fs.readFileSync(
+            path.resolve(__dirname,'./files/index.ejs')
+        )
+    },
     README(project){
         return `# ${project.name}\r\n
 ### 项目信息\r\n
@@ -16,8 +29,12 @@ export default {
     [`package.json`]: (project) => {
         return `{
     "name":"design-project-${project.key}",
-    "version":"${Date.now()}",
+    "version":"1.0.0",
     "description":"${project.name}",
+    "scripts":{
+        "dev": "./node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=development ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base ./ --open --inline --hot --compress --history-api-fallback --config webpack.dev.config.js",
+        "build": "../../node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=production ../../node_modules/webpack/bin/webpack.js --progress --hide-modules --config webpack.prod.config.js"
+    },
     "author":{
         "name":"${project.creater}@tencent.com"
     },
@@ -244,5 +261,20 @@ export default {
             `</script>`
         ]
         return exp.join(`\r\n`)
+    },
+    [`webpack.base.config.js`]() {
+        return fs.readFileSync(
+            path.resolve(__dirname,'./files/webpack.base.config.js')
+        )
+    },
+    [`webpack.dev.config.js`]() {
+        return fs.readFileSync(
+            path.resolve(__dirname,'./files/webpack.dev.config.js')
+        )
+    },
+    [`webpack.prod.config.js`]() {
+        return fs.readFileSync(
+            path.resolve(__dirname,'./files/webpack.prod.config.js')
+        )
     }
 }

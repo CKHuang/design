@@ -25,8 +25,3 @@ app.on(`error`,() => {
 app.listen(config.server.port,config.server.host, async () => {
     console.log(`[server run] sertver run at, http://${config.server.host}:${config.server.port}`)
 })
-
-// 简单抛出几个假的数据
-
-
-console.log(`server restart`)

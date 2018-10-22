@@ -6,6 +6,8 @@ import path from 'path'
 import util from '../lib/util'
 import tmpl from './tmpl/build'
 import translater from '../../config/translater'
+import child_process from 'child_process'
+import shell from 'shelljs'
 
 export default new class BuildLogic extends Logic {
 
@@ -22,10 +24,44 @@ export default new class BuildLogic extends Logic {
               projectPages = await pageLogic.projects(projectKey);
         await this._mkdirProjectFolder(project);
         await this._buildDir([
+            `${projectRootPath}/config`,
             `${projectRootPath}/src`,
-            `${projectRootPath}/src/Page`
+            `${projectRootPath}/src/Page`,
+            `${projectRootPath}/src/template`
         ])
         await this._buildFiles(project,[{
+            fileName: `env.js`,
+            dirPath: `${projectRootPath}/config`,
+            content: () => {
+                return ``
+            }
+        },{
+            fileName: `webpack.base.config.js`,
+            content: () => {
+                return tmpl["webpack.base.config.js"]()
+            }
+        },{
+            fileName: `webpack.dev.config.js`,
+            content: () => {
+                return tmpl["webpack.dev.config.js"]()
+            }
+        },{
+            fileName: `webpack.prod.config.js`,
+            content: () => {
+                return tmpl["webpack.prod.config.js"]()
+            }
+        },{
+            fileName: `index.ejs`,
+            dirPath: `${projectRootPath}/src/template`,
+            content: () => {
+                return tmpl["index.ejs"]()
+            }
+        },{
+            fileName: `.babelrc`,
+            content: () => {
+                return tmpl.babelrc()
+            }
+        },{
             fileName: `README.md`,
             content: () => {
                 return tmpl.README(project)
@@ -61,6 +97,7 @@ export default new class BuildLogic extends Logic {
             }
         }])
         await this._buildPages(projectPages,project,projectDatas);
+        await this._buildDist(project);
     }
 
     /**
@@ -91,9 +128,7 @@ export default new class BuildLogic extends Logic {
         })
     }
 
-
     async _buildPages(projectPages,project,projectDatas) {
-        console.log('------->projectPages',projectPages)
         projectPages.forEach(async (paegConfig) => {
             await this._buildEachPage(paegConfig,project,projectDatas)
         });
@@ -108,6 +143,23 @@ export default new class BuildLogic extends Logic {
             dirPath: `${projectRootPath}/src/Page`,
             content: () => nodetreeTmpl
         }])  
+    }
+
+    async _buildDist(project) {
+        const projectRootPath = this._resolveProjectPath(project.key),
+              execSync = child_process.execFileSync;
+        try {
+            shell.cd(projectRootPath);
+            shell.exec(`npm run build`);
+            const res = execSync(
+                path.resolve(__dirname,'./shell/dist.sh'),[
+                    projectRootPath
+                ]
+            )
+            console.log('--->res',res);
+        } catch (error) {
+            console.error(`dist error`,error)
+        }
     }
 
     _resolveProjectPath(projectKey) {
