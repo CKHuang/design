@@ -2,11 +2,21 @@ import fs from 'fs'
 import path from 'path'
 
 const helper = {
+    tabSpace(depth) {
+        let  tabs = [],
+            tab = `    `;
+        while(depth > 0) {
+            tabs.push(tab);
+            depth--
+        }
+        return tabs.join(``);
+    },
     properties(nodeConfig) {
         const properties = nodeConfig.properties,
               style = properties.style || {},
               props = properties.props || {},
               domProps = properties.domProps || {},
+              depth = properties.depth,
               exp = [];
         exp.push(`:style='${JSON.stringify(style)}'`)
         for (let i in props) {
@@ -82,7 +92,7 @@ export default {
     "scripts":{
         "dev": "../../node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=development ../../node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base ./ --open --inline --hot --compress --history-api-fallback --config webpack.dev.config.js",
         "build": "../../node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=production ../../node_modules/webpack/bin/webpack.js --progress --hide-modules --config webpack.prod.config.js",
-        "start": "../../node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=production ./app"
+        "start": "../../node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=production node ./app"
     },
     "author":{
         "name":"${project.creater}@tencent.com"
@@ -242,73 +252,73 @@ export default {
         ].join(`\r\n`)
     },
     [`page.template`](nodetree) {
-        const   topNodeTree = {
-                    tag: `div`,
-                    properties: {},
-                    id: `nodetree_root`,
-                    children: nodetree
-                },
-                _stack = [];
-        const renderNode = (level,nodeConfig,children) => {
-            const tag = nodeConfig.tag,
-                  properties = nodeConfig.properties,
-                  tabSpae = (lvl) => {
-                      let  tabs = [],
-                           tab = `    `;
-                      while(lvl > 0) {
-                          tabs.push(tab);
-                          lvl--
-                      }
-                      return tabs.join(``);
-                  };
-            let childrenTmpl = ``;
-            if (Array.isArray(children) && children.length > 0) {
-                childrenTmpl = `${children.join(`\r\n`)}`
+        try {
+            let   topNodeTree = {
+                        tag: `div`,
+                        properties: {},
+                        id: `nodetree_root`,
+                        children: nodetree
+                    },
+                    _stack = [],
+                    _depth = 1;
+            const renderNode = (nodeConfig,children) => {
+                const tag = nodeConfig.tag,
+                    properties = nodeConfig.properties,
+                    _space = helper.tabSpace(nodeConfig.depth);
+                let childrenTmpl = ``;
+                if (Array.isArray(children) && children.length > 0) {
+                    childrenTmpl = `${children.join(`\r\n`)}`
+                }
+                if (properties.domProps && properties.domProps.innerHTML) {
+                    childrenTmpl = `${helper.tabSpace(nodeConfig.depth+1)}${properties.domProps.innerHTML}`
+                }
+                let exp = [
+                    `${_space}<${tag} ${helper.properties(nodeConfig)}>`,
+                    `${_space}</${tag}>`
+                ]
+                if (childrenTmpl != ``) {
+                    exp.splice(1,0,childrenTmpl)
+                }
+                return exp.join(`\r\n`);   
             }
-            console.log('-->properties.domProps',properties.domProps)
-            if (properties.domProps && properties.domProps.innerHTML) {
-                childrenTmpl = properties.domProps.innerHTML
-            }
-            let exp = [
-                `${tabSpae(level)}<${tag} ${helper.properties(nodeConfig)}>`,
-                `${tabSpae(level)}</${tag}>`
-            ]
-            if (childrenTmpl != ``) {
-                exp.splice(1,0,childrenTmpl)
-            }
-            return exp.join(`\r\n`);   
-        }
-        let level = 0;
-        const pushStack = (node) => {
-            if (node) {
-                _stack.push(node);
-                if (node.children && node.children.length > 0) {
-                    node.children.forEach((childNode) => {
-                        pushStack(childNode)
-                    })
+            const pushStack = (node) => {
+                if (node) {
+                    _stack.push(node);
+                    if (node.children && node.children.length > 0) {
+                        _depth++;
+                        node.children.forEach((childNode,index) => {
+                            pushStack(childNode)
+                            if (index == node.children.length - 1) {
+                                _depth--;
+                            }
+                        })
+                    }
+                    node.depth = _depth; 
                 }
             }
-        }
-        pushStack(topNodeTree);
-        let _cache = [];
-        while (_stack.length > 0) {
-            const item = _stack.pop();
-            if (item.children.length == 0) {
-                _cache.push(
-                    renderNode(item.level,item)
-                )
-                level++;
-            } else if (item.children.length > 0) {
-                const _children = _cache.splice(-item.children.length);
-                const tnode = renderNode(item.level,item,_children.reverse());
-                _cache.push(tnode)
+            pushStack(topNodeTree);
+            let _cache = [];
+            while (_stack.length > 0) {
+                const item = _stack.pop();
+                if (item.children.length == 0) {
+                    _cache.push(
+                        renderNode(item)
+                    )
+                } else if (item.children.length > 0) {
+                    const _children = _cache.splice(-item.children.length);
+                    const tnode = renderNode(item,_children.reverse());
+                    _cache.push(tnode)
+                }
             }
+            return [
+                `<template>`,
+                `${_cache[0]}`,
+                `</template>`
+            ].join(`\r\n`)
+        } catch (error) {
+            console.error(error)
         }
-        return [
-            `<template>`,
-            `   ${_cache[0]}`,
-            `</template>`
-        ].join(`\r\n`)
+       
     },
     [`page.script`](pageConfig) {
         const pageName = helper.pageName(pageConfig)

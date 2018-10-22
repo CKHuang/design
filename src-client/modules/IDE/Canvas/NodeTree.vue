@@ -96,7 +96,6 @@
             }
         },
         render(h) {
-            console.log(`[渲染画布节点树]canvas nodeTree`,this.nodeTree)
             return this.renderNodeTree(h,{
                 tag: `div`,
                 properties: {

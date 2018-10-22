@@ -126,6 +126,30 @@ util.treeDepth = (nodeTree,handle) => {
     return nextChildren(nodeTree);
 }
 
+
+util.treeNodesDepth = (topNode) => {
+    let stack = [],
+        _depth = 0;
+    const pushStack = (node) => {
+        if (node) {
+            stack.push(node);
+            if (node.children && node.children.length > 0) {
+                _depth++;
+                node.children.forEach((childNode,index) => {
+                    pushStack(childNode);
+                    if (index == node.children.length - 1) {
+                        _depth--;
+                    }
+                })
+                node.depth = _depth;
+            } else if (node.children.length == 0) {
+                node.depth = _depth
+            }
+        }
+    }
+    pushStack(topNode);
+}
+
 /**
  * 递归处理
  * @param {array} list 将要递归处理的数据
@@ -329,6 +353,14 @@ util.defendJsonParse = (data,errRet = {}) => {
     } catch (e) {
         return errRet;
     }
+}
+
+
+util.isArrayEqual = (arr1,arr2) => {
+    const diffs = arr1.concat(arr2).filter(
+        v => !arr1.includes(v) || !arr2.includes(v)
+    )
+    return diffs.length == 0
 }
 
 /**
