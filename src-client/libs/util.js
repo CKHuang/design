@@ -291,8 +291,6 @@ util.isEmpty = (obj) => {
  * @param {object} target 
  */
 util.extend = (origin = {},target = {}) => {
-    origin = util.deepClone(origin);
-    target = util.deepClone(target);
     for ( let i in target ) {
         origin[i] = target[i]
     }

@@ -39,7 +39,7 @@ const helper = {
         return exp.join(' ');
     },
     pageName(pageConfig) {
-        return `Page${pageConfig.id.replace('page_','')}`
+        return pageConfig.router_name;
     },
     replace(content,obj) {
         for ( let i in obj ) {
@@ -59,6 +59,9 @@ const helper = {
             );
         }
         return content
+    },
+    projectKey(project) {
+        return project.name;
     }
 }
 
@@ -74,25 +77,26 @@ export default {
             path.resolve(__dirname,'./files/index.ejs')
         ).toString();
         return helper.replace(content,{
-            projectKey: project.key
+            projectKey: helper.projectKey(project)
         })
     },
     README(project){
         return `# ${project.name}\r\n
 ### 项目信息\r\n
-- 项目KEY：${project.key}
+- 项目名称：${project.name}
+- 项目说明：${project.desc}
 - 创建人：${project.creater}
 - 创建时间：${project.create_time}`;
     },
     [`package.json`]: (project) => {
         return `{
-    "name":"design-project-${project.key}",
+    "name":"design-project-${project.name}",
     "version":"1.0.0",
     "description":"${project.name}",
     "scripts":{
         "dev": "../../node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=development ../../node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base ./ --open --inline --hot --compress --history-api-fallback --config webpack.dev.config.js",
         "build": "../../node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=production ../../node_modules/webpack/bin/webpack.js --progress --hide-modules --config webpack.prod.config.js",
-        "start": "../../node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=production node ./app"
+        "start": "../../node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=production node ./server"
     },
     "author":{
         "name":"${project.creater}@tencent.com"
@@ -164,7 +168,7 @@ export default {
     routes(projectPages,project){
         let impr = [];
         let exp = `export default {\r\n`,
-            key = project.key;
+            key = helper.projectKey(project);
             exp += `    routes: [{\r\n`;
             exp += `        path: "/",\r\n`;
             exp += `        name: "root",\r\n`;
@@ -174,7 +178,7 @@ export default {
         for ( let i in projectPages ) {
             let itemTmpl = ``,
                 value = projectPages[i],
-                path = `/${key}${value.router_path}`,
+                path = `${value.router_path}`,
                 name = `${value.router_name}`,
                 component = helper.pageName(value);
             itemTmpl += `            path:"${path}",\r\n`;
@@ -339,7 +343,7 @@ export default {
             path.resolve(__dirname,'./files/webpack.base.config.js')
         ).toString()
         return helper.replace(content,{
-            projectKey: project.key
+            projectKey: helper.projectKey(project)
         })
     },
     [`webpack.dev.config.js`]() {
@@ -356,14 +360,24 @@ export default {
         let content = fs.readFileSync(
             path.resolve(__dirname,'./files/app.js')
         ).toString(),
+            key = helper.projectKey(project),
             routes = [];
         projectPages.forEach((page) => {
-            routes.push(`router.get("/${project.key}${page.router_path}",responseIndex);`)
+            routes.push(`router.get("${page.router_path}",responseIndex);`)
         })
         return helper.replace(content,{
-            projectKey: project.key,
+            projectKey: key,
             port: 9002 + project.id,
             routeContent: routes.join(`\r\n`)
+        })
+    },
+    [`server.js`](project) {
+        let content = fs.readFileSync(
+            path.resolve(__dirname,'./files/server.js')
+        ).toString();
+        return helper.replace(content,{
+            projectKey: helper.projectKey(project),
+            port: 9002 + project.id
         })
     },
     [`404.html`](project,projectPages) {
@@ -375,7 +389,7 @@ export default {
             pages.push([
                 `<div class="page-item">`,
                     `<p class="page-name">${page.name}</p>`,
-                    `<p class="page-url">/${project.key}${page.router_path}</p>`,
+                    `<p class="page-url">/${helper.projectKey(project)}${page.router_path}</p>`,
                 `<div>`
             ].join('\r\n'))
         })

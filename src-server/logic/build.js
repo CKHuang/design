@@ -18,7 +18,9 @@ export default new class BuildLogic extends Logic {
 
     async main(projectKey) {
         const project = await projectLogic.one(projectKey),
-              projectRootPath = this._resolveProjectPath(project.key),
+              projectRootPath = this._resolveProjectPath(
+                  tmpl.helper.projectKey(project)
+              ),
               projectDatas = await dataLogic.all(projectKey),
               projectDatasJson = translater["project.data.json"](projectDatas),
               projectPages = await pageLogic.projects(projectKey);
@@ -38,6 +40,11 @@ export default new class BuildLogic extends Logic {
             fileName: `app.js`,
             content: () => {
                 return tmpl["app.js"](project,projectPages)
+            }
+        },{
+            fileName: `server.js`,
+            content: () => {
+                return tmpl["server.js"](project)
             }
         },{
             fileName: `env.js`,
@@ -120,7 +127,7 @@ export default new class BuildLogic extends Logic {
      * @description 初始化项目文件
      */
     async _mkdirProjectFolder(project) {
-        const key = project.key,
+        const key = tmpl.helper.projectKey(project),
               projectPath = this._resolveProjectPath(key);
         if (util.fs.isExist(projectPath)) {
             util.fs.removeDir(projectPath)
@@ -129,7 +136,9 @@ export default new class BuildLogic extends Logic {
     }
     
     async _buildFiles(project,fileConfigs) {
-        const projectPath = this._resolveProjectPath(project.key);
+        const projectPath = this._resolveProjectPath(
+            tmpl.helper.projectKey(project)
+        );
         fileConfigs.forEach((fileConfig) => {
             const fileName = fileConfig.fileName,
                   content = fileConfig.content(),
@@ -153,7 +162,9 @@ export default new class BuildLogic extends Logic {
     async _buildEachPage(pageConfig,project,projectDatas) {
         const pageName = tmpl.helper.pageName(pageConfig),
               nodetreeTmpl = tmpl.page(pageConfig),
-              projectRootPath = this._resolveProjectPath(project.key);
+              projectRootPath = this._resolveProjectPath(
+                  tmpl.helper.projectKey(project)
+              );
         await this._buildFiles(project,[{
             fileName: `${pageName}.vue`,
             dirPath: `${projectRootPath}/src/Page`,
@@ -162,7 +173,9 @@ export default new class BuildLogic extends Logic {
     }
 
     async _buildDist(project) {
-        const projectRootPath = this._resolveProjectPath(project.key),
+        const projectRootPath = this._resolveProjectPath(
+                tmpl.helper.projectKey(project)
+            ),
               execSync = child_process.execFileSync;
         try {
             shell.cd(projectRootPath);

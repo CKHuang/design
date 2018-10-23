@@ -50,10 +50,8 @@ app.use((ctx,next) => {
 app.use(router.routes())
    .use(router.allowedMethods())
 
+module.exports = app;
 
 
-app.listen(${port},() => {
-    console.log(`server run at http://0.0.0.0:${port}/${projectKey}`)
-})
 
 

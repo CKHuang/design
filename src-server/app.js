@@ -5,8 +5,16 @@ import auth from './middleware/auth'
 import parameter from './middleware/parameter'
 import routes from './routes'
 import config from '../config/app'
+import proxy from './proxy'
 
 const app = new Koa();
+
+app.use(async (ctx,next) => {
+    await next();
+    console.log('-->App.js',ctx.body)
+})
+
+app.use(proxy());
 
 app.use(cors());
 

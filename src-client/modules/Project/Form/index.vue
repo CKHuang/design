@@ -1,7 +1,10 @@
 <template>
     <Form ref="form" :model="form" :rules="validator" :label-width="120">
         <FormItem label="项目名称" prop="name">
-            <Input v-model="form.name" placeholder="输入项目的名称"></Input>
+            <Input v-model="form.name" placeholder="请填写项目名称，只能是英文和数组的组合"></Input>
+        </FormItem>
+        <FormItem label="项目说明" prop="desc">
+            <Input v-model="form.desc" placeholder="请说明这是什么项目"></Input>
         </FormItem>
         <FormItem label="项目类型">
             <Select v-model="form.type">
@@ -35,7 +38,8 @@
                     : this.types.EDIT,
                 submiting: false,
                 validator: {
-                    name: [this.util.validator.required()]
+                    name: [this.util.validator.project.name()],
+                    desc: [this.util.validator.project.desc()]
                 }
             }
         },
@@ -53,6 +57,7 @@
         },
         methods: {
             async handleSubmit() {
+                console.log('-->this',this.validator,this.util.validator.project.name())
                 this.$refs.form.validate(async (valid) => {
                     if (valid) {
                         await this.handleSend();
@@ -66,7 +71,8 @@
                 try {
                     await this.models.project.insert({
                         name: this.form.name,
-                        type: this.form.type
+                        type: this.form.type,
+                        desc: this.form.desc
                     })
                     this.$Message.success(`成功创建项目`);
                     this.submiting = false;
@@ -79,7 +85,8 @@
             resetForm() {
                 Object.assign(this.form,{
                     name: ``,
-                    type: 1
+                    type: 1,
+                    desc: ``
                 })
             }
         }

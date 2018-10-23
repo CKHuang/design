@@ -44,10 +44,8 @@ export default {
      * @param {}
      */
     async [types.actions["new.page"]]({ dispatch, commit, state }, {page}) {
-        console.log('--->page',page);
         try {
             const project = state[types.state.data.project];
-            console.log('-->project',project.key);
             if (!project || !project.key) {
                 console.error(`no project info`,project)
                 return ;
@@ -55,6 +53,7 @@ export default {
             const pageSize = tpyesConfig.PAGE_SIZE[project.type];
                   page.page_height = pageSize.height;
                   page.page_width = pageSize.width;
+                  page.router_path = `/${project.name}${page.router_path}`
             await pageModel.insert(project.key,page);
             commit(types.mutations["insert.data.project.page.list"],{page})
         } catch (error) {
