@@ -120,7 +120,8 @@ export default new class BuildLogic extends Logic {
             }
         }])
         await this._buildPages(projectPages,project,projectDatas);
-        await this._buildDist(project);
+        const res = await this._buildDist(project);
+        return res;
     }
 
     /**
@@ -178,16 +179,18 @@ export default new class BuildLogic extends Logic {
             ),
               execSync = child_process.execFileSync;
         try {
-            shell.cd(projectRootPath);
-            shell.exec(`npm run build`);
             const res = execSync(
                 path.resolve(__dirname,'./shell/dist.sh'),[
                     projectRootPath
                 ]
             )
-            console.log('--->res',res);
+            if (res.toString() == 'OK') {
+                return `OK`;
+            }
+            return 'Fail';
         } catch (error) {
             console.error(`dist error`,error)
+            throw error;
         }
     }
 

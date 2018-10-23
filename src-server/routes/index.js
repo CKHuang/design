@@ -1,9 +1,10 @@
 import apiRoute from './api/index'
+import webRoute from './web/index'
 
 const routes = [].concat(
-    apiRoute
+    apiRoute,
+    webRoute
 )
-
 
 const route = (app) => {
     routes.forEach((route) => {

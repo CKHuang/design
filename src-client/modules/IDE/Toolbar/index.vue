@@ -66,16 +66,15 @@
         </div>
         <div class="toolbar-center">
             <div class="opera-btn">
-                <Tooltip content="保存" transfer>
-                    <Icon type="ios-cloud-upload-outline" @click="submit" />
-                </Tooltip>
+                <Button size="small" :loading="saving" icon="ios-cloud-upload-outline" @click="submit">{{ saving ? '保存中...' : '保存'}}</Button>
+                <Button size="small" :loading="releasing" icon="ios-cloud-upload-outline" @click="release">{{ releasing ? '发布中...' : '发布'}}</Button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    import { mapGetters, mapMutations, mapActions } from 'vuex'
+    import { mapGetters, mapMutations, mapActions, mapState } from 'vuex'
     import storeTypes from '../../../store/modules/ide/types'
 
     export default {
@@ -83,11 +82,16 @@
         computed: {
             ...mapGetters({
                 'project': storeTypes.state.data[`project`]
+            }),
+            ...mapState({
+                'saving': state => state.ide[storeTypes.state.ui[`ide.toolbar.saving`]],
+                'releasing': state => state.ide[storeTypes.state.ui[`ide.toolbar.releasing`]]
             })
         },
         methods: {
             ...mapActions({
-                "submit": storeTypes.actions[`save.project`]
+                "submit": storeTypes.actions[`save.project`],
+                "release": storeTypes.actions[`release.project`]
             })
         }
     }

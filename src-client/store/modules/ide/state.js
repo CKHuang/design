@@ -17,6 +17,8 @@ const record = new Record();
       })
 
 const state = {
+    [types.state.ui["ide.toolbar.saving"]]: false,
+    [types.state.ui['ide.toolbar.releasing']]:false,
      /**
      * @description 编辑器正在初始化
      * @type {boolean}

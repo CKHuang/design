@@ -353,6 +353,19 @@ export default {
         datas.unshift(data)
     },
     /**
+     * @description toolbar的按钮是否可以点击
+     */
+    [types.mutations["update.ide.toolbar.saving"]](state,{loading}) {
+        return Object.assign(state,{
+            [types.state.ui["ide.toolbar.saving"]]: loading
+        })
+    },
+    [types.mutations["update.ide.toolbar.releasing"]](state,{loading}) {
+        return Object.assign(state,{
+            [types.state.ui["ide.toolbar.releasing"]]: loading
+        })
+    },
+    /**
      * @description 更新项目数据某个数据项的数据
      * @param {string} key 字段内容
      * @param {object} data

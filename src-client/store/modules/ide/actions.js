@@ -76,19 +76,53 @@ export default {
                     fns.push(pageModel.update(page.id,{JSON_nodetree:page.JSON_nodetree}))
                 });
                 const res = await Promise.all(fns);
-                console.log('-->submitPages res',res);
             }
             const submitData = async () => {
                 return await dataModel.update(project.key,{
                     JSON_content: datas
                 })
             }
+            const st = Date.now();
+            commit(types.mutations["update.ide.toolbar.saving"],{
+                loading: true
+            })
             await submitPages();
             await submitData();
-            await projectModel.build(project.key);
-            console.log('--->datas',datas,'--->pages',pages,'-->project',project);
+            const ts = parseInt(( Date.now() - st ) / 1000),
+                  t = ts >= 4 ? 0 : 2500;
+            setTimeout(() => {
+                commit(types.mutations["update.ide.toolbar.saving"],{
+                    loading: false
+                })
+            },t)
+            return ;
+            
         } catch (error) {
             console.log(`save.project error`,error)
+            throw error
+           
         }
+    },
+
+    /**
+     * @description 构建项目
+     */
+    async [types.actions["release.project"]]({ state, getters, dispatch, commit }) {
+        try {
+            
+            await dispatch(types.actions["save.project"])
+            const project = state[types.state.data.project];
+            commit(types.mutations["update.ide.toolbar.releasing"],{
+                loading: true
+            })
+            await projectModel.build(project.key);
+            commit(types.mutations["update.ide.toolbar.releasing"],{
+                loading: false
+            })
+        } catch (error) {
+            console.log('-->release',error)
+            throw error;
+        }
+       
     }
 }

@@ -1,20 +1,22 @@
 import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
+import staticCache from 'koa-static-cache'
 import cors from 'koa-cors'
 import auth from './middleware/auth'
 import parameter from './middleware/parameter'
 import routes from './routes'
 import config from '../config/app'
 import proxy from './proxy'
+import path from 'path'
 
 const app = new Koa();
 
-app.use(async (ctx,next) => {
-    await next();
-    console.log('-->App.js',ctx.body)
-})
-
 app.use(proxy());
+
+app.use(staticCache({
+    dir: path.join(__dirname,'../dist'),
+    prefix: `/web/dist`
+}))
 
 app.use(cors());
 

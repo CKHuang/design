@@ -4,4 +4,6 @@ projectRootPath=$1
 
 cd $projectRootPath
 echo $projectRootPath
-npm run build
+v=$(npm run build)
+
+echo "OK"

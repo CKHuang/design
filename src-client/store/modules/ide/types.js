@@ -48,7 +48,13 @@ export default {
             /**
              * @description 数据管理器的额表单是否可见
              */
-            [`data.form.visiable`]: `data.form.visiable`
+            [`data.form.visiable`]: `data.form.visiable`,
+            /**
+             * @description 项目保存按钮
+             */
+            [`ide.toolbar.saving`]: `ide.toolbar.saving`,
+
+            [`ide.toolbar.releasing`]: `ide.toolbar.releasing`
         },
         data: {
             /**
@@ -171,7 +177,9 @@ export default {
         [`update.data.page.form.data`]: `update.data.page.form.data`,
         [`reset.data.page.form.data`]: `reset.data.page.form.data`,
         [`update.data.project.data.form.data`]: `update.data.project.data.form.data`,
-        [`reset.data.project.data.form.data`]: `reset.data.project.data.form.data`
+        [`reset.data.project.data.form.data`]: `reset.data.project.data.form.data`,
+        [`update.ide.toolbar.saving`]: `update.ide.toolbar.saving`,
+        [`update.ide.toolbar.releasing`]: `update.ide.toolbar.releasing`
     },
     actions: {
         /**
@@ -189,6 +197,10 @@ export default {
         /**
          * @description 保存页面编辑更新
          */
-        [`save.project`]: `ide.save.project`
+        [`save.project`]: `ide.save.project`,
+        /**
+         * @description 发布项目
+         */
+        [`release.project`]: `ide.release.project`
     }
 }

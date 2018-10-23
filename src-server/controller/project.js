@@ -37,12 +37,12 @@ export default new class ProjectController extends Controller {
             await logic.invoke(`insert`,inserted)
         )
     }
-    
 
     /**
      * @description 构建项目代码
      */
     async buildAction(ctx,res) {
+        ctx.res.setTimeout(50000);
         res.data(
             await logic.invoke(
                 `build`,
@@ -50,5 +50,6 @@ export default new class ProjectController extends Controller {
             )
         )
     }
+    
     
 }
