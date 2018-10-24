@@ -24,7 +24,11 @@ app.use(parameter());
 
 app.use(auth());
 
-app.use(bodyParser());
+app.use(bodyParser({
+    onerror: function (err, ctx) {
+        ctx.throw('body parse error [message from design svr]', 422);
+    }
+}));
 
 routes(app);
 

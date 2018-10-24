@@ -1,4 +1,5 @@
 import axios from 'axios'
+import util from './util'
 
 export default class Http {
 
@@ -48,15 +49,15 @@ export default class Http {
                 opts.headers = {}
             }
             opts.headers['X-Requested-With'] = `XMLHttpRequest`
-            const req = {
+            const req = util.extend({
                 method: method,
                 url: url,
-                headers: opts.headers,
-                params: opts.params,
-                data: opts.data,
-                timeout: opts.timeout,
-                responseType: opts.responseType
-            }
+                headers: {},
+                params: {},
+                data: {},
+                timeout: 5000,
+                responseType: 'json'
+            },opts)
             axios(req).then((response) => {
                 const httpStatus = response.status;
                 const httpBody = response.data;
@@ -101,6 +102,7 @@ export default class Http {
     showErrorMessage(error,handleMessage) {
         const req = error.req,
               res = error.res;
+              console.log('-->showErrorMessage',error,handleMessage)
         let message = `请求网络接口返回失败`,
             subMessage = ``;
         if (res.httpStatus == '404') {

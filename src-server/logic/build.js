@@ -184,13 +184,13 @@ export default new class BuildLogic extends Logic {
                     projectRootPath
                 ]
             )
-            if (res.toString() == 'OK') {
-                return `OK`;
+            if (res.toString().replace(/\s+/g, "") == 'OK') {
+                return {ret:0,message:'success'};
             }
-            return 'Fail';
+            return {ret:-1,message:`build project error, message:${res}`};
         } catch (error) {
-            console.error(`dist error`,error)
-            throw error;
+            console.error('->error',error)
+            return {ret:-2,message:`build dist error, message:${error}`}
         }
     }
 

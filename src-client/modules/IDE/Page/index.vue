@@ -114,7 +114,13 @@
                                 size: 15
                             }
                         }),
-                        h(`span`,data.title)
+                        h(`Tooltip`,{
+                            props: {
+                                content: data.data.router_path,
+                                placement: 'right'
+                            }
+                        },[h(`span`,data.title)])
+                        
                     ]),
                     h(`div`,{
                         'class': `ide-page-item-btns`
@@ -166,7 +172,8 @@
                     const item = {
                         title: page.name,
                         expand: false,
-                        render: this.renderPageItem
+                        render: this.renderPageItem,
+                        data: page
                     }
                     result.push(item)
                 });

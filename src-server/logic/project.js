@@ -50,6 +50,7 @@ export default new class ProjectLogic extends Logic {
     }
 
     async build(projectKey) {
-        return await buildLogic.main(projectKey);
+        const res = await buildLogic.main(projectKey);
+        return res;
     }
 }

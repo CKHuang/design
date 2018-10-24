@@ -5,6 +5,7 @@
 export default {
     state: {
         ui: {
+            [`message.content`]: `ide.ui.message.content`,
             /**
              * @description code模块展开状态
              */
@@ -148,6 +149,7 @@ export default {
         [`data.project.data.json`]: `data.project.data.json`
     },
     mutations: {
+        [`set.ui.message`]: `set.ui.message`,
         [`toggle.ui.code.spread`]: `ide.toggle.ui.code.spread`,
         [`update.ui.canvas.ref`]: `update.ui.canvas.ref`,
         [`update.ui.canvas.hover.placeholder.offset`]: `update.ui.canvas.hover.placeholder.offset`,

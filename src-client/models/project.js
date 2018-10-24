@@ -50,7 +50,8 @@ export default class Project extends Http {
     async build(projectKey) {
         return await this.request(
             `PUT`,
-            this.merge(this.baseURL,`/project/${projectKey}/build`)
+            this.merge(this.baseURL,`/project/${projectKey}/build`),
+            {timeout:600000}
         )
     }
 }

@@ -17,6 +17,7 @@ const record = new Record();
       })
 
 const state = {
+    [types.state.ui["message.content"]]:{type:``,message:``},
     [types.state.ui["ide.toolbar.saving"]]: false,
     [types.state.ui['ide.toolbar.releasing']]:false,
      /**

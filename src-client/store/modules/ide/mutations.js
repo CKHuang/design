@@ -4,6 +4,13 @@ import tpyesConfig from '../../../../config/types'
 import util from '../../../libs/util';
 
 export default {
+    [types.mutations["set.ui.message"]](state,{
+       message,type
+    }) {
+        return Object.assign(state,{
+            [types.state.ui['message.content']]: {message,type}
+        })
+    },
     /**
      * @description 更新ide的加载状态
      * @param {boolean} isLoading 是否加载中

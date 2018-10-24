@@ -176,6 +176,7 @@ html,body {
                 <div>正在初始化项目，请稍后</div>
             </Spin>
         </div>
+        <CommonMessage></CommonMessage>
     </div>
 </template>
 
@@ -189,6 +190,7 @@ html,body {
     import PropsEditor from './PropsEditor/index.vue'
     import NodeTree from './NodeTree/index.vue'
     import DataManager from './DataManager/index.vue'
+    import CommonMessage from '../Common/Message.vue'
     import { mapGetters, mapMutations, mapActions } from 'vuex'
     import storeTypes from '../../store/modules/ide/types'
 
@@ -215,7 +217,8 @@ html,body {
             SiderMenu: SiderMenu,
             NodeTree: NodeTree,
             PropsEditor: PropsEditor,
-            DataManager: DataManager
+            DataManager: DataManager,
+            CommonMessage: CommonMessage
         },
         async created() {
             await this[`init.data`]({

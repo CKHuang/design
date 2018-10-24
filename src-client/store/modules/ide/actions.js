@@ -115,9 +115,21 @@ export default {
             commit(types.mutations["update.ide.toolbar.releasing"],{
                 loading: true
             })
-            await projectModel.build(project.key);
+            const res = await projectModel.build(project.key);
             commit(types.mutations["update.ide.toolbar.releasing"],{
                 loading: false
+            })
+            let type,message;
+            if (res.ret == 0) {
+                type = 'success';
+                message = '项目发布成功'
+            } else {
+                type = 'error';
+                message = `项目发布失败，失败原因：${res.message}`
+            }
+            commit(types.mutations["set.ui.message"],{
+                type: type,
+                message: message
             })
         } catch (error) {
             console.log('-->release',error)
