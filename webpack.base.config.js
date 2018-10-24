@@ -28,6 +28,8 @@ fs.open('./config/env.js', 'w', function(err, fd) {
     });
 });
 
+const publicPath = process.env.NODE_ENV == 'development' ? '/dist/' : `/web/dist/${_now}`
+
 module.exports = {
     _now: _now,
     entry: {
@@ -90,7 +92,7 @@ module.exports = {
 
             {
                 test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
-                loader: 'url-loader?limit=1024&publicPath=/web/dist/'+_now+'/'
+                loader: 'url-loader?limit=1024&publicPath='+publicPath
             },
             {
                 test: /\.(html|tpl)$/,

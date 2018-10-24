@@ -9,3 +9,4 @@ node_modules
 package-lock.json
 projects
 dist
+config

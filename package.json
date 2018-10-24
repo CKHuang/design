@@ -7,7 +7,7 @@
     "dev:client": "./node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=development ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base ./ --open --inline --hot --compress --history-api-fallback --config webpack.dev.config.js",
     "dev:server": "./node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=development ./node_modules/hotnode/javascript/hotnode.js ./src-server/es6",
     "dev:server:node": "./node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=development node ./src-server/es6",
-    "dev": "./node_modules/npm/bin/npm-cli.js run dev:client & ./node_modules/npm/bin/npm-cli.js run dev:server",
+    "dev": "./node_modules/npm/bin/npm-cli.js run dev:client & ./node_modules/npm/bin/npm-cli.js run dev:server:node",
     "build": "cross-env NODE_ENV=production ./node_modules/webpack/bin/webpack.js --progress --hide-modules --config webpack.prod.config.js",
     "prod:preview": "node ./src-server/es6.js",
     "prod:start": "./node_modules/pm2/bin/pm2 start ./server/pm2.config.js",

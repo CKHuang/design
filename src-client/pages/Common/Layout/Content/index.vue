@@ -6,9 +6,7 @@
 
 <template>
     <Content :style="{padding: '0 50px'}">
-        <Card dis-hover class="content" >
-            <router-view></router-view>
-        </Card>
+        <router-view></router-view>
     </Content>
 </template>
 
