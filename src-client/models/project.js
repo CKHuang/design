@@ -1,6 +1,9 @@
 import Http from '../libs/Http'
 import httpConfig from '../../config/http'
 
+/**
+ * @description 
+ */
 export default class Project extends Http {
 
     constructor() {
