@@ -1,11 +1,11 @@
 import Widget from '../../../base/Widget'
 
-export default class Sider extends Widget {
-    constructor() {
+export default class Layout extends Widget {
+    constructor(opts = {description: 'Layout'}) {
         super(
-            `Sider`,
+            `Layout`,
             `iview`,
-            `Sider`
+            opts.description
         )
         this.style = {
             "minHeight": "10px"
