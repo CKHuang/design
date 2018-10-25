@@ -87,7 +87,10 @@
                     }
                 }
                 return h('Panel',{
-                    props: {name:propsGroupKey}
+                    props: {
+                        name:propsGroupKey,
+                    },
+                    key: propsGroupKey,
                 },[
                     h('span',propsGroupKey),
                     h('Form',{

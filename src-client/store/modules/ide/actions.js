@@ -94,10 +94,18 @@ export default {
                 commit(types.mutations["update.ide.toolbar.saving"],{
                     loading: false
                 })
+                commit(types.mutations["set.ui.message"],{
+                    type: `success`,
+                    message: `项目保存成功`
+                })
             },t)
             return ;
             
         } catch (error) {
+            commit(types.mutations["set.ui.message"],{
+                type: `error`,
+                message: `项目保存失败`
+            })
             console.log(`save.project error`,error)
             throw error
            
