@@ -124,12 +124,13 @@
 <script>
     import { mapGetters, mapMutations, mapActions } from 'vuex'
     import storeTypes from '../../../store/modules/ide/types'
-    import NodeTree from './NodeTree'
+    import NodeTree from './NodeTreeV2'
     import PropsEditor from '../PropsEditor/index.vue'
     import Preview from './preview'
     import HoverPlaceHover from './hoverPlaceholder.vue'
     import EditNode from './EditNode.vue'
     import util from '../../../libs/util';
+  
 
     export default {
         name: `IDECanvas`,
@@ -138,7 +139,7 @@
             PropsEditor: PropsEditor,
             HoverPlaceHover: HoverPlaceHover,
             EditNode: EditNode,
-            Preview: Preview
+            Preview: Preview   
         },
         computed: {
             ...mapGetters({

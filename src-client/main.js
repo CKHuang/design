@@ -11,8 +11,6 @@ import VueDragDrop from 'vue-drag-drop';
 import 'iview/dist/styles/iview.css'
 import './styles/common.css'
 
-
-
 Vue.use(VueRouter);
 
 Vue.use(iView);

@@ -1,72 +1,9 @@
 import fs from 'fs'
 import path from 'path'
-
-const helper = {
-    tabSpace(depth) {
-        let  tabs = [],
-            tab = `    `;
-        while(depth > 0) {
-            tabs.push(tab);
-            depth--
-        }
-        return tabs.join(``);
-    },
-    properties(nodeConfig) {
-        const properties = nodeConfig.properties,
-              style = properties.style || {},
-              props = properties.props || {},
-              domProps = properties.domProps || {},
-              depth = properties.depth,
-              exp = [];
-        exp.push(`:style='${JSON.stringify(style)}'`)
-        for (let i in props) {
-            let value,
-                typeValue = typeof props[i],
-                vBind = typeValue != 'variable' ? '' : ':';
-            if (typeValue == 'number') {
-                value = props[i]
-            } else if (typeValue == 'string') {
-                value = `'${props[i]}'`
-            } else if (typeValue == 'boolean') {
-                value = null
-            }
-            if (typeValue == 'boolean' && props[i] == true) {
-                exp.push(`${i}`)
-            } else if (value != null){
-                exp.push(`${vBind}${i}=${value}`)
-            }  
-        }
-        return exp.join(' ');
-    },
-    pageName(pageConfig) {
-        return pageConfig.router_name;
-    },
-    replace(content,obj) {
-        for ( let i in obj ) {
-            let str = ``
-            if (typeof obj[i] == 'function') {
-                str = obj[i]()
-            } else if (typeof obj[i] == 'object') {
-                str = JSON.stringify(obj[i])
-            } else if (typeof obj[i] == 'number') {
-                str = String(obj[i])
-            } else {
-                str = obj[i];
-            }
-            content = content.replace(
-                new RegExp('\\$\{'+i+'\}','g'),
-                str
-            );
-        }
-        return content
-    },
-    projectKey(project) {
-        return project.name;
-    }
-}
+import builder from '../../../config/build'
 
 export default {
-    helper: helper,
+    helper: builder.helper,
     [`babelrc`]() {
         return fs.readFileSync(
             path.resolve(__dirname,`./files/.babelrc`)
@@ -255,75 +192,7 @@ export default {
             `${script}`
         ].join(`\r\n`)
     },
-    [`page.template`](nodetree) {
-        try {
-            let   topNodeTree = {
-                        tag: `div`,
-                        properties: {},
-                        id: `nodetree_root`,
-                        children: nodetree
-                    },
-                    _stack = [],
-                    _depth = 1;
-            const renderNode = (nodeConfig,children) => {
-                const tag = nodeConfig.tag,
-                    properties = nodeConfig.properties,
-                    _space = helper.tabSpace(nodeConfig.depth);
-                let childrenTmpl = ``;
-                if (Array.isArray(children) && children.length > 0) {
-                    childrenTmpl = `${children.join(`\r\n`)}`
-                }
-                if (properties.domProps && properties.domProps.innerHTML) {
-                    childrenTmpl = `${helper.tabSpace(nodeConfig.depth+1)}${properties.domProps.innerHTML}`
-                }
-                let exp = [
-                    `${_space}<${tag} ${helper.properties(nodeConfig)}>`,
-                    `${_space}</${tag}>`
-                ]
-                if (childrenTmpl != ``) {
-                    exp.splice(1,0,childrenTmpl)
-                }
-                return exp.join(`\r\n`);   
-            }
-            const pushStack = (node) => {
-                if (node) {
-                    _stack.push(node);
-                    if (node.children && node.children.length > 0) {
-                        _depth++;
-                        node.children.forEach((childNode,index) => {
-                            pushStack(childNode)
-                            if (index == node.children.length - 1) {
-                                _depth--;
-                            }
-                        })
-                    }
-                    node.depth = _depth; 
-                }
-            }
-            pushStack(topNodeTree);
-            let _cache = [];
-            while (_stack.length > 0) {
-                const item = _stack.pop();
-                if (item.children.length == 0) {
-                    _cache.push(
-                        renderNode(item)
-                    )
-                } else if (item.children.length > 0) {
-                    const _children = _cache.splice(-item.children.length);
-                    const tnode = renderNode(item,_children.reverse());
-                    _cache.push(tnode)
-                }
-            }
-            return [
-                `<template>`,
-                `${_cache[0]}`,
-                `</template>`
-            ].join(`\r\n`)
-        } catch (error) {
-            console.error(error)
-        }
-       
-    },
+    [`page.template`]: builder.template,
     [`page.script`](pageConfig) {
         const pageName = helper.pageName(pageConfig)
         let exp = [
