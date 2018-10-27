@@ -9,9 +9,6 @@
 
 </style>
 
-<template>
-    <v-runtime-template :template="template"/>
-</template>
 
 <script>
     import util from '../../../libs/util'
@@ -30,21 +27,20 @@
         components: {
             VRuntimeTemplate: VRuntimeTemplate
         },
-        data() {
-            return {
-                template: ``
-            } 
-        },
         computed: {
             ...mapGetters({
                 "nodeTree": storeTypes.state.data[`nodetree`],
                 "previewState": storeTypes.state.ui[`ide.canvas.preview`]
             })
         },
-        watch: {
-            'nodeTree': function(newValue,oldValue) {
-                this.template = builder.template(newValue,2)
-            }
+        render(h) {
+            const _nodeTree = this.nodeTree,
+                  template = builder.template(_nodeTree,2); 
+            return h('v-runtime-template',{
+                props: {
+                    template: template
+                }
+            })
         }
     }
 </script>

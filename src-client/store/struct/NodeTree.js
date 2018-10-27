@@ -14,7 +14,10 @@ export default class NodeTree extends EventEmitter{
         this.nodes = {};
         this.nodeCount = 0;
         this.EVENT = {
-            CHANGE: `change`
+            SET_NODETREE: `set-nodetree`,
+            CHANGE_NODE_PROPS: `change-node-props`,
+            INSERT_NODE: `insert-node`,
+            DELETE_NODE: `delete-node`
         }
     }
 
@@ -142,7 +145,7 @@ export default class NodeTree extends EventEmitter{
         cloneNode(util.deepClone(nodeTree),newTree);
         this.nodeTree = newTree;
         this.nodeCount = count;
-        this._emit(this.EVENT.CHANGE);
+        this._emit(this.EVENT.SET_NODETREE,this.nodeTree);
     }
 
     /**
@@ -153,6 +156,7 @@ export default class NodeTree extends EventEmitter{
         const node = this.find(nodeId);
         console.log(`[删除节点]nodeId`,nodeId,`node`,util.deepClone(node))
         const stack = [];
+        const refNodes = []
         const pushStack = (node) => {
             if (node) {
                 stack.push(node);
@@ -168,6 +172,7 @@ export default class NodeTree extends EventEmitter{
             const item = stack.pop();
             delete this.nodes[item.id];
             this.nodeCount--;
+            refNodes.push(item);
         }
         let parentNodeId,
             nodeIndex;
@@ -186,7 +191,7 @@ export default class NodeTree extends EventEmitter{
         parentNodeId == null 
             ? this.nodeTree.splice(nodeIndex,1)
             : this.find(parentNodeId).children.splice(nodeIndex,1)
-        this._emit(this.EVENT.CHANGE);
+        this._emit(this.EVENT.DELETE_NODE,refNodes);
 
     }
 
@@ -210,41 +215,39 @@ export default class NodeTree extends EventEmitter{
         const parent = parentId ? this.find(parentId)
                                 : this.nodeTree;
         const insertAction = (parent,newNode) => {
-            console.log('--->insertAction',insertMethod,insertIndex)
             if (insertMethod == 'push' || insertMethod == 'unshift') {
                 parent[insertMethod](newNode);
             } else if (insertMethod == 'splice') {
                 parent[insertMethod](insertIndex,0,newNode)
             }
         }
+        
         // 没有子节点，不是复合节点，直接创建即可
         if (typeof nodeConfig.children == 'undefined' || nodeConfig.children.length == 0) {
             const _node = this.createNode(nodeConfig);
             if (Array.isArray(parent)) {
                 insertAction(parent,_node);
-                //parent[mode](_node);
             } else {
-                insertAction(parent.children,_node)
-                //parent.children[mode](_node);
+                insertAction(parent.children,_node)      
             }
             this.nodes[_node.id] = _node;
             this.nodeCount++;
-            this._emit(this.EVENT.CHANGE);
+            this._emit(this.EVENT.INSERT_NODE,[_node]);
         } else if (nodeConfig.children.length > 0) {
             // 复合节点
-            const _res = this.createUnitNode(nodeConfig)
+            const _res = this.createUnitNode(nodeConfig);
             if ( Array.isArray(parent)) {
                 insertAction(parent,_res.node);
-                //parent[mode](_res.node)
             } else {
                 insertAction(parent.children,_res.node)
-                //parent.children[mode](_res.node)
             }
+            const refNodes = []
             for ( let i in _res.nodes ) {
                 this.nodes[i] = _res.nodes[i];
+                refNodes.push(_res.nodes[i])
             }
             this.nodeCount += _res.nodeCount;
-            this._emit(this.EVENT.CHANGE)
+            this._emit(this.EVENT.INSERT_NODE,refNodes)
         }
         
         
@@ -283,8 +286,15 @@ export default class NodeTree extends EventEmitter{
                 [fieldName]: newValue
             })
         }
+        
         // vuex 对象新增属性的更新不会触发state，需要这样处理一下
         node.properties = Object.assign({},node.properties);
+        this._emit(this.EVENT.CHANGE_NODE_PROPS,{
+            nodeId,
+            propsGroup,
+            fieldName,
+            newValue
+        });
         return {
             oldValue,
             newValue

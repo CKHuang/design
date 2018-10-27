@@ -82,7 +82,6 @@ export default {
         if (visiable) {
             
         }
-        console.log('--->visiable',visiable);
         return Object.assign(state,{
             [types.state.ui["data.form.visiable"]]: visiable
         })
@@ -413,6 +412,17 @@ export default {
     ) {
         return Object.assign(state,{
             [types.state.data["project.data.form.data"]]: {key:``,value:``,type:`string`,desc:``}
+        })
+    },
+    /**
+     * @description 设置节点属性的值
+     */
+    [types.mutations["set.ide.node.properties.data"]](state,{key,value}) {
+        state[types.state.data["node.data"]][key] = value;
+    },
+    [types.mutations["init.ide.node.properties.data"]](state,datas) {
+        return Object.assign(state,{
+            [types.state.data["node.properties.data"]]: datas
         })
     }
 }

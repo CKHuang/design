@@ -135,7 +135,11 @@ export default {
             /**
              * @description 项目数据中心编辑中的表单数据
              */
-            [`project.data.form.data`]: `ide.project.data.form.data`
+            [`project.data.form.data`]: `ide.project.data.form.data`,
+            /**
+             * @description 项目节点的属性值
+             */
+            [`node.properties.data`]: `ide.data.node.properties.data`
         }
     },
     getters: {
@@ -181,7 +185,9 @@ export default {
         [`update.data.project.data.form.data`]: `update.data.project.data.form.data`,
         [`reset.data.project.data.form.data`]: `reset.data.project.data.form.data`,
         [`update.ide.toolbar.saving`]: `update.ide.toolbar.saving`,
-        [`update.ide.toolbar.releasing`]: `update.ide.toolbar.releasing`
+        [`update.ide.toolbar.releasing`]: `update.ide.toolbar.releasing`,
+        [`set.ide.node.properties.data`]: `update.ide.node.properties.data`,
+        [`init.ide.node.properties.data`]: `init.ide.node.properties.data`
     },
     actions: {
         /**

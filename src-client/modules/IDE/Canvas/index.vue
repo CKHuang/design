@@ -173,117 +173,121 @@
                     /**
                      * @description 如果this.attachNode是null表示是要依附到根节点
                      */
-                    const attachNode = this.attachNode 
-                        ? document.querySelector(`#${this.attachNode}`)
-                        : document.querySelector(`#nodetree_root`);
-                    const attachNodeDim = attachNode.getBoundingClientRect(),
-                            nodeConfig = this.attachNode 
-                                ? this.queryNode(this.attachNode)
-                                : null,
-                            children = nodeConfig ? nodeConfig.children : [],
-                            childNodes = [],
-                            childNodeDims = [];
-                    console.log('--->children',nodeConfig)
-                    children.forEach((child) => {
-                        const node = document.querySelector(`#${child.id}`)
-                        childNodes.push(node);
-                        childNodeDims.push(node.getBoundingClientRect())
-                    });
-                    /**
-                     * @description 计算pos这个鼠标的点在哪个位置
-                     * method: after、before、on
-                     * index: index of child
-                     */
-                    let poses = [],
-                        dimRight = 0,
-                        dimDown = 0,
-                        xCenter = 0,
-                        yCenter = 0,
-                        dragX = this.dragPosition.x,
-                        dragY = this.dragPosition.y;
-                    childNodeDims.forEach((dim,index) => {
-                        let method;
-                        dimRight = dim.x + dim.width;
-                        dimDown = dim.y + dim.height;
-                        xCenter = dim.x + dim.width / 2;
-                        yCenter = dim.y + dim.height / 2;
-                        if ( ( parseInt(dim.x) == dragX && dragY >= dim.y && dragY <= dimDown) 
-                            || (parseInt(dim.y) == dragY && dragX >= dim.x && dragX <= dimRight)
-                        ) {
-                            method = `on`   
+                    try {
+                        const attachNode = this.attachNode 
+                            ? document.querySelector(`#${this.attachNode}`)
+                            : document.querySelector(`#nodetree_root`);
+                        const attachNodeDim = attachNode.getBoundingClientRect(),
+                                nodeConfig = this.attachNode 
+                                    ? this.queryNode(this.attachNode)
+                                    : null,
+                                children = nodeConfig ? nodeConfig.children : [],
+                                childNodes = [],
+                                childNodeDims = [];
+                        console.log('--->children',nodeConfig)
+                        children.forEach((child) => {
+                            const node = document.querySelector(`#${child.id}`)
+                            childNodes.push(node);
+                            childNodeDims.push(node.getBoundingClientRect())
+                        });
+                        /**
+                         * @description 计算pos这个鼠标的点在哪个位置
+                         * method: after、before、on
+                         * index: index of child
+                         */
+                        let poses = [],
+                            dimRight = 0,
+                            dimDown = 0,
+                            xCenter = 0,
+                            yCenter = 0,
+                            dragX = this.dragPosition.x,
+                            dragY = this.dragPosition.y;
+                        childNodeDims.forEach((dim,index) => {
+                            let method;
+                            dimRight = dim.x + dim.width;
+                            dimDown = dim.y + dim.height;
+                            xCenter = dim.x + dim.width / 2;
+                            yCenter = dim.y + dim.height / 2;
+                            if ( ( parseInt(dim.x) == dragX && dragY >= dim.y && dragY <= dimDown) 
+                                || (parseInt(dim.y) == dragY && dragX >= dim.x && dragX <= dimRight)
+                            ) {
+                                method = `on`   
+                            }
+                            if (dragX < dim.x) {
+                                method = `before`
+                            } else if (dragX > dimRight) {
+                                method = 'after'
+                            }
+                            if (dragY < dim.y) {
+                                method = `before`
+                            } else if (dragY > dimDown) {
+                                method = 'after'
+                            } 
+                            poses.push(method)
+                        });
+                        console.log('-->poses',poses)
+                        /**
+                         * @description 根据位置信息算出来要设置placeholder的位置
+                         */
+                        let action = 'push',
+                            index = 0,
+                            nearestBeforeNode = poses.indexOf('before');
+                        if (nearestBeforeNode == 0) {
+                            action = 'unshift'
+                        } else if (nearestBeforeNode > 0) {
+                            action = 'splice'
+                            index = nearestBeforeNode
                         }
-                        if (dragX < dim.x) {
-                            method = `before`
-                        } else if (dragX > dimRight) {
-                            method = 'after'
-                        }
-                        if (dragY < dim.y) {
-                            method = `before`
-                        } else if (dragY > dimDown) {
-                            method = 'after'
-                        } 
-                        poses.push(method)
-                    });
-                    console.log('-->poses',poses)
-                    /**
-                     * @description 根据位置信息算出来要设置placeholder的位置
-                     */
-                    let action = 'push',
-                        index = 0,
-                        nearestBeforeNode = poses.indexOf('before');
-                    if (nearestBeforeNode == 0) {
-                        action = 'unshift'
-                    } else if (nearestBeforeNode > 0) {
-                        action = 'splice'
-                        index = nearestBeforeNode
-                    }
-                    this.insertMethod = action;
-                    this.insertIndex = index;
-                    console.log('-->insertMethod',this.insertMethod )
-                    /**
-                     * @description 设置placeholder
-                     */
-                    if (action == 'push') {
-                        if (childNodeDims.length > 0) {
-                            const followNodeDim = childNodeDims[childNodeDims.length - 1];
-                            this.setPlaceHolder(
-                                ( followNodeDim.x + followNodeDim.width ),
-                                followNodeDim.y,
-                                this.placeholderSize,
-                                followNodeDim.height
-                            )
-                        } else {
+                        this.insertMethod = action;
+                        this.insertIndex = index;
+                        console.log('-->insertMethod',this.insertMethod )
+                        /**
+                         * @description 设置placeholder
+                         */
+                        if (action == 'push') {
+                            if (childNodeDims.length > 0) {
+                                const followNodeDim = childNodeDims[childNodeDims.length - 1];
+                                this.setPlaceHolder(
+                                    ( followNodeDim.x + followNodeDim.width ),
+                                    followNodeDim.y,
+                                    this.placeholderSize,
+                                    followNodeDim.height
+                                )
+                            } else {
+                                this.setPlaceHolder(
+                                    attachNodeDim.x,
+                                    attachNodeDim.y,
+                                    this.placeholderSize,
+                                    attachNodeDim.height
+                                )
+                            }
+                            
+                        } else if (action == 'unshift') {
                             this.setPlaceHolder(
                                 attachNodeDim.x,
                                 attachNodeDim.y,
                                 this.placeholderSize,
                                 attachNodeDim.height
                             )
+                        } else if (action == 'splice') {
+                            const dim = childNodeDims[index],
+                                    larger = dim.width < dim.height ? 'h' : 'w',
+                                    w = larger == 'w' ? dim.width : this.placeholderSize,
+                                    h = larger == 'h' ? dim.width : this.placeholderSize,
+                                    x = larger == 'w' ? dim.x : dim.x - this.placeholderSize,
+                                    y = larger == 'h' ? dim.y : dim.y - this.placeholderSize ;
+                            this.setPlaceHolder(
+                                x,
+                                y,
+                                w,
+                                h
+                            )
                         }
-                        
-                    } else if (action == 'unshift') {
-                        this.setPlaceHolder(
-                            attachNodeDim.x,
-                            attachNodeDim.y,
-                            this.placeholderSize,
-                            attachNodeDim.height
-                        )
-                    } else if (action == 'splice') {
-                        const dim = childNodeDims[index],
-                                larger = dim.width < dim.height ? 'h' : 'w',
-                                w = larger == 'w' ? dim.width : this.placeholderSize,
-                                h = larger == 'h' ? dim.width : this.placeholderSize,
-                                x = larger == 'w' ? dim.x : dim.x - this.placeholderSize,
-                                y = larger == 'h' ? dim.y : dim.y - this.placeholderSize ;
-                        this.setPlaceHolder(
-                            x,
-                            y,
-                            w,
-                            h
-                        )
+                    console.log('-->最近一个节点',nodeConfig,poses);  
+                    } catch (error) {
+                        console.error(error);
+                        console.log('evnt',event,'attachNode',this.attachNode,'DOM',document.querySelector(`#nodetree_root`));
                     }
-
-                    console.log('-->最近一个节点',nodeConfig,poses);   
                 } 
             },
             setPlaceHolder(x,y,w,h) {

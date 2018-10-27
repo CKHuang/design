@@ -4,11 +4,47 @@ import NodeTree from '../../struct/NodeTree'
 import Record from '../../struct/Record'
 import page from '../../struct/page'
 
+const setNodeProps = (node) => {
+    console.log('-->insert node',node)
+}
+
+const delNodeProps = (node) => {
+    console.log('-->dele',node)
+}
+
 const nodetree = new NodeTree();
-    nodetree.on('change', () => {
+    nodetree.on(nodetree.EVENT.SET_NODETREE, (nodeTree) => {
+        state[types.state.data[`nodetree`]] = nodeTree
+        
+        state[types.state.data["page.editing"]].JSON_nodetree = nodeTree;
+    })
+    nodetree.on(nodetree.EVENT.INSERT_NODE, (nodes) => {
+        state[types.state.data[`nodetree`]] = nodetree.nodeTree
+       
+        state[types.state.data["page.editing"]].JSON_nodetree = nodetree.nodeTree;
+        console.log('-->update change',nodetree.nodeTree,state[types.state.data[`nodetree`]])
+        // nodes.forEach((node) => {
+        //     setNodeProps(node)
+        // })
+    })
+    nodetree.on(nodetree.EVENT.DELETE_NODE, (nodes) => {
         state[types.state.data[`nodetree`]] = nodetree.nodeTree
         state[types.state.data["page.editing"]].JSON_nodetree = nodetree.nodeTree;
+        // nodes.forEach((node) => {
+        //     delNodeProps(node);
+        // })
+
     })
+    nodetree.on(nodetree.EVENT.CHANGE_NODE_PROPS, ( 
+        nodeId,
+        propsGroup,
+        fieldName,
+        newValue
+    ) => {
+        const datas = state[types.state.data["node.properties.data"]];
+        const key = `${nodeId}_${propsGroup}_${fieldName}`
+        datas[key] = newValue;
+    });
 
 const record = new Record();
       record.on('change',() => {
@@ -151,9 +187,18 @@ const state = {
      * @type {object}
      */
     [types.state.data["page.form.data"]]: page(``,``,``,``),
-
+    /**
+     * @description 项目数据层表单的填写
+     */
     [types.state.data["project.data.form.data"]]: {key:``,value:``,type:``,desc:``},
-    [types.state.data["project.data.form.type"]]: null
+    /**
+     * @description 项目数据层表单的类型
+     */
+    [types.state.data["project.data.form.type"]]: null,
+    /**
+     * @description 项目的节点属性值
+     */
+    [types.state.data["node.properties.data"]]: {}
 }
 
 export default state
