@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import builder from '../../../config/build'
+import builder from '../../../common/build'
 
 export default {
     helper: builder.helper,

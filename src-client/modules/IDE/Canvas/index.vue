@@ -124,7 +124,7 @@
 <script>
     import { mapGetters, mapMutations, mapActions } from 'vuex'
     import storeTypes from '../../../store/modules/ide/types'
-    import NodeTree from './NodeTreeV2'
+    import NodeTree from './NodeTree'
     import PropsEditor from '../PropsEditor/index.vue'
     import Preview from './preview'
     import HoverPlaceHover from './hoverPlaceholder.vue'
@@ -316,7 +316,6 @@
             },
             handleDrop(foo,widgetConfig) {
                 const parentId = this.logicFindNearestNode(event)
-                console.log('-->this',this.insertMethod,this.insertIndex)
                 this[`insert.node`]({
                     parentId: parentId,
                     nodeConfig: widgetConfig,
