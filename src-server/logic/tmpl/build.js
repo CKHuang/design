@@ -2,8 +2,10 @@ import fs from 'fs'
 import path from 'path'
 import builder from '../../../common/build'
 
+const helper = builder.helper;
+
 export default {
-    helper: builder.helper,
+    helper: helper,
     [`babelrc`]() {
         return fs.readFileSync(
             path.resolve(__dirname,`./files/.babelrc`)
