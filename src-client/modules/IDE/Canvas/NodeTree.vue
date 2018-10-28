@@ -38,7 +38,7 @@
                   template = builder.template(_nodeTree,2); 
             return h('v-runtime-template',{
                 props: {
-                    template: template
+                    template: template.renderTmplate
                 }
             })
         }

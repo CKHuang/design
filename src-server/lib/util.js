@@ -247,5 +247,20 @@ util.oneOf = function(value,list,defaultVal = null) {
     }
 }
 
+/**
+ * 对比origin以及target，如果
+ * target里面的key在origin存在
+ * 则会覆盖
+ * @param {object} origin 
+ * @param {object} target 
+ */
+util.extend = (origin = {},target = {}) => {
+    for ( let i in target ) {
+        origin[i] = target[i]
+    }
+    return origin;
+}
+
+
 
 export default util

@@ -7,7 +7,6 @@ import util from '../lib/util'
 import tmpl from './tmpl/build'
 import translater from '../../config/translater'
 import child_process from 'child_process'
-import shell from 'shelljs'
 
 export default new class BuildLogic extends Logic {
 

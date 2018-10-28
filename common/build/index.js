@@ -10,42 +10,66 @@ const helper = {
         }
         return tabs.join(``);
     },
-    properties(nodeConfig) {
-        const properties = nodeConfig.properties,
+    propsKey(nodeId,groupName,attrName) {
+        return `${nodeId}_${groupName}_${attrName}`.replace(/\-/g,'_')
+    },
+    /**
+     * @param {number} mode 1表示在属性上面设置变量，然后生成对应的变量对象针对生成.vue文件使用，2表示直接在属性上面设置值,针对预览使用
+     */
+    properties(nodeConfig,mode = 1) {
+        const nodeId = nodeConfig.id,
+              properties = nodeConfig.properties,
               style = properties.style || {},
               props = properties.props || {},
               domProps = properties.domProps || {},
               depth = properties.depth,
               attrs = properties.attrs || {},
-              toDomAttrArr = (_attrs_) => {
+              vueTemplateFilters = ['attrs_id','attrs_data-node'],
+              toDomAttrArr = (_attrs_,groupName) => {
                  const res = []
                  for (let i in _attrs_) {
                      let value,
                          typeValue = typeof _attrs_[i],
                          vBind = typeValue != 'variable' ? '' : ':';
-                     if (typeValue == 'number') {
-                         value = `'${_attrs_[i]}'`
-                         vBind = ':'
-                     } else if (typeValue == 'string') {
-                         value = `'${_attrs_[i]}'`
-                     } else if (typeValue == 'boolean') {
-                         value = null
-                     }
-                     if (typeValue == 'boolean' && props[i] == true) {
-                         res.push(`${i}`)
-                     } else if (value != null) {
-                         res.push(`${vBind}${i}=${value}`)
-                     }
+                    if (mode == 2) {
+                        if (typeValue == 'number') {
+                            value = `'${_attrs_[i]}'`
+                            vBind = ':'
+                        } else if (typeValue == 'string') {
+                            value = `'${_attrs_[i]}'`
+                        } else if (typeValue == 'boolean') {
+                            value = null
+                        }
+                        if (typeValue == 'boolean' && props[i] == true) {
+                            res.push(`${i}`)
+                        } else if (value != null) {
+                            res.push(`${vBind}${i}=${value}`)
+                        }
+                    } else if (mode == 1) {
+                        if (vueTemplateFilters.includes(`${groupName}_${i}`)) {
+                            continue ;
+                        }
+                        vBind = ":";
+                        let propKey = this.propsKey(
+                            nodeId,groupName,i
+                        )
+                        res.push(`${vBind}${i}='${propKey}'`)
+                        renderData[propKey] = _attrs_[i]
+                    }  
                  }
                  return res;
-              };
+              },
+              renderData = {};
         let exp = [];
         exp.push(`:style='${JSON.stringify(style)}'`);
         exp = exp.concat(
-            toDomAttrArr(props),
-            toDomAttrArr(attrs)
+            toDomAttrArr(props,'props'),
+            toDomAttrArr(attrs,'attrs')
         )
-        return exp.join(' ');
+        return {
+            renderStr: exp.join(' '),
+            renderData: renderData
+        };
     },
     pageName(pageConfig) {
         return pageConfig.router_name;
@@ -97,7 +121,9 @@ export default {
                         children: nodetree
                     },
                     _stack = [],
-                    _depth = 1;
+                    _depth = 1,
+                    renderData = {},
+                    renderTmplate = ``;
             const renderNode = (nodeConfig,children) => {
                 const tag = nodeConfig.tag,
                     _space = helper.tabSpace(nodeConfig.depth);
@@ -113,10 +139,18 @@ export default {
                     childrenTmpl = `${children.join(`\r\n`)}`
                 }
                 if (properties.domProps && properties.domProps.innerHTML) {
-                    childrenTmpl = `${helper.tabSpace(nodeConfig.depth+1)}${properties.domProps.innerHTML}`
+                    if (mode == 1) {
+                        const innerHTMLKey = `${helper.propsKey(nodeConfig.id,'domProps','innerHTML')}`
+                        childrenTmpl = `${helper.tabSpace(nodeConfig.depth+1)}{{${innerHTMLKey}}}`
+                        renderData[innerHTMLKey] = properties.domProps.innerHTML
+                    } else if (mode == 2) {
+                        childrenTmpl = `${helper.tabSpace(nodeConfig.depth+1)}${properties.domProps.innerHTML}`
+                    }
                 }  
+                const propsRes = helper.properties(nodeConfig,mode);
+                util.extend(renderData,propsRes.renderData)
                 let exp = [
-                    `${_space}<${tag} ${helper.properties(nodeConfig)}>`,
+                    `${_space}<${tag} ${propsRes.renderStr}>`,
                     `${_space}</${tag}>`
                 ]
                 if (childrenTmpl != ``) {
@@ -153,11 +187,15 @@ export default {
                     _cache.push(tnode)
                 }
             }
-            return mode == 1 ? [
+            renderTmplate = mode == 1 ? [
                 `<template>`,
                 `${_cache[0]}`,
                 `</template>`
             ].join(`\r\n`) : _cache[0]
+            return {
+                renderTmplate: renderTmplate,
+                renderData: renderData
+            }
         } catch (error) {
             console.error(error)
         }

@@ -73,7 +73,10 @@ export default {
             const submitPages = async () => {
                 const fns = [];
                 pages.forEach((page) => {
-                    fns.push(pageModel.update(page.id,{JSON_nodetree:page.JSON_nodetree}))
+                    fns.push(pageModel.update(page.id,{
+                        JSON_nodetree:page.JSON_nodetree,
+                        JSON_node_props_data:page.JSON_node_props_data
+                    }))
                 });
                 const res = await Promise.all(fns);
             }

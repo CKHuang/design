@@ -48,6 +48,7 @@ export default {
             new form.CheckboxGroup().getConfig(),
             new form.Switch().getConfig(),
             new form.Select().getConfig(),
+            new form.Option().getConfig(),
             new form.Slider().getConfig(),
             new form.DatePicker().getConfig(),
             new form.TimePicker().getConfig(),

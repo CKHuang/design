@@ -21,7 +21,8 @@ export default (
     page_height = 0,
     nodetree = [],
     parentId = null,
-    id = null
+    id = null,
+    node_props_data = {}
 ) => {
     return Object.assign({
         name: name,
@@ -31,6 +32,7 @@ export default (
         router_props: router_props,
         page_width: page_width,
         page_height: page_height,
-        JSON_nodetree: nodetree
+        JSON_nodetree: nodetree,
+        JSON_node_props_data: node_props_data
     })
 }

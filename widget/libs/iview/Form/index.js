@@ -11,6 +11,7 @@ import Slider from './Slider'
 import DatePicker from './DatePicker'
 import TimePicker from './TimePicker'
 import InputNumber from './InputNumber'
+import Option from './Option'
 import Rate from './Rate'
 
 export default {
@@ -27,5 +28,6 @@ export default {
     DatePicker,
     TimePicker,
     InputNumber,
-    Rate
+    Rate,
+    Option
 }

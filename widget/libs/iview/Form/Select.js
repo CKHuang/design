@@ -1,8 +1,9 @@
 import Widget from '../../../base/Widget'
 import controls from '../../../base/controls'
+import Option from './Option'
 
 export default class Select extends Widget {
-    constructor() {
+    constructor(opts = {options: [new Option().getConfig(),new Option().getConfig()]}) {
         super(
             `Select`,
             `iview`,
@@ -22,11 +23,9 @@ export default class Select extends Widget {
                     ]
                 }),
                 'transfer': controls.Switch(`transfer`),
-                'placeholder': controls.Input(`占位文本`),
-                
-                
-                
-            }
+                'placeholder': controls.Input(`占位文本`), 
+            },
+            opts.options
         )
     }
 }

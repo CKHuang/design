@@ -296,7 +296,8 @@ export default {
         Object.assign(state,{
             [types.state.data["page.editing"]]: page
         })
-        this.commit(types.mutations["select.data.nodetree"],{nodeTree:page.JSON_nodetree}); 
+        this.commit(types.mutations["select.data.nodetree"],{nodeTree:page.JSON_nodetree});
+        this.commit(types.mutations["init.ide.node.properties.data"],page.JSON_node_props_data)
     },
     /**
      * @description 更新页面模块的表单类型，有新建以及修改
@@ -422,7 +423,7 @@ export default {
     },
     [types.mutations["init.ide.node.properties.data"]](state,datas) {
         return Object.assign(state,{
-            [types.state.data["node.properties.data"]]: datas
+            [types.state.data["node.properties.data"]]: datas || {}
         })
     }
 }

@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import builder from '../../../common/build'
+import util from '../../lib/util';
 
 const helper = builder.helper;
 
@@ -186,27 +187,65 @@ export default {
         )
     },
     page(pageConfig){
-        const template = this['page.template'](pageConfig.JSON_nodetree),
-              script = this['page.script'](pageConfig);
+        const template = this['page.template'](pageConfig.JSON_nodetree,1);
+        let scriptData = template.renderData;
+        let script = this['page.script'](pageConfig,{
+            data: scriptData
+        });
         return [
-            `${template}`,
+            `${template.renderTmplate}`,
             `\n`,
             `${script}`
         ].join(`\r\n`)
     },
     [`page.template`]: builder.template,
-    [`page.script`](pageConfig) {
-        const pageName = helper.pageName(pageConfig)
+    [`page.script`](pageConfig,opts = {
+        'method': {},
+        'data': {}
+    }) {
+        const pageName = helper.pageName(pageConfig);
+        const _opts = util.extend({
+            'method': {},
+            'data': {}
+        },opts)
+        function renderDataStr(datas){
+            let keys = Object.keys(datas);
+            if (keys.length == 0) {
+                return `        data:{}`
+            }
+            const res = [
+                `        data(){`,
+                `           return {`
+            ];
+            let typeValue,
+                value;
+            for( let i in datas ) {
+                typeValue = typeof datas[i];
+                if (typeValue == 'object') {
+                    value = JSON.stringify(datas[i])
+                } else if (typeValue == 'string') {
+                    value = `'${datas[i]}'`
+                } else {
+                    value = datas[i].toString()
+                }
+                res.push(`              "${i}":${value},`)
+            }
+            res.push(`           }`)
+            res.push(`        }`)
+            return res.join('\r\n')
+        } 
         let exp = [
             '<script>',
             `    /**`,
             `     * @deprecated ${pageConfig.name}`,
             `     */`,
             `    export default {`,
-            `        name:"${pageName}"`,
+            `        name:"${pageName}",`,
+            `${renderDataStr(_opts.data)}`,
             `    }`,
             `</script>`
         ]
+        console.log(exp.join(`\r\n`))
         return exp.join(`\r\n`)
     },
     [`webpack.base.config.js`](project) {
